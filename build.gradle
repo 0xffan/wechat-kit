@@ -1,0 +1,43 @@
+group 'me.ixfan.libs'
+version '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'jdepend'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = "wechat-kit"
+    version = "0.0.1"
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    httpclientVersion = '4.5.2'
+    gsonVersion = '2.6.2'
+    slf4jVersion = '1.7.21'
+    log4jVersion = '2.5'
+    junitVersion = '4.12'
+}
+
+dependencies {
+    compile(
+            "org.apache.httpcomponents:httpclient:${httpclientVersion}",
+            "com.google.code.gson:gson:${gsonVersion}",
+            "org.slf4j:slf4j-api:${slf4jVersion}",
+            "org.apache.logging.log4j:log4j-core:${log4jVersion}",
+            "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    )
+
+    testCompile "junit:junit:${junitVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
