@@ -3,18 +3,15 @@ package me.ixfan.wechatkit.message.in.event;
 /**
  * Created by xfan on 16/3/27.
  */
-public class ReceivedSubscribeEvent extends ReceivedEventMsg {
+public class QrSceneEvent extends EventMsg {
 
     /**
-     * 事件KEY值，qrscene_为前缀，后面为二维码的参数值
-     *
-     * 说明: 当未关注公众号的用户通过扫描二维码关注公众号时, 推送的 subscribe 事件
-     * 会包含 <code>EventKey</code> 和 <code>Ticket</code>.
+     * 事件KEY值，是一个32位无符号整数, 即创建二维码时的二维码scene_id
      */
     private String eventKey;
 
     /**
-     * 二维码的ticket，可用来换取二维码图片
+     * 二维码的ticket, 可用来换取二维码图片
      */
     private String ticket;
 
@@ -36,6 +33,6 @@ public class ReceivedSubscribeEvent extends ReceivedEventMsg {
 
     @Override
     public String getEvent() {
-        return EventType.SUBSCRIBE.value();
+        return EventType.SCAN.value();
     }
 }

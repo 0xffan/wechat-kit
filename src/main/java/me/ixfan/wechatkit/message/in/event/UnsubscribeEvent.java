@@ -3,7 +3,7 @@ package me.ixfan.wechatkit.message.in.event;
 /**
  * Created by xfan on 16/3/27.
  */
-public class ReceivedUnsubscribeEvent extends ReceivedEventMsg {
+public class UnsubscribeEvent extends EventMsg {
 
     @Override
     public String getEvent() {

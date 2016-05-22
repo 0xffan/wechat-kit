@@ -5,7 +5,7 @@ package me.ixfan.wechatkit.message.in.event;
  *
  * 点击菜单拉取消息时的事件推送.
  */
-public class ReceivedMenuClickEvent extends ReceivedEventMsg {
+public class MenuClickEvent extends EventMsg {
 
     /**
      * 事件KEY值, 与自定义菜单接口中KEY值对应

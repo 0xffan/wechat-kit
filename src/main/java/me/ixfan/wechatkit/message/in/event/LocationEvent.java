@@ -3,7 +3,7 @@ package me.ixfan.wechatkit.message.in.event;
 /**
  * Created by xfan on 16/3/27.
  */
-public class ReceivedLocationEvent extends ReceivedEventMsg {
+public class LocationEvent extends EventMsg {
 
     /**
      * 地理位置纬度

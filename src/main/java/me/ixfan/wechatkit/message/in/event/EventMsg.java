@@ -6,7 +6,7 @@ import me.ixfan.wechatkit.message.in.ReceivedMsgType;
 /**
  * Created by xfan on 16/3/27.
  */
-public abstract class ReceivedEventMsg extends ReceivedMsg {
+public abstract class EventMsg extends ReceivedMsg {
 
     private String event;
 
