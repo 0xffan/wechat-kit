@@ -26,13 +26,18 @@ ext {
     junitVersion = '4.12'
 }
 
+configurations.all {
+    exclude group:"commons-logging", module:"commons-logging"
+}
+
 dependencies {
     compile(
             "org.apache.httpcomponents:httpclient:${httpclientVersion}",
             "com.google.code.gson:gson:${gsonVersion}",
             "org.slf4j:slf4j-api:${slf4jVersion}",
             "org.apache.logging.log4j:log4j-core:${log4jVersion}",
-            "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+            "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}",
+            "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
     )
 
     testCompile "junit:junit:${junitVersion}"
