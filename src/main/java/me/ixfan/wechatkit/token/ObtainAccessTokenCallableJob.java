@@ -18,14 +18,14 @@ import java.util.concurrent.Callable;
  */
 public class ObtainAccessTokenCallableJob implements Callable<AccessToken> {
 
-    private final String OBTAIN_ACCESS_TOKEN_API_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
+    private static final String WECHAT_POST_OBTAIN_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}";
 
     @Override
     public AccessToken call() throws Exception {
 
-        String requestUrl = OBTAIN_ACCESS_TOKEN_API_URL
-                            + "&appid=" + AppProperties.get("APPID")
-                            + "&secret=" + AppProperties.get("APPSECRET");
+        String requestUrl = WECHAT_POST_OBTAIN_ACCESS_TOKEN
+                            .replace("${APPID}", AppProperties.get("APPID"))
+                            .replace("${APPSECRET}", AppProperties.get("APPSECRET"));
 
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setRetryHandler(new ObtainTokenRetryHandler())
