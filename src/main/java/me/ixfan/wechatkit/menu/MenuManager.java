@@ -7,29 +7,32 @@ import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
  */
 public class MenuManager {
 
-    private final String WECHAT_MENU_CREATE_URL_POST = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
-    private final String WECHAT_MENU_DELETE_URL_GET = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=";
+    /** 微信API - 创建自定义微信菜单 */
+    private static final String WECHAT_POST_MENU_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${ACCESS_TOKEN}";
+    /** 微信API - 删除自定义的微信菜单 */
+    private static final String WECHAT_GET_MENU_DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=${ACCESS_TOKEN}";
 
     private static MenuManager menuManager;
-    private WechatAccessTokenContainer accessTokenContainer;
+    private static WechatAccessTokenContainer accessTokenContainer;
 
     public static MenuManager getInstance(WechatAccessTokenContainer accessTokenContainer) {
-        if (null == menuManager) {
-            return new MenuManager(accessTokenContainer);
-        } else {
+        if (null != menuManager) {
             return menuManager;
         }
+
+        menuManager = new MenuManager(accessTokenContainer);
+        return menuManager;
     }
 
-    public MenuManager(WechatAccessTokenContainer accessTokenContainer) {
+    private MenuManager(WechatAccessTokenContainer accessTokenContainer) {
         this.accessTokenContainer = accessTokenContainer;
     }
 
-    public void createCustomizedMenu(String accessToken) {
+    public void createCustomizedMenu() {
         // TODO: 创建个性化微信菜单
     }
 
-    public void deleteCustomizedMenu(String accessToken) {
+    public void deleteCustomizedMenu() {
         // TODO: 删除个性化微信菜单
     }
 }
