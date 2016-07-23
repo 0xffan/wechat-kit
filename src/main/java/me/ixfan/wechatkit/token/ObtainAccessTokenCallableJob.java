@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (c) 2016 Warren Fan
@@ -31,6 +31,7 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 /**
@@ -45,7 +46,7 @@ public class ObtainAccessTokenCallableJob implements Callable<AccessToken> {
     private static final String WECHAT_GET_OBTAIN_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}";
 
     @Override
-    public AccessToken call() throws Exception {
+    public AccessToken call() {
 
         String requestUrl = WECHAT_GET_OBTAIN_ACCESS_TOKEN
                             .replace("${APPID}", AppProperties.get("APPID"))
@@ -56,7 +57,12 @@ public class ObtainAccessTokenCallableJob implements Callable<AccessToken> {
                 .build();
 
         HttpUriRequest request = RequestBuilder.get(requestUrl).setCharset(Charsets.UTF_8).build();
-        AccessToken accessToken = httpClient.execute(request, new AccessTokenResponseHandler());
+        AccessToken accessToken = null;
+        try {
+            accessToken = httpClient.execute(request, new AccessTokenResponseHandler());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return accessToken;
     }

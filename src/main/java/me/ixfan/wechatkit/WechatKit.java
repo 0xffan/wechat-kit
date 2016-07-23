@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (c) 2016 Warren Fan
@@ -31,7 +31,8 @@ import me.ixfan.wechatkit.user.UserManager;
 /**
  * 微信开放平台功能入口.
  *
- * Created by xfan on 16/5/22.
+ * @author xfan
+ * @since 16/5/22
  */
 public class WechatKit {
 
@@ -45,6 +46,9 @@ public class WechatKit {
         this.accessTokenContainer = builder.accessTokenContainer;
     }
 
+    /**
+     * Builde of WechatKit. The instance of {@link me.ixfan.wechatkit.token.WechatAccessTokenContainer} is required.
+     */
     public static class Builder {
         private final String appId;
         private final String appSecret;
@@ -65,10 +69,20 @@ public class WechatKit {
         }
     }
 
+    /**
+     * Customize menu of WeChat official accounts.
+     *
+     * @return Instance of ${@link me.ixfan.wechatkit.menu.MenuManager}.
+     */
     public MenuManager menuManager() {
         return MenuManager.getInstance(accessTokenContainer);
     }
 
+    /**
+     * Manage WeChat users.
+     *
+     * @return Intance of ${@link me.ixfan.wechatkit.user.UserManager}.
+     */
     public UserManager userManager() {
         return UserManager.getInstance(accessTokenContainer);
     }

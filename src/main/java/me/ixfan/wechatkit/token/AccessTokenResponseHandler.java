@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (c) 2016 Warren Fan
@@ -54,6 +54,13 @@ public class AccessTokenResponseHandler implements ResponseHandler<AccessToken> 
 
     private final Logger logger = LoggerFactory.getLogger(AccessTokenResponseHandler.class);
 
+    /**
+     * Response handler of WeChat access_token request.
+     *
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @Override
     public AccessToken handleResponse(HttpResponse response) throws IOException {
         StatusLine status = response.getStatusLine();

@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (c) 2016 Warren Fan
@@ -24,9 +24,17 @@
 
 package me.ixfan.wechatkit.menu;
 
+import com.google.gson.Gson;
+import me.ixfan.wechatkit.menu.model.MenuItem;
 import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
+ * Function set of menu management.
+ *
  * Created by xfan on 16/3/26.
  */
 public class MenuManager {
@@ -52,11 +60,21 @@ public class MenuManager {
         this.accessTokenContainer = accessTokenContainer;
     }
 
-    public void createCustomizedMenu() {
+    public void createCustomizedMenu(List<MenuItem> menu) {
         // TODO: 创建个性化微信菜单
     }
 
     public void deleteCustomizedMenu() {
         // TODO: 删除个性化微信菜单
+    }
+
+    public String convertMenuItemstoJsonString(MenuItem... menuItems) {
+        if (null == menuItems || menuItems.length <= 0) {
+            return "";
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("button", menuItems);
+        return new Gson().toJson(map);
     }
 }
