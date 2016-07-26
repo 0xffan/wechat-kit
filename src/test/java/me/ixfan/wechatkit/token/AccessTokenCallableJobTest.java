@@ -25,6 +25,7 @@
 package me.ixfan.wechatkit.token;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.*;
@@ -36,6 +37,7 @@ import static org.junit.Assert.fail;
  */
 public class AccessTokenCallableJobTest {
 
+    @Ignore("APPSECRET 不能公开, 在 Travis CI 中 build 时忽略此测试用例.")
     @Test
     public void successfullyRetrievedAccessToken() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
