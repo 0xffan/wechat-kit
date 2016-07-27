@@ -24,6 +24,9 @@
 
 package me.ixfan.wechatkit.menu.model;
 
+import me.ixfan.wechatkit.menu.MenuType;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,6 +60,15 @@ public class MenuItem {
      * 二级菜单数组，个数应为1~5个
      */
     private List<MenuItem> sub_button;
+
+    public MenuItem(String name) {
+        this.name = name;
+    }
+
+    public MenuItem(String name, MenuType type) {
+        this.name = name;
+        this.type = type.getName();
+    }
 
     public String getName() {
         return name;
@@ -109,5 +121,12 @@ public class MenuItem {
 
     public void setSub_button(List<MenuItem> sub_button) {
         this.sub_button = sub_button;
+    }
+
+    public void addSubMenu(MenuItem subMenu) {
+        if (null == this.sub_button) {
+            this.sub_button = new ArrayList<>();
+        }
+        this.sub_button.add(subMenu);
     }
 }

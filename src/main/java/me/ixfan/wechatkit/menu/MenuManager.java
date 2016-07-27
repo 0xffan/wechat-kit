@@ -68,7 +68,7 @@ public class MenuManager {
         // TODO: 删除个性化微信菜单
     }
 
-    public String convertMenuItemstoJsonString(MenuItem... menuItems) {
+    public String convertMenuItemsToJsonString(MenuItem... menuItems) {
         if (null == menuItems || menuItems.length <= 0) {
             return "";
         }
