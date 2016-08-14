@@ -43,7 +43,7 @@ import java.net.UnknownHostException;
  *
  * Created by xfan on 16/3/27.
  */
-public class ObtainTokenRetryHandler implements HttpRequestRetryHandler {
+class ObtainTokenRetryHandler implements HttpRequestRetryHandler {
 
     Logger logger = LoggerFactory.getLogger(ObtainTokenRetryHandler.class);
 

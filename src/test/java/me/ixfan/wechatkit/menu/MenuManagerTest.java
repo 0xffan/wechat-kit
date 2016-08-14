@@ -48,27 +48,41 @@
 package me.ixfan.wechatkit.menu;
 
 import com.google.gson.Gson;
+import me.ixfan.wechatkit.WechatKit;
 import me.ixfan.wechatkit.menu.model.MenuItem;
+import me.ixfan.wechatkit.token.SimpleTokenContainer;
+import me.ixfan.wechatkit.util.AppProperties;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Warren Fan
  */
 public class MenuManagerTest {
 
-    @Test
-    public void correctConvertMenuItemsToJsonString() {
-        String expectedMenusInJson = "{\"button\":[{\"name\":\"点我试试\",\"type\":\"click\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"菜单二\",\"sub_button\":[{\"name\":\"点我点我\",\"type\":\"click\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"谷歌搜索\",\"type\":\"view\",\"url\":\"https://www.google.com\"},{\"name\":\"扫码推事件\",\"type\":\"scancode_push\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"扫码带提示\",\"type\":\"scancode_waitmsg\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"}]},{\"name\":\"菜单三\",\"sub_button\":[{\"name\":\"系统拍照发图\",\"type\":\"pic_sysphoto\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"拍照或者相册发图\",\"type\":\"pic_photo_or_album\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"微信相册发图\",\"type\":\"pic_weixin\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"发送位置\",\"type\":\"location_select\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"}]}]}";
+    private static WechatKit wechatKit;
+    private static MenuItem levelOneMenu1;
+    private static MenuItem levelOneMenu2;
+    private static MenuItem levelOneMenu3;
 
-        MenuItem levelOneMenu1 = new MenuItem("点我试试", MenuType.CLICK);
+    @BeforeClass
+    public static void prepare() {
+        wechatKit = new WechatKit.Builder(AppProperties.get("APPID"), AppProperties.get("APPSECRET"))
+                        .setAccessTokenContainer(SimpleTokenContainer.getTokenContainer()).build();
+
+        levelOneMenu1 = new MenuItem("⚤ 你", MenuType.CLICK);
         levelOneMenu1.setKey("DEVELOPER_DEFINED_EVENT_KEY");
 
-        MenuItem levelOneMenu2 = new MenuItem("菜单二");
-        MenuItem levelOneMenu3 = new MenuItem("菜单三");
+        levelOneMenu2 = new MenuItem("这是啥");
+        levelOneMenu3 = new MenuItem("这又是啥");
 
         MenuItem menu21 = new MenuItem("点我点我", MenuType.CLICK);
         menu21.setKey("DEVELOPER_DEFINED_EVENT_KEY");
@@ -95,13 +109,32 @@ public class MenuManagerTest {
         MenuItem menu34 = new MenuItem("发送位置", MenuType.LOCATION_SELECT);
         menu34.setKey("DEVELOPER_DEFINED_EVENT_KEY");
         levelOneMenu3.addSubMenu(menu34);
+    }
 
-        Map<String, Object> menus = new HashMap<>();
+    @Test
+    public void correctConvertMenuItemsToJsonString() {
+        Map<String, MenuItem[]> menus = new HashMap<>();
+        String expectedMenusInJson = "{\"button\":[{\"name\":\"⚤ 你\",\"type\":\"click\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"这是啥\",\"sub_button\":[{\"name\":\"点我点我\",\"type\":\"click\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"谷歌搜索\",\"type\":\"view\",\"url\":\"https://www.google.com\"},{\"name\":\"扫码推事件\",\"type\":\"scancode_push\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"扫码带提示\",\"type\":\"scancode_waitmsg\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"}]},{\"name\":\"这又是啥\",\"sub_button\":[{\"name\":\"系统拍照发图\",\"type\":\"pic_sysphoto\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"拍照或者相册发图\",\"type\":\"pic_photo_or_album\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"微信相册发图\",\"type\":\"pic_weixin\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"},{\"name\":\"发送位置\",\"type\":\"location_select\",\"key\":\"DEVELOPER_DEFINED_EVENT_KEY\"}]}]}";
+
         menus.put("button", new MenuItem[] { levelOneMenu1, levelOneMenu2, levelOneMenu3 });
 
         Gson gson = new Gson();
         String menusInJson = gson.toJson(menus);
 
         Assert.assertEquals("Compact JSON string should equals!", expectedMenusInJson, menusInJson);
+    }
+
+    @Ignore("跳过创建菜单的测试, 避免每次测试都创建一次测试菜单.")
+    @Test
+    public void createCustomizedMenuSuccessfully() {
+        boolean result = this.wechatKit.menuManager().createCustomizedMenu(Arrays.asList(levelOneMenu1, levelOneMenu2, levelOneMenu3));
+        assertTrue("Failed to create wechat menu!", result);
+    }
+
+    @Ignore("跳过删除菜单的测试, 避免每次测试都把菜单删掉.")
+    @Test
+    public void deleteCustomizedMenuSuccessfully() {
+        boolean result = this.wechatKit.menuManager().deleteCustomizedMenu();
+        assertTrue("Failed to delete wechat menu!", result);
     }
 }

@@ -30,5 +30,9 @@ package me.ixfan.wechatkit.token;
  * Created by xfan on 16/5/22.
  */
 public interface WechatAccessTokenContainer {
-    AccessToken getWechatApiAccessToken();
+    String getWechatApiAccessToken();
+
+    default void setWechatApiAccessToken(AccessToken accessToken) {
+
+    }
 }

@@ -25,9 +25,16 @@
 package me.ixfan.wechatkit.menu;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import me.ixfan.wechatkit.constants.WeChatConstants;
 import me.ixfan.wechatkit.menu.model.MenuItem;
+import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
+import me.ixfan.wechatkit.util.HttpClientUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,35 +46,65 @@ import java.util.Map;
  */
 public class MenuManager {
 
-    /** 微信API - 创建自定义微信菜单 */
-    private static final String WECHAT_POST_MENU_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${ACCESS_TOKEN}";
-    /** 微信API - 删除自定义的微信菜单 */
-    private static final String WECHAT_GET_MENU_DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=${ACCESS_TOKEN}";
+    private Logger logger = LoggerFactory.getLogger(MenuManager.class);
 
-    private static MenuManager menuManager;
-    private static WechatAccessTokenContainer accessTokenContainer;
+    private static TokenManager tokenManager;
 
-    public static MenuManager getInstance(WechatAccessTokenContainer accessTokenContainer) {
-        if (null != menuManager) {
-            return menuManager;
+    public MenuManager(TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
+    }
+
+    /**
+     * Create customized menus.
+     * @param menus {@link MenuItem}s to be created.
+     */
+    public boolean createCustomizedMenu(List<MenuItem> menus) {
+        String menusInJson = convertMenuItemsToJsonString((MenuItem[]) menus.toArray());
+        try {
+            JsonObject response = HttpClientUtil.sendPostRequestWithJsonBody(
+                    WeChatConstants.WECHAT_POST_MENU_CREATE_URL
+                            .replace("${ACCESS_TOKEN}", this.tokenManager.getAccessToken()),
+                    menusInJson);
+            int wechatResponseCode = response.get(WeChatConstants.WECHAT_API_RESPONSE_KEY_ERRCODE).getAsInt();
+            if (0 != wechatResponseCode) {
+                logger.error("Failed to create customized menu, {}", response.toString());
+                return false;
+            }
+        } catch (IOException e) {
+            logger.error("Error occurred while creating customized menu.");
+            e.printStackTrace();
+            return false;
         }
 
-        menuManager = new MenuManager(accessTokenContainer);
-        return menuManager;
+        return true;
     }
 
-    private MenuManager(WechatAccessTokenContainer accessTokenContainer) {
-        this.accessTokenContainer = accessTokenContainer;
+    /**
+     * Delete customized menus.
+     */
+    public boolean deleteCustomizedMenu() {
+        try {
+            JsonObject response = HttpClientUtil.sendGetRequestAndGetJsonResponse(
+                    WeChatConstants.WECHAT_GET_MENU_DELETE_URL.replace("${ACCESS_TOKEN}",
+                                                                       this.tokenManager.getAccessToken()));
+            int wechatResponseCode = response.get(WeChatConstants.WECHAT_API_RESPONSE_KEY_ERRCODE).getAsInt();
+            if (0 != wechatResponseCode) {
+                logger.error("Failed to delete menu, {}", response.toString());
+                return false;
+            }
+        } catch (IOException e) {
+            logger.error("Error occurred while deleting customized menu.");
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
-    public void createCustomizedMenu(List<MenuItem> menu) {
-        // TODO: 创建个性化微信菜单
-    }
-
-    public void deleteCustomizedMenu() {
-        // TODO: 删除个性化微信菜单
-    }
-
+    /**
+     * Serialize {@link MenuItem} array to JSON string.
+     * @param menuItems
+     * @return
+     */
     public String convertMenuItemsToJsonString(MenuItem... menuItems) {
         if (null == menuItems || menuItems.length <= 0) {
             return "";

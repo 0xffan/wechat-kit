@@ -25,6 +25,7 @@
 package me.ixfan.wechatkit;
 
 import me.ixfan.wechatkit.menu.MenuManager;
+import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
 import me.ixfan.wechatkit.user.UserManager;
 
@@ -40,14 +41,19 @@ public class WechatKit {
     private final String appSecret;
     public WechatAccessTokenContainer accessTokenContainer;
 
+    private TokenManager tokenManager;
+    private MenuManager menuManager;
+    private UserManager userManager;
+
     public WechatKit(Builder builder) {
         this.appId = builder.appId;
         this.appSecret = builder.appSecret;
         this.accessTokenContainer = builder.accessTokenContainer;
+        this.tokenManager = new TokenManager(this.appId, this.appSecret, this.accessTokenContainer);
     }
 
     /**
-     * Builde of WechatKit. The instance of {@link me.ixfan.wechatkit.token.WechatAccessTokenContainer} is required.
+     * Builde of WechatKit. The instance of {@link WechatAccessTokenContainer} is required.
      */
     public static class Builder {
         private final String appId;
@@ -70,12 +76,26 @@ public class WechatKit {
     }
 
     /**
+     * <code>access_token</code> manager.
+     * @return
+     */
+    public TokenManager tokenManager() {
+        if (null == this.tokenManager) {
+            this.tokenManager = new TokenManager(this.appId, this.appSecret, this.accessTokenContainer);
+        }
+        return this.tokenManager;
+    }
+
+    /**
      * Customize menu of WeChat official accounts.
      *
      * @return Instance of ${@link me.ixfan.wechatkit.menu.MenuManager}.
      */
     public MenuManager menuManager() {
-        return MenuManager.getInstance(accessTokenContainer);
+        if (null == this.menuManager) {
+            this.menuManager = new MenuManager(this.tokenManager);
+        }
+        return this.menuManager;
     }
 
     /**
@@ -84,7 +104,10 @@ public class WechatKit {
      * @return Intance of ${@link me.ixfan.wechatkit.user.UserManager}.
      */
     public UserManager userManager() {
-        return UserManager.getInstance(accessTokenContainer);
+        if (null == this.userManager) {
+            this.userManager = new UserManager(this.accessTokenContainer);
+        }
+        return this.userManager;
     }
 
 }

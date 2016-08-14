@@ -34,6 +34,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -42,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +89,24 @@ public class HttpClientUtil {
                 url,
                 HttpPost.METHOD_NAME,
                 nameValuePairs.toArray(new NameValuePair[nameValuePairs.size()]));
+    }
+
+    /**
+     * Send HTTP POST request with body of JSON data.
+     * @param url URL of request.
+     * @param jsonBody Body data in JSON.
+     * @return JSON object of response.
+     * @throws IOException
+     */
+    public static JsonObject sendPostRequestWithJsonBody(String url, String jsonBody)
+            throws IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpUriRequest request = RequestBuilder.post(url)
+                                               .setCharset(Charsets.UTF_8)
+                                               .addHeader("Content-type", "application/json")
+                                               .setEntity(new StringEntity(jsonBody, Charsets.UTF_8))
+                                               .build();
+        return httpClient.execute(request, new JsonResponseHandler());
     }
 
     /**
