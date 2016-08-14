@@ -39,7 +39,6 @@ public class WechatKit {
 
     private final String appId;
     private final String appSecret;
-    public WechatAccessTokenContainer accessTokenContainer;
 
     private TokenManager tokenManager;
     private MenuManager menuManager;
@@ -48,8 +47,7 @@ public class WechatKit {
     public WechatKit(Builder builder) {
         this.appId = builder.appId;
         this.appSecret = builder.appSecret;
-        this.accessTokenContainer = builder.accessTokenContainer;
-        this.tokenManager = new TokenManager(this.appId, this.appSecret, this.accessTokenContainer);
+        this.tokenManager = new TokenManager(this.appId, this.appSecret, builder.accessTokenContainer);
     }
 
     /**
@@ -76,20 +74,9 @@ public class WechatKit {
     }
 
     /**
-     * <code>access_token</code> manager.
-     * @return
-     */
-    public TokenManager tokenManager() {
-        if (null == this.tokenManager) {
-            this.tokenManager = new TokenManager(this.appId, this.appSecret, this.accessTokenContainer);
-        }
-        return this.tokenManager;
-    }
-
-    /**
      * Customize menu of WeChat official accounts.
      *
-     * @return Instance of ${@link me.ixfan.wechatkit.menu.MenuManager}.
+     * @return Instance of ${@link MenuManager}.
      */
     public MenuManager menuManager() {
         if (null == this.menuManager) {
@@ -105,7 +92,7 @@ public class WechatKit {
      */
     public UserManager userManager() {
         if (null == this.userManager) {
-            this.userManager = new UserManager(this.accessTokenContainer);
+            this.userManager = new UserManager(this.tokenManager);
         }
         return this.userManager;
     }

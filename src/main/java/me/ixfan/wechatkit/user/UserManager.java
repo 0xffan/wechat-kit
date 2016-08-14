@@ -24,6 +24,7 @@
 
 package me.ixfan.wechatkit.user;
 
+import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
 
 /**
@@ -32,10 +33,10 @@ import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
  */
 public class UserManager {
 
-    private static WechatAccessTokenContainer accessTokenContainer;
+    private static TokenManager tokenManager;
 
-    public UserManager(WechatAccessTokenContainer accessTokenContainer) {
-        this.accessTokenContainer = accessTokenContainer;
+    public UserManager(TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
     }
 
 }
