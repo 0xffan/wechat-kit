@@ -1,46 +1,15 @@
-group 'me.ixfan.libs'
-version '0.1-SNAPSHOT'
+allprojects {
+    group 'me.ixfan.libs'
+}
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-jar {
-    baseName = 'ixfan-wechat-kit'
-    manifest {
-        attributes("Implementation-Title": "WeChat Development Kit for Java",
-                "Implementation-Version": version)
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    repositories {
+        mavenCentral()
     }
-}
-
-repositories {
-    mavenCentral()
-}
-
-ext {
-    httpclientVersion = '4.5.2'
-    gsonVersion = '2.6.2'
-    slf4jVersion = '1.7.21'
-    log4jVersion = '2.5'
-    junitVersion = '4.12'
-}
-
-configurations.all {
-    exclude group:"commons-logging", module:"commons-logging"
-}
-
-dependencies {
-    compile "org.apache.httpcomponents:httpclient:${httpclientVersion}",
-            "com.google.code.gson:gson:${gsonVersion}",
-            "org.slf4j:slf4j-api:${slf4jVersion}",
-            "org.apache.logging.log4j:log4j-core:${log4jVersion}",
-            "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}",
-            "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
-
-    testCompile "junit:junit:${junitVersion}"
 }
 
 task wrapper(type: Wrapper) {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="me.ixfan.wechatkit.menu.MenuManagerTest" tests="3" skipped="2" failures="0" errors="0" timestamp="2016-08-16T15:02:46" hostname="xfan-mbp.local" time="0.049">
+  <properties/>
+  <testcase name="deleteCustomizedMenuSuccessfully" classname="me.ixfan.wechatkit.menu.MenuManagerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="correctConvertMenuItemsToJsonString" classname="me.ixfan.wechatkit.menu.MenuManagerTest" time="0.047"/>
+  <testcase name="createCustomizedMenuSuccessfully" classname="me.ixfan.wechatkit.menu.MenuManagerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

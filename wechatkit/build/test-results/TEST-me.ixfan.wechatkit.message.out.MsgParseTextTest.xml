@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="me.ixfan.wechatkit.message.out.MsgParseTextTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2016-08-16T15:02:47" hostname="xfan-mbp.local" time="0.156">
+  <properties/>
+  <testcase name="successfullyDeserializeXmlTextMsgToObject" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.007"/>
+  <testcase name="msgContentIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.008"/>
+  <testcase name="toUserNameIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.006"/>
+  <testcase name="createTimeIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.006"/>
+  <testcase name="fromUserNameIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.008"/>
+  <testcase name="successfullySerializeTextMsgToXml" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.006"/>
+  <testcase name="successfullyDeserializeXmlTextMsgToObject" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.008"/>
+  <testcase name="msgContentIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.011"/>
+  <testcase name="toUserNameIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.009"/>
+  <testcase name="createTimeIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.007"/>
+  <testcase name="fromUserNameIsRequired" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.006"/>
+  <testcase name="successfullySerializeTextMsgToXml" classname="me.ixfan.wechatkit.message.out.MsgParseTextTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
