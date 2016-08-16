@@ -40,18 +40,24 @@ public class WechatKit {
     private final String appId;
     private final String appSecret;
 
-    private TokenManager tokenManager;
+    private final TokenManager tokenManager;
+
     private MenuManager menuManager;
     private UserManager userManager;
 
-    public WechatKit(Builder builder) {
+    private WechatKit(Builder builder) {
         this.appId = builder.appId;
         this.appSecret = builder.appSecret;
         this.tokenManager = new TokenManager(this.appId, this.appSecret, builder.accessTokenContainer);
     }
 
+    public static WechatKit build(String appId, String appSecret, WechatAccessTokenContainer accessTokenContainer) {
+        return new Builder(appId, appSecret).setAccessTokenContainer(accessTokenContainer).build();
+    }
+
+
     /**
-     * Builde of WechatKit. The instance of {@link WechatAccessTokenContainer} is required.
+     * Builder of WechatKit. The instance of {@link WechatAccessTokenContainer} is required.
      */
     public static class Builder {
         private final String appId;
