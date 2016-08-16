@@ -1,14 +1,33 @@
-# WeChat Development Kit  [![Build Status](https://travis-ci.org/ixfan/wechat-kit.svg?branch=master)](https://travis-ci.org/ixfan/wechat-kit)
+# WeChat Development Kit
 
-### 这是什么
+[![Build Status](https://travis-ci.org/ixfan/wechat-kit.svg?branch=master)](https://travis-ci.org/ixfan/wechat-kit)
 
-微信公众平台开发套件
+微信公众平台开发组件(WeChat Kit)是 Java 封装的微信开放平台接口功能，方便在用 Java 开发微信公众平台应用时对微信开放平台接口的使用。
 
-### 怎么用
+## 怎么用
 
-TODO: Add usage.
+### 关于 access_token
 
-### 开发进程
+`access_token` 是公众号的全局唯一接口调用凭证，开发者需要进行妥善保存。WeChat Kit 使用 [`WechatAccessTokenContainer`](src/main/java/me/ixfan/wechatkit/token/WechatAccessTokenContainer.java) 和 [`TokenManager`](src/main/java/me/ixfan/wechatkit/token/TokenManager.java) 来管理 `access_token`。[`WechatAccessTokenContainer`](src/main/java/me/ixfan/wechatkit/token/WechatAccessTokenContainer.java) 是一个接口，定义了 `access_token` 缓存容器存取 `access_token` 的方法，使用者需要为 [`WechatKit`](src/main/java/me/ixfan/wechatkit/WechatKit.java) 提供自己的 `WechatAccessTokenContainer` 实现类。
+
+### 开始使用
+
+[`WechatKit`](src/main/java/me/ixfan/wechatkit/WechatKit.java) 是使用 WeChat Kit 时主要用到的类，所有对微信开放平台接口功能的使用都要通过 `WechatKit`。
+
+以为公众号创建自定义菜单和获取微信用户信息为例：
+
+```java
+// 首先创建 WechatKit 实例
+WechatKit wechatKit = WechatKit.build("APPID", "APPSECRET", yourWechatAccessTokenContainerImpl);
+
+// 为公众号创建自定义菜单
+wechatKit.menuManager().createCustomizedMenu(menuItemsList);
+
+// 获取微信用户信息
+WechatUser user = wechatKit.userManager().getWechatUserInfo("user's openid");
+```
+
+## 开发进程
 
 > ✔️ - Done &nbsp;&nbsp;&nbsp; 🛠 - Ongoing  &nbsp;&nbsp;&nbsp; 🕖 - Pending
 
@@ -58,6 +77,6 @@ TODO: Add usage.
  
  🕖 发送客服消息
 
-### 一起玩
+## 一起玩
 
 
