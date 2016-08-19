@@ -1,12 +1,15 @@
+apply plugin: 'idea'
+
 allprojects {
     group 'me.ixfan.libs'
 }
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'idea'
+
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+
     repositories {
         mavenCentral()
     }
