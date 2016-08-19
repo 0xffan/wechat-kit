@@ -1,4 +1,4 @@
 language: java
-script: ./gradlew clean build
+script: ./gradlew :wechatkit:build
 jdk:
   - oraclejdk8
