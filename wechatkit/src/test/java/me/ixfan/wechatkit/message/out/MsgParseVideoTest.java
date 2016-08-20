@@ -24,6 +24,8 @@
 
 package me.ixfan.wechatkit.message.out;
 
+import me.ixfan.wechatkit.message.out.xml.ResponseVideoMsg;
+import me.ixfan.wechatkit.message.out.xml.Video;
 import me.ixfan.wechatkit.util.JAXBUtil;
 import org.junit.After;
 import org.junit.Before;

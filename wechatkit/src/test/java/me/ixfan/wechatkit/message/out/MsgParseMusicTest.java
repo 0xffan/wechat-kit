@@ -24,6 +24,8 @@
 
 package me.ixfan.wechatkit.message.out;
 
+import me.ixfan.wechatkit.message.out.xml.Music;
+import me.ixfan.wechatkit.message.out.xml.ResponseMusicMsg;
 import me.ixfan.wechatkit.util.JAXBUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +38,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

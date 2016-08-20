@@ -70,6 +70,6 @@ public class ReceivedVoiceMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return ReceivedMsgType.Voice.value();
+        return InMessageType.Voice.value();
     }
 }

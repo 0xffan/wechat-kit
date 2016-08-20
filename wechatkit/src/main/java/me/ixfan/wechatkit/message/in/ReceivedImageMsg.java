@@ -70,6 +70,6 @@ public class ReceivedImageMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return ReceivedMsgType.Image.value();
+        return InMessageType.Image.value();
     }
 }

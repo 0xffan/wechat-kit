@@ -71,6 +71,6 @@ public class ReceivedVideoMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return ReceivedMsgType.Video.value();
+        return InMessageType.Video.value();
     }
 }

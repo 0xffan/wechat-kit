@@ -45,7 +45,7 @@ public abstract class ReceivedMsg {
     private Long createTime;
 
     /**
-     * 接收消息的类型. {@code ReceivedMsgType} 定义了可选的接收消息类型.
+     * 接收消息的类型. {@link InMessageType} 定义了可选的接收消息类型.
      */
     private String msgType;
 

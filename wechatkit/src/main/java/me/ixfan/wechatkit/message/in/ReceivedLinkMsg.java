@@ -83,6 +83,6 @@ public class ReceivedLinkMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return ReceivedMsgType.Link.value();
+        return InMessageType.Link.value();
     }
 }

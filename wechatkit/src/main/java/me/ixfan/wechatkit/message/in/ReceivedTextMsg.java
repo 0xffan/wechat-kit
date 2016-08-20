@@ -57,6 +57,6 @@ public class ReceivedTextMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return ReceivedMsgType.Text.value();
+        return InMessageType.Text.value();
     }
 }

@@ -96,6 +96,6 @@ public class ReceivedLocationMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return ReceivedMsgType.Location.value();
+        return InMessageType.Location.value();
     }
 }

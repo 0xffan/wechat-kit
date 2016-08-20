@@ -24,6 +24,7 @@
 
 package me.ixfan.wechatkit.message.out;
 
+import me.ixfan.wechatkit.message.out.xml.ResponseTextMsg;
 import me.ixfan.wechatkit.util.JAXBUtil;
 import org.junit.After;
 import org.junit.Before;

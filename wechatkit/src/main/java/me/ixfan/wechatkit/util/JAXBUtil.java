@@ -53,7 +53,7 @@ public class JAXBUtil {
      * Serialize {@link XmlSerializable} instance to XML string. There is no XML declaration in the result XML string.
      * @param object Object to be serialized.
      * @param <T> The type of the object to be serialized, it must implements {@link XmlSerializable} interface.
-     * @return
+     * @return XML string.
      * @throws JAXBException
      * @throws IOException
      * @throws SAXException
@@ -87,9 +87,7 @@ public class JAXBUtil {
         JAXBContext jaxbContext = JAXBContext.newInstance(tClass);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-        T object = (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(msgInXml.getBytes(StandardCharsets.UTF_8)));
-
-        return object;
+        return (T) jaxbUnmarshaller.unmarshal(new ByteArrayInputStream(msgInXml.getBytes(StandardCharsets.UTF_8)));
     }
 
     private static void generateAndSetSchema(JAXBContext jaxbContext, Marshaller marshaller) throws IOException, SAXException {
@@ -117,7 +115,7 @@ public class JAXBUtil {
             return result;
         }
 
-        public byte[] getSchemaContent() {
+        byte[] getSchemaContent() {
             return schemaOutputStream.toByteArray();
         }
     }

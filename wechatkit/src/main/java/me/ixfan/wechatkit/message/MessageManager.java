@@ -24,12 +24,17 @@
 
 package me.ixfan.wechatkit.message;
 
+import me.ixfan.wechatkit.common.WechatApiResult;
 import me.ixfan.wechatkit.message.in.ReceivedMsg;
 
+import java.util.Map;
+
 /**
- * Created by xfan on 16/3/26.
+ * 消息管理
+ *
+ * Created by Warran Fan on 16/3/26.
  */
-public class MessageProcessor {
+public class MessageManager {
 
     /**
      * 解析来自微信的 XML 格式的消息,返回对应的消息对象实例。
@@ -39,6 +44,26 @@ public class MessageProcessor {
     public static ReceivedMsg parseXmlMessage(String msgInXml) {
         // TODO: 解析来自微信的 XML 格式的消息, 返回对应的消息对象实例
 
+        return null;
+    }
+
+    public WechatApiResult massMessaging(String content, String[] openids) {
+        return null;
+    }
+
+    public WechatApiResult massMessaging(String content, String tadId, boolean isToAll) {
+        return null;
+    }
+
+    /**
+     * TODO 向用户发送模板消息。
+     *
+     * @param templateId 消息模板ID
+     * @param openid 接收消息的用户的 openid
+     * @param params 消息模板中需要传入的数据
+     * @return 微信模板消息接口的返回结果,封装成 {@link WechatApiResult} 的实例。
+     */
+    public WechatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> params) {
         return null;
     }
 }

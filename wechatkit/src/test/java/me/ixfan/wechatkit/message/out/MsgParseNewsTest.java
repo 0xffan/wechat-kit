@@ -24,6 +24,8 @@
 
 package me.ixfan.wechatkit.message.out;
 
+import me.ixfan.wechatkit.message.out.xml.Article;
+import me.ixfan.wechatkit.message.out.xml.ResponseNewsMsg;
 import me.ixfan.wechatkit.util.JAXBUtil;
 import org.junit.After;
 import org.junit.Before;
