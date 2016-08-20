@@ -81,8 +81,8 @@ public class Video implements XmlSerializable {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] { "^MediaId", "^Title", "^Description" };
+    public String cdataElements() {
+        return "MediaId Title Description";
     }
 
     @Override

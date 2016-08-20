@@ -104,7 +104,7 @@ public class Article implements XmlSerializable {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] {"^Title", "^Description", "^PicUrl", "^Url"};
+    public String cdataElements() {
+        return "Title Description PicUrl Url";
     }
 }

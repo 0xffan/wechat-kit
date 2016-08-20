@@ -55,8 +55,8 @@ public class ResponseVoiceMsg extends ResponseMsg {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] { "^ToUserName", "^FromUserName", "^MsgType", "^MediaId" };
+    public String cdataElements() {
+        return "ToUserName FromUserName MsgType MediaId";
     }
 
     @Override

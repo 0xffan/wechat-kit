@@ -119,7 +119,7 @@ public class Music implements XmlSerializable {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] { "^Title", "^Description", "^MusicUrl", "^HQMusicUrl", "^ThumbMediaId"};
+    public String cdataElements() {
+        return "Title Description MusicUrl HQMusicUrl ThumbMediaId";
     }
 }

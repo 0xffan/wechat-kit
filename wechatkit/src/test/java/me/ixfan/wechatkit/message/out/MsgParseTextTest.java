@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.transform.TransformerException;
 
 import java.io.IOException;
 
@@ -89,7 +90,7 @@ public class MsgParseTextTest {
     }
 
     @Test
-    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         textMsg.setToUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -97,7 +98,7 @@ public class MsgParseTextTest {
     }
 
     @Test
-    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         textMsg.setFromUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -105,7 +106,7 @@ public class MsgParseTextTest {
     }
 
     @Test
-    public void createTimeIsRequired() throws JAXBException, IOException, SAXException {
+    public void createTimeIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         textMsg.setCreateTime(null);
 
         thrown.expect(MarshalException.class);
@@ -113,7 +114,7 @@ public class MsgParseTextTest {
     }
 
     @Test
-    public void msgContentIsRequired() throws JAXBException, IOException, SAXException {
+    public void msgContentIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         textMsg.setContent(null);
 
         thrown.expect(MarshalException.class);

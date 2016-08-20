@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class MsgParseNewsTest {
     }
 
     @Test
-    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         newsMsg.setToUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -108,7 +109,7 @@ public class MsgParseNewsTest {
     }
 
     @Test
-    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         newsMsg.setFromUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -116,7 +117,7 @@ public class MsgParseNewsTest {
     }
 
     @Test
-    public void createTimeIsRequired() throws JAXBException, IOException, SAXException {
+    public void createTimeIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         newsMsg.setCreateTime(null);
 
         thrown.expect(MarshalException.class);
@@ -124,7 +125,7 @@ public class MsgParseNewsTest {
     }
 
     @Test
-    public void articleCountIsRequired() throws JAXBException, IOException, SAXException {
+    public void articleCountIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         newsMsg.setArticleCount(null);
 
         thrown.expect(MarshalException.class);
@@ -132,7 +133,7 @@ public class MsgParseNewsTest {
     }
 
     @Test
-    public void articlesIsRequired() throws JAXBException, IOException, SAXException {
+    public void articlesIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         newsMsg.setArticles(null);
 
         thrown.expect(MarshalException.class);

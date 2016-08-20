@@ -50,9 +50,8 @@ public class ResponseVideoMsg extends ResponseMsg {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] { "^ToUserName", "^FromUserName", "^MsgType",
-            "^MediaId", "^Title", "^Description" };
+    public String cdataElements() {
+        return "ToUserName FromUserName MsgType MediaId Title Description";
     }
 
     @Override

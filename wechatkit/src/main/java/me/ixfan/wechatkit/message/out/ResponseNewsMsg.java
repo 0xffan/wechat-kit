@@ -25,8 +25,6 @@
 package me.ixfan.wechatkit.message.out;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -74,9 +72,8 @@ public class ResponseNewsMsg extends ResponseMsg {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] {"^ToUserName", "^FromUserName", "^MsgType",
-                "^Title", "^Description", "^PicUrl", "^Url" };
+    public String cdataElements() {
+        return "ToUserName FromUserName MsgType Title Description PicUrl Url";
     }
 
     @Override

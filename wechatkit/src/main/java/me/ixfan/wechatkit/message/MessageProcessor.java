@@ -31,8 +31,14 @@ import me.ixfan.wechatkit.message.in.ReceivedMsg;
  */
 public class MessageProcessor {
 
+    /**
+     * 解析来自微信的 XML 格式的消息,返回对应的消息对象实例。
+     * @param msgInXml 微信推送的 XML 格式的消息或事件。
+     * @return 消息或事件对象实例
+     */
     public static ReceivedMsg parseXmlMessage(String msgInXml) {
         // TODO: 解析来自微信的 XML 格式的消息, 返回对应的消息对象实例
+
         return null;
     }
 }

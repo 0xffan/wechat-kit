@@ -26,7 +26,6 @@ package me.ixfan.wechatkit.message.out;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,10 +53,8 @@ public class ResponseMusicMsg extends ResponseMsg {
     }
 
     @Override
-    public String[] cdataElements() {
-        List<String> cdataElements = new ArrayList<>(Arrays.asList(super.cdataElements()));
-        cdataElements.addAll(Arrays.asList(this.music.cdataElements()));
-        return cdataElements.toArray(new String[cdataElements.size()]);
+    public String cdataElements() {
+        return super.cdataElements() + " " + this.music.cdataElements();
     }
 
     @Override

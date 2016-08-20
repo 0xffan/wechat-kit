@@ -90,8 +90,8 @@ public abstract class ResponseMsg implements XmlSerializable {
         return msgType;
     }
 
-    public String[] cdataElements() {
-        return new String[] { "^FromUserName", "^ToUserName", "^MsgType"};
+    public String cdataElements() {
+        return "FromUserName ToUserName MsgType";
     }
 
     @Override

@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -95,7 +96,7 @@ public class MsgParseMusicTest {
     }
 
     @Test
-    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         musicMsg.setToUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -103,7 +104,7 @@ public class MsgParseMusicTest {
     }
 
     @Test
-    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         musicMsg.setFromUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -111,7 +112,7 @@ public class MsgParseMusicTest {
     }
 
     @Test
-    public void createTimeIsRequired() throws JAXBException, IOException, SAXException {
+    public void createTimeIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         musicMsg.setCreateTime(null);
 
         thrown.expect(MarshalException.class);

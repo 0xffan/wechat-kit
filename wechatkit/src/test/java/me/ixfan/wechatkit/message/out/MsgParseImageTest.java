@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -89,7 +90,7 @@ public class MsgParseImageTest {
     }
 
     @Test
-    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         imageMsg.setToUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -97,7 +98,7 @@ public class MsgParseImageTest {
     }
 
     @Test
-    public void toFromNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toFromNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         imageMsg.setFromUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -105,7 +106,7 @@ public class MsgParseImageTest {
     }
 
     @Test
-    public void createTimeIsRequired() throws JAXBException, IOException, SAXException {
+    public void createTimeIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         imageMsg.setCreateTime(null);
 
         thrown.expect(MarshalException.class);
@@ -113,7 +114,7 @@ public class MsgParseImageTest {
     }
 
     @Test
-    public void imageObjectIsRequired() throws JAXBException, IOException, SAXException {
+    public void imageObjectIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         imageMsg.setMediaImage(null);
 
         thrown.expect(MarshalException.class);
@@ -121,7 +122,7 @@ public class MsgParseImageTest {
     }
 
     @Test
-    public void meidaIdOfImageIsRequired() throws JAXBException, IOException, SAXException {
+    public void meidaIdOfImageIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         imageMsg.getMediaImage().setMediaId(null);
 
         thrown.expect(MarshalException.class);

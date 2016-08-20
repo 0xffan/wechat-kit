@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -89,7 +90,7 @@ public class MsgParseVoiceTest {
     }
 
     @Test
-    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         voiceMsg.setToUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -97,7 +98,7 @@ public class MsgParseVoiceTest {
     }
 
     @Test
-    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         voiceMsg.setFromUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -105,7 +106,7 @@ public class MsgParseVoiceTest {
     }
 
     @Test
-    public void mediaIdOfVoiceIsRequired() throws JAXBException, IOException, SAXException {
+    public void mediaIdOfVoiceIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         voiceMsg.getMediaVoice().setMediaId(null);
 
         thrown.expect(MarshalException.class);

@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.MarshalException;
+import javax.xml.transform.TransformerException;
 
 import java.io.IOException;
 
@@ -93,7 +94,7 @@ public class MsgParseVideoTest {
     }
 
     @Test
-    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void toUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         videoMsg.setToUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -101,7 +102,7 @@ public class MsgParseVideoTest {
     }
 
     @Test
-    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException {
+    public void fromUserNameIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         videoMsg.setFromUserName(null);
 
         thrown.expect(MarshalException.class);
@@ -109,7 +110,7 @@ public class MsgParseVideoTest {
     }
 
     @Test
-    public void mediaIdOfVideoIsRequired() throws JAXBException, IOException, SAXException {
+    public void mediaIdOfVideoIsRequired() throws JAXBException, IOException, SAXException, TransformerException {
         videoMsg.getVideo().setMediaId(null);
 
         thrown.expect(MarshalException.class);

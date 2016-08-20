@@ -53,8 +53,8 @@ public class ResponseTextMsg extends ResponseMsg {
     }
 
     @Override
-    public String[] cdataElements() {
-        return new String[] {"^ToUserName", "^FromUserName", "^MsgType", "^Content" };
+    public String cdataElements() {
+        return "ToUserName FromUserName MsgType Content";
     }
 
     @Override

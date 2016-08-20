@@ -24,14 +24,16 @@
 
 package me.ixfan.wechatkit.util;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import me.ixfan.wechatkit.message.out.xml.XmlSerializable;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.*;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -39,6 +41,7 @@ import javax.xml.validation.SchemaFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -46,27 +49,38 @@ import java.nio.charset.StandardCharsets;
  */
 public class JAXBUtil {
 
-    public static <T extends XmlSerializable> String marshal(T object) throws JAXBException, IOException, SAXException {
+    /**
+     * Serialize {@link XmlSerializable} instance to XML string. There is no XML declaration in the result XML string.
+     * @param object Object to be serialized.
+     * @param <T> The type of the object to be serialized, it must implements {@link XmlSerializable} interface.
+     * @return
+     * @throws JAXBException
+     * @throws IOException
+     * @throws SAXException
+     * @throws TransformerException
+     */
+    public static <T extends XmlSerializable> String marshal(T object)
+            throws JAXBException, IOException, SAXException, TransformerException {
         JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
         jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, StandardCharsets.UTF_8.name());
         generateAndSetSchema(jaxbContext, jaxbMarshaller);
 
-        OutputFormat outputFormat = new OutputFormat();
-        outputFormat.setOmitDocumentType(true);
-        outputFormat.setOmitXMLDeclaration(true);
-        outputFormat.setCDataElements(object.cdataElements());
-        outputFormat.setPreserveEmptyAttributes(true);
-        outputFormat.setIndenting(false);
+        ByteArrayOutputStream os1 = new ByteArrayOutputStream();
+        jaxbMarshaller.marshal(object, os1);
 
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        XMLSerializer serializer = new XMLSerializer(outputFormat);
-        serializer.setOutputByteStream(os);
+        Transformer transformer = SAXTransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.STANDALONE, "no");
+        transformer.setOutputProperty(OutputKeys.INDENT, "no");
+        transformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, object.cdataElements());
 
-        jaxbMarshaller.marshal(object, serializer.asContentHandler());
+        StreamResult result = new StreamResult(new ByteArrayOutputStream());
+        transformer.transform(new StreamSource(new StringReader(os1.toString(StandardCharsets.UTF_8.name()))), result);
 
-        return os.toString(StandardCharsets.UTF_8.name());
+        return ((ByteArrayOutputStream)result.getOutputStream()).toString(StandardCharsets.UTF_8.name());
     }
 
     public static <T> T unmarshal(String msgInXml, Class<T> tClass) throws JAXBException {
