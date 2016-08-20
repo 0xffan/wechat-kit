@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="me.ixfan.wechatkit.token.AccessTokenCallableJobTest" tests="1" skipped="1" failures="0" errors="0" timestamp="2016-08-16T15:02:48" hostname="xfan-mbp.local" time="0.0">
-  <properties/>
-  <testcase name="successfullyRetrievedAccessToken" classname="me.ixfan.wechatkit.token.AccessTokenCallableJobTest" time="0.0">
-    <skipped/>
-  </testcase>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
