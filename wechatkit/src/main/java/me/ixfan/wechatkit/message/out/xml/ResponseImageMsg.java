@@ -58,14 +58,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by xfan on 16/3/27.
  */
 @XmlRootElement(name = "xml")
-public class ResponseImageMsg extends  ResponseMsg {
+public class ResponseImageMsg extends ResponseMsg {
 
     /**
      * 通过素材管理接口上传多媒体文件, 得到的id.
      */
     private MediaObject mediaImage;
 
-    @XmlElement(name = "Image", required = true)
+    @XmlElement(name = "IMAGE", required = true)
     public MediaObject getMediaImage() {
         return mediaImage;
     }
@@ -88,7 +88,7 @@ public class ResponseImageMsg extends  ResponseMsg {
     public String toString() {
         return "ImageMsg[" + super.toString()
                 + ", MsgType='" + this.getMsgType()
-                + "', Image[MediaId='" + this.mediaImage.getMediaId()
+                + "', IMAGE[MediaId='" + this.mediaImage.getMediaId()
                 + "']]";
     }
 }

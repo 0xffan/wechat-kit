@@ -24,9 +24,16 @@
 
 package me.ixfan.wechatkit.message.in;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Created by xfan on 16/3/26.
  */
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(propOrder = { "toUserName", "fromUserName", "createTime", "msgType"})
 public abstract class ReceivedMsg {
 
     /**
@@ -49,6 +56,7 @@ public abstract class ReceivedMsg {
      */
     private String msgType;
 
+    @XmlElement(name = "ToUserName", required = true)
     public String getToUserName() {
         return toUserName;
     }
@@ -57,6 +65,7 @@ public abstract class ReceivedMsg {
         this.toUserName = toUserName;
     }
 
+    @XmlElement(name = "FromUserName", required = true)
     public String getFromUserName() {
         return fromUserName;
     }
@@ -65,6 +74,7 @@ public abstract class ReceivedMsg {
         this.fromUserName = fromUserName;
     }
 
+    @XmlElement(name = "CreateTime", required = true)
     public Long getCreateTime() {
         return createTime;
     }
@@ -73,8 +83,13 @@ public abstract class ReceivedMsg {
         this.createTime = createTime;
     }
 
+    @XmlElement(name = "MsgType", required = true)
     public String getMsgType() {
         return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
     }
 
 }

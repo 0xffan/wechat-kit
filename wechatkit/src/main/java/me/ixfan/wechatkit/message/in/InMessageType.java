@@ -53,28 +53,57 @@ package me.ixfan.wechatkit.message.in;
  */
 public enum InMessageType {
 
-    Text("text", "文本消息"),
-    Image("image", "图片消息"),
-    Voice("voice", "语音消息"),
-    Video("video", "视频消息"),
-    ShortVideo("shortvideo", "小视频消息"),
-    Location("location", "地理位置消息"),
-    Link("link", "链接消息"),
-    Event("event", "事件推送");
+    /**
+     * 文本消息
+     */
+    TEXT { @Override public String stringValue() { return "text";}},
+    /**
+     * 图片消息
+     */
+    IMAGE { @Override public String stringValue() { return "image";}},
+    /**
+     * 语音消息
+     */
+    VOICE { @Override public String stringValue() { return "voice";}},
+    /**
+     * 视频消息
+     */
+    VIDEO { @Override public String stringValue() { return "video";}},
+    /**
+     * 小视频消息
+     */
+    SHORT_VIDEO { @Override public String stringValue() { return "shortvideo";}},
+    /**
+     * 地理位置消息
+     */
+    LOCATION { @Override public String stringValue() { return "location";}},
+    /**
+     * 链接消息
+     */
+    LINK { @Override public String stringValue() { return "link";}},
+    /**
+     * 事件推送
+     */
+    EVENT { @Override public String stringValue() { return "event";}},
+    /**
+     * 未知消息类型
+     */
+    UNKNOWN { @Override public String stringValue() { return "unknown";}};
 
-    private String value;
-    private String description;
-
-    InMessageType(String msgType, String description) {
-        this.value = msgType;
-        this.description = description;
+    public static InMessageType of(String messageType) {
+        switch (messageType) {
+            case "text": return TEXT;
+            case "image": return IMAGE;
+            case "voice": return VOICE;
+            case "video": return VIDEO;
+            case "shortvideo": return SHORT_VIDEO;
+            case "location": return LOCATION;
+            case "link": return LINK;
+            case "event": return EVENT;
+            default: return UNKNOWN;
+        }
     }
 
-    public String value() {
-        return value;
-    }
+    public abstract String stringValue();
 
-    public String description() {
-        return description;
-    }
 }

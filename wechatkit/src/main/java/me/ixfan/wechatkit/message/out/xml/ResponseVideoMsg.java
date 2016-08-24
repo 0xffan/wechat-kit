@@ -61,7 +61,7 @@ public class ResponseVideoMsg extends ResponseMsg {
 
     private Video video;
 
-    @XmlElement(name = "Video", required = true)
+    @XmlElement(name = "VIDEO", required = true)
     public Video getVideo() {
         return video;
     }

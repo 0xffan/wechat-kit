@@ -114,7 +114,7 @@ public class HttpClientUtil {
      * If method is not specified, GET method will be used.
      * @param url URL of request.
      * @param method HTTP method used.
-     * @param nameValuePairs name/value pairs parameter used as an element of HTTP messages.
+     * @param nameValuePairs name/stringValue pairs parameter used as an element of HTTP messages.
      * @return JSON object of response.
      * @throws IOException
      */
@@ -134,7 +134,7 @@ public class HttpClientUtil {
      * If method is not specified, GET method will be used.
      * @param url URL of request.
      * @param method HTTP method used.
-     * @param nameValuePairs name/value pairs parameter used as an element of HTTP messages.
+     * @param nameValuePairs name/stringValue pairs parameter used as an element of HTTP messages.
      * @return String response.
      * @throws IOException
      */

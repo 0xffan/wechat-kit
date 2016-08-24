@@ -33,7 +33,7 @@ import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
  */
 public class UserManager {
 
-    private static TokenManager tokenManager;
+    private TokenManager tokenManager;
 
     public UserManager(TokenManager tokenManager) {
         this.tokenManager = tokenManager;

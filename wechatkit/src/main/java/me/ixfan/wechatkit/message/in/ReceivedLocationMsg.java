@@ -24,9 +24,13 @@
 
 package me.ixfan.wechatkit.message.in;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by xfan on 16/3/26.
  */
+@XmlRootElement(name = "xml")
 public class ReceivedLocationMsg extends ReceivedMsg {
 
     /**
@@ -37,12 +41,12 @@ public class ReceivedLocationMsg extends ReceivedMsg {
     /**
      * 地理位置纬度
      */
-    private Double location_X;
+    private Double latitude;
 
     /**
      * 地理位置经度
      */
-    private Double location_Y;
+    private Double longitude;
 
     /**
      * 地图缩放大小
@@ -54,6 +58,7 @@ public class ReceivedLocationMsg extends ReceivedMsg {
      */
     private String label;
 
+    @XmlElement(name = "MsgId", required = true)
     public String getMsgId() {
         return msgId;
     }
@@ -62,22 +67,25 @@ public class ReceivedLocationMsg extends ReceivedMsg {
         this.msgId = msgId;
     }
 
-    public Double getLocation_X() {
-        return location_X;
+    @XmlElement(name = "Location_X", required = true)
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation_X(Double location_X) {
-        this.location_X = location_X;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
-    public Double getLocation_Y() {
-        return location_Y;
+    @XmlElement(name = "Location_Y", required = true)
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setLocation_Y(Double location_Y) {
-        this.location_Y = location_Y;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
+    @XmlElement(name = "Scale", required = true)
     public Float getScale() {
         return scale;
     }
@@ -86,6 +94,7 @@ public class ReceivedLocationMsg extends ReceivedMsg {
         this.scale = scale;
     }
 
+    @XmlElement(name = "Label", required = true)
     public String getLabel() {
         return label;
     }
@@ -96,6 +105,6 @@ public class ReceivedLocationMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return InMessageType.Location.value();
+        return InMessageType.LOCATION.stringValue();
     }
 }

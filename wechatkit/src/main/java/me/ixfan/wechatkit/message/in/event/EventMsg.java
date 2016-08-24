@@ -27,15 +27,21 @@ package me.ixfan.wechatkit.message.in.event;
 import me.ixfan.wechatkit.message.in.InMessageType;
 import me.ixfan.wechatkit.message.in.ReceivedMsg;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * Created by xfan on 16/3/27.
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class EventMsg extends ReceivedMsg {
 
     private String event;
 
+    @XmlElement(name = "EVENT", required = true)
     public String getEvent() {
-        return event;
+        return this.event;
     }
 
     public void setEvent(String event) {
@@ -44,6 +50,6 @@ public abstract class EventMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return InMessageType.Event.value();
+        return InMessageType.EVENT.stringValue();
     }
 }

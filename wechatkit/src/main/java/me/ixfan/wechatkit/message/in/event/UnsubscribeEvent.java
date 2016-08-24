@@ -24,13 +24,16 @@
 
 package me.ixfan.wechatkit.message.in.event;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by xfan on 16/3/27.
  */
+@XmlRootElement(name = "xml")
 public class UnsubscribeEvent extends EventMsg {
 
     @Override
     public String getEvent() {
-        return EventType.UNSUBSCRIE.value();
+        return EventType.UNSUBSCRIBE.stringValue();
     }
 }

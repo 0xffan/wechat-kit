@@ -25,6 +25,7 @@
 package me.ixfan.wechatkit;
 
 import me.ixfan.wechatkit.menu.MenuManager;
+import me.ixfan.wechatkit.message.MessageManager;
 import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
 import me.ixfan.wechatkit.user.UserManager;
@@ -44,6 +45,7 @@ public class WechatKit {
 
     private MenuManager menuManager;
     private UserManager userManager;
+    private MessageManager messageManager;
 
     private WechatKit(Builder builder) {
         this.appId = builder.appId;
@@ -101,6 +103,13 @@ public class WechatKit {
             this.userManager = new UserManager(this.tokenManager);
         }
         return this.userManager;
+    }
+
+    public MessageManager messageManager() {
+        if (null == this.messageManager) {
+            this.messageManager = new MessageManager(tokenManager);
+        }
+        return this.messageManager;
     }
 
 }

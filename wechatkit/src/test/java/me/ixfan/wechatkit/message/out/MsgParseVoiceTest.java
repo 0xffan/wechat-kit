@@ -55,7 +55,7 @@ public class MsgParseVoiceTest {
 
     @Before
     public void setup() {
-        voiceMsgXml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[voice]]></MsgType><Voice><MediaId><![CDATA[media_id]]></MediaId></Voice></xml>";
+        voiceMsgXml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[voice]]></MsgType><VOICE><MediaId><![CDATA[media_id]]></MediaId></VOICE></xml>";
         voiceMsg = new ResponseVoiceMsg();
         voiceMsg.setToUserName("toUser");
         voiceMsg.setFromUserName("fromUser");

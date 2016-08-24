@@ -26,10 +26,9 @@ package me.ixfan.wechatkit.menu;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import me.ixfan.wechatkit.constants.WeChatConstants;
+import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.menu.model.MenuItem;
 import me.ixfan.wechatkit.token.TokenManager;
-import me.ixfan.wechatkit.token.WechatAccessTokenContainer;
 import me.ixfan.wechatkit.util.HttpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +47,7 @@ public class MenuManager {
 
     private Logger logger = LoggerFactory.getLogger(MenuManager.class);
 
-    private static TokenManager tokenManager;
+    private TokenManager tokenManager;
 
     public MenuManager(TokenManager tokenManager) {
         this.tokenManager = tokenManager;

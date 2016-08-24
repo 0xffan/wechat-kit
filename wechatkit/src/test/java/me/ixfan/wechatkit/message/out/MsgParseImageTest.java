@@ -55,7 +55,7 @@ public class MsgParseImageTest {
 
     @Before
     public void setup() {
-        imageMsgXml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[media_id]]></MediaId></Image></xml>";
+        imageMsgXml = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[image]]></MsgType><IMAGE><MediaId><![CDATA[media_id]]></MediaId></IMAGE></xml>";
         imageMsg = new ResponseImageMsg();
         imageMsg.setToUserName("toUser");
         imageMsg.setFromUserName("fromUser");

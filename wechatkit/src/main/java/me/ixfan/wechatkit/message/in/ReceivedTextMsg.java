@@ -24,9 +24,13 @@
 
 package me.ixfan.wechatkit.message.in;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by xfan on 16/3/26.
  */
+@XmlRootElement(name = "xml")
 public class ReceivedTextMsg extends ReceivedMsg {
 
     /**
@@ -39,6 +43,7 @@ public class ReceivedTextMsg extends ReceivedMsg {
      */
     private String content;
 
+    @XmlElement(name = "MsgId", required = true)
     public String getMsgId() {
         return msgId;
     }
@@ -47,6 +52,7 @@ public class ReceivedTextMsg extends ReceivedMsg {
         this.msgId = msgId;
     }
 
+    @XmlElement(name = "Content", required = true)
     public String getContent() {
         return content;
     }
@@ -57,6 +63,6 @@ public class ReceivedTextMsg extends ReceivedMsg {
 
     @Override
     public String getMsgType() {
-        return InMessageType.Text.value();
+        return InMessageType.TEXT.stringValue();
     }
 }
