@@ -24,11 +24,15 @@
 
 package me.ixfan.wechatkit.message.in.event;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
- * Created by xfan on 16/3/27.
- *
  * 点击菜单拉取消息时的事件推送.
+ *
+ * Created by xfan on 16/3/27.
  */
+@XmlRootElement(name = "xml")
 public class MenuClickEvent extends EventMsg {
 
     /**
@@ -36,6 +40,7 @@ public class MenuClickEvent extends EventMsg {
      */
     private String eventKey;
 
+    @XmlElement(name = "EventKey", required = true)
     public String getEventKey() {
         return eventKey;
     }
@@ -46,6 +51,6 @@ public class MenuClickEvent extends EventMsg {
 
     @Override
     public String getEvent() {
-        return EventType.MENU_CLICK.value();
+        return EventType.MENU_CLICK.stringValue();
     }
 }

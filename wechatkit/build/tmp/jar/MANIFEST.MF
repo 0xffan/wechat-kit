@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: WeChat Development Kit for Java
-Implementation-Version: 0.1-SNAPSHOT
-

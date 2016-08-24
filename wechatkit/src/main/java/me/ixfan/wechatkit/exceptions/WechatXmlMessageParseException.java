@@ -45,50 +45,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-package me.ixfan.wechatkit.message.out.xml;
-
-import me.ixfan.wechatkit.material.MediaObject;
-import me.ixfan.wechatkit.message.out.OutMessageType;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+package me.ixfan.wechatkit.exceptions;
 
 /**
- * Created by xfan on 16/3/27.
+ * @author Warren Fan
  */
-@XmlRootElement(name = "xml")
-public class ResponseVoiceMsg extends ResponseMsg {
+public class WechatXmlMessageParseException extends RuntimeException {
 
-    /**
-     * 通过素材管理接口上传多媒体文件, 得到的id.
-     */
-    private MediaObject mediaVoice;
-
-    @XmlElement(name = "VOICE", required = true)
-    public MediaObject getMediaVoice() {
-        return mediaVoice;
+    public WechatXmlMessageParseException(String message) {
+        super(message);
     }
 
-    public void setMediaVoice(MediaObject mediaVoice) {
-        this.mediaVoice = mediaVoice;
-    }
-
-    @Override
-    public String getMsgType() {
-        return OutMessageType.Voice.value();
-    }
-
-    @Override
-    public String cdataElements() {
-        return "ToUserName FromUserName MsgType MediaId";
-    }
-
-    @Override
-    public String toString() {
-        return "VoiceMsg[" + super.toString()
-                + ", MsgType='" + this.getMsgType()
-                + "', VOICE[MediaId='" + this.mediaVoice.getMediaId()
-                + "']]";
+    public WechatXmlMessageParseException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

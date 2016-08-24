@@ -24,9 +24,15 @@
 
 package me.ixfan.wechatkit.message.in.event;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
+ * 用户关注事件。用户未关注时，通过扫码进行关注后的事件推送数据包中包含 <code>EventKey</code> 和 <code>Ticket</code>。
+ *
  * Created by xfan on 16/3/27.
  */
+@XmlRootElement(name = "xml")
 public class SubscribeEvent extends EventMsg {
 
     /**
@@ -42,6 +48,7 @@ public class SubscribeEvent extends EventMsg {
      */
     private String ticket;
 
+    @XmlElement(name = "EventKey")
     public String getEventKey() {
         return eventKey;
     }
@@ -50,6 +57,7 @@ public class SubscribeEvent extends EventMsg {
         this.eventKey = eventKey;
     }
 
+    @XmlElement(name = "Ticket")
     public String getTicket() {
         return ticket;
     }
@@ -60,6 +68,6 @@ public class SubscribeEvent extends EventMsg {
 
     @Override
     public String getEvent() {
-        return EventType.SUBSCRIBE.value();
+        return EventType.SUBSCRIBE.stringValue();
     }
 }

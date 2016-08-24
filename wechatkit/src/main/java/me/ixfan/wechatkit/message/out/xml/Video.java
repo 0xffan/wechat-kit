@@ -111,7 +111,7 @@ public class Video implements XmlSerializable {
 
     @Override
     public String toString() {
-        return "Video=[title='" + this.title
+        return "VIDEO=[title='" + this.title
                 + "', description='" + this.description
                 + "', mediaId='" + this.mediaId
                 + "']";

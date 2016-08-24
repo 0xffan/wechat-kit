@@ -49,7 +49,7 @@ package me.ixfan.wechatkit.token;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import me.ixfan.wechatkit.constants.WeChatConstants;
+import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.util.HttpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

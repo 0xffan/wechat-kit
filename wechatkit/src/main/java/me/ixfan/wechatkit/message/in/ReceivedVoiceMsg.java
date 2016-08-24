@@ -24,9 +24,13 @@
 
 package me.ixfan.wechatkit.message.in;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by xfan on 16/3/26.
  */
+@XmlRootElement(name = "xml")
 public class ReceivedVoiceMsg extends ReceivedMsg {
 
     /**
@@ -44,6 +48,12 @@ public class ReceivedVoiceMsg extends ReceivedMsg {
      */
     private String format;
 
+    /**
+     * 开通语音识别后, 微信会在推送的语音消息XML数据包中, 增加一个 Recognition 字段, 代表语音识别结果, UTF-8 编码。
+     */
+    private String recognition;
+
+    @XmlElement(name = "MsgId", required = true)
     public String getMsgId() {
         return msgId;
     }
@@ -52,6 +62,7 @@ public class ReceivedVoiceMsg extends ReceivedMsg {
         this.msgId = msgId;
     }
 
+    @XmlElement(name = "MediaId", required = true)
     public String getMediaId() {
         return mediaId;
     }
@@ -60,6 +71,7 @@ public class ReceivedVoiceMsg extends ReceivedMsg {
         this.mediaId = mediaId;
     }
 
+    @XmlElement(name = "Format", required = true)
     public String getFormat() {
         return format;
     }
@@ -68,8 +80,17 @@ public class ReceivedVoiceMsg extends ReceivedMsg {
         this.format = format;
     }
 
+    @XmlElement(name = "Recognition", required = false)
+    public String getRecognition() {
+        return recognition;
+    }
+
+    public void setRecognition(String recognition) {
+        this.recognition = recognition;
+    }
+
     @Override
     public String getMsgType() {
-        return InMessageType.Voice.value();
+        return InMessageType.VOICE.stringValue();
     }
 }

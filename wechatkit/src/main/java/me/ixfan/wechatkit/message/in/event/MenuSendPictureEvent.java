@@ -45,50 +45,91 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package me.ixfan.wechatkit.message.in.event;
 
-package me.ixfan.wechatkit.message.out.xml;
-
-import me.ixfan.wechatkit.material.MediaObject;
-import me.ixfan.wechatkit.message.out.OutMessageType;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import java.util.List;
 
 /**
- * Created by xfan on 16/3/27.
+ * 通过菜单发送图片事件, 发图方式包括弹出系统拍照发图、弹出拍照或者相册发图、弹出微信相册发图。
+ *
+ * @author Warren Fan
  */
 @XmlRootElement(name = "xml")
-public class ResponseVoiceMsg extends ResponseMsg {
+public class MenuSendPictureEvent extends EventMsg {
 
     /**
-     * 通过素材管理接口上传多媒体文件, 得到的id.
+     * 事件KEY值，由开发者在创建菜单时设定。
      */
-    private MediaObject mediaVoice;
+    private String eventKey;
+    /**
+     * 发送的图片信息。
+     */
+    private SendPicsInfo sendPicsInfo;
 
-    @XmlElement(name = "VOICE", required = true)
-    public MediaObject getMediaVoice() {
-        return mediaVoice;
+    @XmlElement(name = "EventKey")
+    public String getEventKey() {
+        return eventKey;
     }
 
-    public void setMediaVoice(MediaObject mediaVoice) {
-        this.mediaVoice = mediaVoice;
+    public void setEventKey(String eventKey) {
+        this.eventKey = eventKey;
     }
 
-    @Override
-    public String getMsgType() {
-        return OutMessageType.Voice.value();
+    @XmlElement(name = "SendPicsInfo")
+    public SendPicsInfo getSendPicsInfo() {
+        return sendPicsInfo;
     }
 
-    @Override
-    public String cdataElements() {
-        return "ToUserName FromUserName MsgType MediaId";
+    public void setSendPicsInfo(SendPicsInfo sendPicsInfo) {
+        this.sendPicsInfo = sendPicsInfo;
     }
 
-    @Override
-    public String toString() {
-        return "VoiceMsg[" + super.toString()
-                + ", MsgType='" + this.getMsgType()
-                + "', VOICE[MediaId='" + this.mediaVoice.getMediaId()
-                + "']]";
+    @XmlAccessorType(XmlAccessType.NONE)
+    private class SendPicsInfo {
+        /**
+         * 发送的图片数量。
+         */
+        private int count;
+        /**
+         * 图片列表。
+         */
+        List<PictureItem> picList;
+
+        @XmlElement(name = "Count")
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        @XmlElement(name = "item")
+        @XmlElementWrapper(name = "PicList")
+        public List<PictureItem> getPicList() {
+            return picList;
+        }
+
+        public void setPicList(List<PictureItem> picList) {
+            this.picList = picList;
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    private class PictureItem {
+        /**
+         * 图片的MD5值，开发者若需要，可用于验证接收到图片。
+         */
+        private String picMd5Sum;
+
+        @XmlElement(name = "PicMd5Sum")
+        public String getPicMd5Sum() {
+            return picMd5Sum;
+        }
+
+        public void setPicMd5Sum(String picMd5Sum) {
+            this.picMd5Sum = picMd5Sum;
+        }
     }
 }

@@ -24,9 +24,15 @@
 
 package me.ixfan.wechatkit.message.in.event;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
+ * 上报地理位置事件.
+ *
  * Created by xfan on 16/3/27.
  */
+@XmlRootElement(name = "xml")
 public class LocationEvent extends EventMsg {
 
     /**
@@ -44,6 +50,7 @@ public class LocationEvent extends EventMsg {
      */
     private Double precision;
 
+    @XmlElement(name = "Latitude", required = true)
     public Double getLatitude() {
         return latitude;
     }
@@ -52,6 +59,7 @@ public class LocationEvent extends EventMsg {
         this.latitude = latitude;
     }
 
+    @XmlElement(name = "Longitude", required = true)
     public Double getLongitude() {
         return longitude;
     }
@@ -60,6 +68,7 @@ public class LocationEvent extends EventMsg {
         this.longitude = longitude;
     }
 
+    @XmlElement(name = "Precision", required = true)
     public Double getPrecision() {
         return precision;
     }
@@ -70,6 +79,6 @@ public class LocationEvent extends EventMsg {
 
     @Override
     public String getEvent() {
-        return EventType.LOCATION.value();
+        return EventType.LOCATION.stringValue();
     }
 }

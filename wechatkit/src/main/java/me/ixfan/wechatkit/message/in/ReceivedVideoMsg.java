@@ -24,9 +24,15 @@
 
 package me.ixfan.wechatkit.message.in;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
+ * 用户发送给公众号的视频消息, 包括普通视频和小视频。
+ *
  * Created by xfan on 16/3/26.
  */
+@XmlRootElement(name = "xml")
 public class ReceivedVideoMsg extends ReceivedMsg {
 
     /**
@@ -44,6 +50,7 @@ public class ReceivedVideoMsg extends ReceivedMsg {
      */
     private String thumbMediaId;
 
+    @XmlElement(name = "MsgId", required = true)
     public String getMsgId() {
         return msgId;
     }
@@ -52,6 +59,7 @@ public class ReceivedVideoMsg extends ReceivedMsg {
         this.msgId = msgId;
     }
 
+    @XmlElement(name = "ThumbMediaId", required = true)
     public String getThumbMediaId() {
         return thumbMediaId;
     }
@@ -60,8 +68,8 @@ public class ReceivedVideoMsg extends ReceivedMsg {
         this.thumbMediaId = thumbMediaId;
     }
 
+    @XmlElement(name = "MediaId", required = true)
     public String getMediaId() {
-
         return mediaId;
     }
 
@@ -69,8 +77,4 @@ public class ReceivedVideoMsg extends ReceivedMsg {
         this.mediaId = mediaId;
     }
 
-    @Override
-    public String getMsgType() {
-        return InMessageType.Video.value();
-    }
 }

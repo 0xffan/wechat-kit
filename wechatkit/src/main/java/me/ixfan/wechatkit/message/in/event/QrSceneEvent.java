@@ -24,9 +24,15 @@
 
 package me.ixfan.wechatkit.message.in.event;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
+ * 用户已关注时的扫码事件推送.
+ *
  * Created by xfan on 16/3/27.
  */
+@XmlRootElement(name = "xml")
 public class QrSceneEvent extends EventMsg {
 
     /**
@@ -39,6 +45,7 @@ public class QrSceneEvent extends EventMsg {
      */
     private String ticket;
 
+    @XmlElement(name = "EventKey", required = true)
     public String getEventKey() {
         return eventKey;
     }
@@ -47,6 +54,7 @@ public class QrSceneEvent extends EventMsg {
         this.eventKey = eventKey;
     }
 
+    @XmlElement(name = "Ticket", required = true)
     public String getTicket() {
         return ticket;
     }
@@ -57,6 +65,6 @@ public class QrSceneEvent extends EventMsg {
 
     @Override
     public String getEvent() {
-        return EventType.SCAN.value();
+        return EventType.SCAN.stringValue();
     }
 }

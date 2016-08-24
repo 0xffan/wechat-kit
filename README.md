@@ -43,15 +43,15 @@ WechatUser user = wechatKit.userManager().getWechatUserInfo("user's openid");
 
 * 消息管理
 
- 🛠 解析微信服务器推送的消息&事件
+ ✔️ 解析微信服务器推送的消息&事件
  
  🕖 主动给用户发送消息
  
  🕖 发送模板消息
  
- 🕖 被动回复消息
+ 🛠 被动回复消息
  
- 🕖 群发消息
+ 🛠 群发消息
 
 * 用户管理
 
