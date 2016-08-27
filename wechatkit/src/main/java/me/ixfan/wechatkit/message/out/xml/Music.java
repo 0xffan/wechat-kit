@@ -87,6 +87,15 @@ public class Music implements XmlSerializable {
      */
     private String thumbMediaId;
 
+    public Music() {}
+
+    public Music(String title, String description, String musicUrl, String thumbMediaId) {
+        this.title = title;
+        this.description = description;
+        this.musicUrl = musicUrl;
+        this.thumbMediaId = thumbMediaId;
+    }
+
     @XmlElement(name = "Title")
     public String getTitle() {
         return title;

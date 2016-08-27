@@ -40,6 +40,7 @@ public class WechatKit {
 
     private final String appId;
     private final String appSecret;
+    private final String wechatAccountId;
 
     private final TokenManager tokenManager;
 
@@ -50,11 +51,12 @@ public class WechatKit {
     private WechatKit(Builder builder) {
         this.appId = builder.appId;
         this.appSecret = builder.appSecret;
+        this.wechatAccountId = builder.wechatAccountId;
         this.tokenManager = new TokenManager(this.appId, this.appSecret, builder.accessTokenContainer);
     }
 
-    public static WechatKit build(String appId, String appSecret, WechatAccessTokenContainer accessTokenContainer) {
-        return new Builder(appId, appSecret).setAccessTokenContainer(accessTokenContainer).build();
+    public static WechatKit build(String wechatAccountId, String appId, String appSecret, WechatAccessTokenContainer accessTokenContainer) {
+        return new Builder(appId, appSecret, wechatAccountId).setAccessTokenContainer(accessTokenContainer).build();
     }
 
 
@@ -64,11 +66,13 @@ public class WechatKit {
     public static class Builder {
         private final String appId;
         private final String appSecret;
+        private final String wechatAccountId;
         private WechatAccessTokenContainer accessTokenContainer;
 
-        public Builder(String appId, String appSecret) {
+        public Builder(String appId, String appSecret, String wechatAccountId) {
             this.appId = appId;
             this.appSecret = appSecret;
+            this.wechatAccountId = wechatAccountId;
         }
 
         public Builder setAccessTokenContainer(WechatAccessTokenContainer accessTokenContainer) {
@@ -107,7 +111,7 @@ public class WechatKit {
 
     public MessageManager messageManager() {
         if (null == this.messageManager) {
-            this.messageManager = new MessageManager(tokenManager);
+            this.messageManager = new MessageManager(wechatAccountId, tokenManager);
         }
         return this.messageManager;
     }

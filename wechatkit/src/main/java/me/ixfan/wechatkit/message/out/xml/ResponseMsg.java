@@ -82,6 +82,15 @@ public abstract class ResponseMsg implements XmlSerializable {
      */
     private String msgType;
 
+    public ResponseMsg() {}
+
+    public ResponseMsg(String fromUserName, String toUserName, Long createTime, String msgType) {
+        this.fromUserName = fromUserName;
+        this.toUserName = toUserName;
+        this.createTime = createTime;
+        this.msgType = msgType;
+    }
+
     @XmlElement(name = "FromUserName", required = true)
     public String getFromUserName() {
         return fromUserName;

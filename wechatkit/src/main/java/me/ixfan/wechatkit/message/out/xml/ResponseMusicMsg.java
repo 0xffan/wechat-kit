@@ -61,6 +61,12 @@ public class ResponseMusicMsg extends ResponseMsg {
 
     private Music music;
 
+    public ResponseMusicMsg() { super(); }
+
+    public ResponseMusicMsg(String fromUserName, String toUserName, Long createTime) {
+        super(fromUserName, toUserName, createTime, OutMessageType.MUSIC.stringValue());
+    }
+
     @XmlElement(name = "Music")
     public Music getMusic() {
         return music;
@@ -72,7 +78,7 @@ public class ResponseMusicMsg extends ResponseMsg {
 
     @Override
     public String getMsgType() {
-        return OutMessageType.Music.value();
+        return OutMessageType.MUSIC.stringValue();
     }
 
     @Override

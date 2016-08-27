@@ -72,7 +72,7 @@ public class ParseMessageFromUserTest {
     private final String SHORT_VIDEO_MSG_FROM_USER = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1358831860</CreateTime><MsgType><![CDATA[shortvideo]]></MsgType><MediaId><![CDATA[media_id]]></MediaId><ThumbMediaId><![CDATA[thumb_media_id]]></ThumbMediaId><MsgId>1234567890123456</MsgId></xml>";
     private final String LOCATION_MSG_FROM_USER = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1358831860</CreateTime><MsgType><![CDATA[location]]></MsgType><Location_X>23.134521</Location_X><Location_Y>113.358803</Location_Y><Scale>20</Scale><Label><![CDATA[位置信息]]></Label><MsgId>1234567890123456</MsgId></xml>";
     private final String LINK_MSG_FROM_USER = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1358831860</CreateTime><MsgType><![CDATA[link]]></MsgType><Title><![CDATA[公众平台官网链接]]></Title><Description><![CDATA[公众平台官网链接]]></Description><Url><![CDATA[url]]></Url><MsgId>1234567890123456</MsgId></xml>";
-    WechatKit wechatKit = WechatKit.build("YOUR_APPID", "YOUR_APP_SECRET", null);
+    WechatKit wechatKit = WechatKit.build("YOUR_WECHAT_ACCOUNT_ID", "YOUR_APPID", "YOUR_APP_SECRET", null);
 
     @Test
     public void parseXmlTextMessageSuccessfully() {

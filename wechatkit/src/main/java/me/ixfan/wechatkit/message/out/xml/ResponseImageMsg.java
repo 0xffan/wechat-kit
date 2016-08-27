@@ -65,7 +65,13 @@ public class ResponseImageMsg extends ResponseMsg {
      */
     private MediaObject mediaImage;
 
-    @XmlElement(name = "IMAGE", required = true)
+    public ResponseImageMsg() { super(); }
+
+    public ResponseImageMsg(String fromUserName, String toUserName, Long createTime) {
+        super(fromUserName, toUserName, createTime, OutMessageType.IMAGE.stringValue());
+    }
+
+    @XmlElement(name = "Image", required = true)
     public MediaObject getMediaImage() {
         return mediaImage;
     }
@@ -76,7 +82,7 @@ public class ResponseImageMsg extends ResponseMsg {
 
     @Override
     public String getMsgType() {
-        return OutMessageType.Image.value();
+        return OutMessageType.IMAGE.stringValue();
     }
 
     @Override
@@ -88,7 +94,7 @@ public class ResponseImageMsg extends ResponseMsg {
     public String toString() {
         return "ImageMsg[" + super.toString()
                 + ", MsgType='" + this.getMsgType()
-                + "', IMAGE[MediaId='" + this.mediaImage.getMediaId()
+                + "', Image[MediaId='" + this.mediaImage.getMediaId()
                 + "']]";
     }
 }

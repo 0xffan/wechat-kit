@@ -75,7 +75,7 @@ public class MenuManagerTest {
 
     @BeforeClass
     public static void prepare() {
-        wechatKit = new WechatKit.Builder(AppProperties.get("APPID"), AppProperties.get("APPSECRET"))
+        wechatKit = new WechatKit.Builder(AppProperties.get("APPID"), AppProperties.get("APPSECRET"), AppProperties.get("WECHAT_ID"))
                         .setAccessTokenContainer(SimpleTokenContainer.getTokenContainer()).build();
 
         levelOneMenu1 = new MenuItem("⚤ 你", MenuType.CLICK);

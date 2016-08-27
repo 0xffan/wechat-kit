@@ -77,6 +77,14 @@ public class Video implements XmlSerializable {
      */
     private String description;
 
+    public Video() {}
+
+    public Video(String title, String description, String mediaId) {
+        this.title = title;
+        this.description = description;
+        this.mediaId = mediaId;
+    }
+
     @XmlElement(name = "MediaId", required = true)
     public String getMediaId() {
         return mediaId;
@@ -111,7 +119,7 @@ public class Video implements XmlSerializable {
 
     @Override
     public String toString() {
-        return "VIDEO=[title='" + this.title
+        return "Video=[title='" + this.title
                 + "', description='" + this.description
                 + "', mediaId='" + this.mediaId
                 + "']";
