@@ -82,6 +82,21 @@ public class Article implements XmlSerializable {
      */
     private String url;
 
+    public Article() {}
+
+    public Article(String title, String description, String url) {
+        this.title = title;
+        this.description = description;
+        this.url = url;
+    }
+
+    public Article(String title, String description, String picUrl, String url) {
+        this.title = title;
+        this.description = description;
+        this.picUrl = picUrl;
+        this.url = url;
+    }
+
     @XmlElement(name = "Title")
     public String getTitle() {
         return title;

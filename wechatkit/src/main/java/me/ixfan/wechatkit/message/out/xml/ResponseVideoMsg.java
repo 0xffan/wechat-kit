@@ -61,7 +61,13 @@ public class ResponseVideoMsg extends ResponseMsg {
 
     private Video video;
 
-    @XmlElement(name = "VIDEO", required = true)
+    public ResponseVideoMsg() { super(); }
+
+    public ResponseVideoMsg(String fromUserName, String toUserName, Long createTime) {
+        super(fromUserName, toUserName, createTime, OutMessageType.VIDEO.stringValue());
+    }
+
+    @XmlElement(name = "Video", required = true)
     public Video getVideo() {
         return video;
     }
@@ -72,7 +78,7 @@ public class ResponseVideoMsg extends ResponseMsg {
 
     @Override
     public String getMsgType() {
-        return OutMessageType.Video.value();
+        return OutMessageType.VIDEO.stringValue();
     }
 
     @Override

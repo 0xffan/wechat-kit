@@ -65,7 +65,13 @@ public class ResponseVoiceMsg extends ResponseMsg {
      */
     private MediaObject mediaVoice;
 
-    @XmlElement(name = "VOICE", required = true)
+    public ResponseVoiceMsg() { super(); }
+
+    public ResponseVoiceMsg(String fromUserName, String toUserName, Long createTime) {
+        super(fromUserName, toUserName, createTime, OutMessageType.VOICE.stringValue());
+    }
+
+    @XmlElement(name = "Voice", required = true)
     public MediaObject getMediaVoice() {
         return mediaVoice;
     }
@@ -76,7 +82,7 @@ public class ResponseVoiceMsg extends ResponseMsg {
 
     @Override
     public String getMsgType() {
-        return OutMessageType.Voice.value();
+        return OutMessageType.VOICE.stringValue();
     }
 
     @Override
@@ -88,7 +94,7 @@ public class ResponseVoiceMsg extends ResponseMsg {
     public String toString() {
         return "VoiceMsg[" + super.toString()
                 + ", MsgType='" + this.getMsgType()
-                + "', VOICE[MediaId='" + this.mediaVoice.getMediaId()
+                + "', Voice[MediaId='" + this.mediaVoice.getMediaId()
                 + "']]";
     }
 }

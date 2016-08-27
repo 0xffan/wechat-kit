@@ -69,6 +69,12 @@ public class ResponseNewsMsg extends ResponseMsg {
      */
     private List<Article> articles;
 
+    public ResponseNewsMsg() { super(); }
+
+    public ResponseNewsMsg(String fromUserName, String toUserName, Long createTime) {
+        super(fromUserName, toUserName, createTime, OutMessageType.NEWS.stringValue());
+    }
+
     @XmlElement(name = "ArticleCount", required = true)
     public Integer getArticleCount() {
         return articleCount;
@@ -86,6 +92,7 @@ public class ResponseNewsMsg extends ResponseMsg {
 
     public void setArticles(List<Article> articles) {
         this.articles = articles;
+        this.articleCount = null != articles ? articles.size():0;
     }
 
     public void addArticle(Article article) {
@@ -94,7 +101,7 @@ public class ResponseNewsMsg extends ResponseMsg {
 
     @Override
     public String getMsgType() {
-        return OutMessageType.News.value();
+        return OutMessageType.NEWS.stringValue();
     }
 
     @Override

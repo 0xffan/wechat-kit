@@ -26,21 +26,27 @@ package me.ixfan.wechatkit.message;
 
 import me.ixfan.wechatkit.common.WechatApiResult;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageParseException;
+import me.ixfan.wechatkit.exceptions.WechatXmlMessageSerializationException;
+import me.ixfan.wechatkit.material.MediaObject;
 import me.ixfan.wechatkit.message.in.*;
 import me.ixfan.wechatkit.message.in.event.*;
+import me.ixfan.wechatkit.message.out.xml.*;
 import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.util.JAXBUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -50,9 +56,11 @@ import java.util.Map;
  */
 public class MessageManager {
 
+    private String wechatAccountId;
     private TokenManager tokenManager;
 
-    public MessageManager(TokenManager tokenManager) {
+    public MessageManager(String wechatAccountId, TokenManager tokenManager) {
+        this.wechatAccountId = wechatAccountId;
         this.tokenManager = tokenManager;
     }
 
@@ -60,7 +68,7 @@ public class MessageManager {
      * 解析来自微信的 XML 格式的消息,返回对应的消息对象实例。
      *
      * @param xmlMessageReader 微信推送的 XML 格式的消息或事件。
-     * @return 消息或事件对象实例
+     * @return 消息或事件对象实例。
      */
     public ReceivedMsg parseXmlMessage(Reader xmlMessageReader) throws WechatXmlMessageParseException {
         String msgInXml;
@@ -68,7 +76,16 @@ public class MessageManager {
             msgInXml = getContent(xmlMessageReader);
         } catch (IOException e) {
             throw new WechatXmlMessageParseException("Failed to read content from 'Reader'.", e);
+        } finally {
+            if (null != xmlMessageReader) {
+                try {
+                    xmlMessageReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
         DocumentBuilder documentBuilder;
         try {
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -133,6 +150,174 @@ public class MessageManager {
             default: return null;
         }
 
+    }
+
+    /**
+     * 把被动回复的消息对象转换成 XML 数据包。
+     *
+     * @param responseMessage 被动回复消息对象。
+     * @return 被动回复消息的 XML 数据包。
+     */
+    public String generateResponseMessageInXml(ResponseMsg responseMessage)
+            throws WechatXmlMessageSerializationException {
+        if (responseMessage instanceof ResponseTextMsg) {
+            try {
+                return JAXBUtil.marshal((ResponseTextMsg) responseMessage);
+            } catch (Exception e) {
+                throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+            }
+        } else if (responseMessage instanceof ResponseImageMsg) {
+            try {
+                return JAXBUtil.marshal((ResponseImageMsg) responseMessage);
+            } catch (Exception e) {
+                throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+            }
+        } else if (responseMessage instanceof ResponseVoiceMsg) {
+            try {
+                return JAXBUtil.marshal((ResponseVoiceMsg) responseMessage);
+            } catch (Exception e) {
+                throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+            }
+        } else if (responseMessage instanceof ResponseMusicMsg) {
+            try {
+                return JAXBUtil.marshal((ResponseMusicMsg) responseMessage);
+            } catch (Exception e) {
+                throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+            }
+        } else if (responseMessage instanceof ResponseVideoMsg) {
+            try {
+                return JAXBUtil.marshal((ResponseVideoMsg) responseMessage);
+            } catch (Exception e) {
+                throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+            }
+        } else if (responseMessage instanceof ResponseNewsMsg) {
+            try {
+                return JAXBUtil.marshal((ResponseNewsMsg) responseMessage);
+            } catch (Exception e) {
+                throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+            }
+        }
+        return "success";
+    }
+
+    /**
+     * 构造被动回复文本消息的 XML 数据包。
+     *
+     * @param toUserOpenid 接收消息的用户 openid。
+     * @param content 文本消息内容。
+     * @return 被动回复文本消息的 XML 数据包。
+     */
+    public String generateTextResponseMessageInXml(String toUserOpenid, String content) {
+        ResponseTextMsg textMsg = new ResponseTextMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis(), content);
+        try {
+            return JAXBUtil.marshal(textMsg);
+        } catch (Exception e) {
+            throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+        }
+    }
+
+    /**
+     * 构造被动回复图片消息的 XML 数据包。
+     *
+     * @param toUserOpenid 接收消息的用户的openid。
+     * @param mediaId 通过素材管理中的接口上传多媒体文件得到的ID。
+     * @return 被动回复图片消息的 XML 数据包。
+     */
+    public String generateImageResponseMessageInXml(String toUserOpenid, String mediaId) {
+        ResponseImageMsg imageMsg = new ResponseImageMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        imageMsg.setMediaImage(new MediaObject(mediaId));
+        try {
+            return JAXBUtil.marshal(imageMsg);
+        } catch (Exception e) {
+            throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+        }
+    }
+
+    /**
+     * 构造被动回复语音消息的 XML 数据包。
+     *
+     * @param toUserOpenid 接收消息的用户的openid。
+     * @param mediaId 通过素材管理中的接口上传多媒体文件得到的ID。
+     * @return 被动回复语音消息的 XML 数据包。
+     */
+    public String generateVoiceResponseMessageInXml(String toUserOpenid, String mediaId) {
+        ResponseVoiceMsg voiceMsg = new ResponseVoiceMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        voiceMsg.setMediaVoice(new MediaObject(mediaId));
+        try {
+            return JAXBUtil.marshal(voiceMsg);
+        } catch (Exception e) {
+            throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+        }
+    }
+
+    /**
+     * 构造被动回复视频消息的 XML 数据包。
+     * @param toUserOpenid 接收消息的用户的 openid。
+     * @param title 视频消息的标题
+     * @param description 视频消息的描述
+     * @param mediaId 通过素材管理中的接口上传多媒体文件得到的ID。
+     * @return 被动回复视频消息的 XML 数据包。
+     */
+    public String generateVideoResponseMessageInXml(String toUserOpenid, String title, String description, String mediaId) {
+        ResponseVideoMsg videoMsg = new ResponseVideoMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        videoMsg.setVideo(new Video(title, description, mediaId));
+        try {
+            return JAXBUtil.marshal(videoMsg);
+        } catch (Exception e) {
+            throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+        }
+    }
+
+    /**
+     * 构造被动回复音乐消息的 XML 数据包。
+     * @param toUserOpenid 接收消息的用户的 openid。
+     * @param music 要发送的音乐消息对象。
+     * @return 被动回复音乐消息的 XML 数据包。
+     */
+    public String generateMusicResponseMessageInXml(String toUserOpenid, Music music) {
+        ResponseMusicMsg musicMsg = new ResponseMusicMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        musicMsg.setMusic(music);
+        try {
+            return JAXBUtil.marshal(musicMsg);
+        } catch (Exception e) {
+            throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+        }
+    }
+
+    /**
+     * 构造被动回复图文消息的 XML 数据包。
+     * @param toUserOpenid 接收消息的用户的 openid。
+     * @param articles 多条图文消息信息，默认第一个item为大图。注意，如果图文数超过10，微信接口则将会无响应。
+     * @return 被动回复图文消息的 XML 数据包。
+     */
+    public String generateNewsResponseMessageInXml(String toUserOpenid, Article... articles) {
+        ResponseNewsMsg newsMsg = new ResponseNewsMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        newsMsg.setArticles(Arrays.asList(articles));
+        try {
+            return JAXBUtil.marshal(newsMsg);
+        } catch (Exception e) {
+            throw new WechatXmlMessageSerializationException("消息对象转XML格式失败。", e);
+        }
+    }
+
+    public WechatApiResult massMessaging(String content, String[] openids) {
+        return null;
+    }
+
+    public WechatApiResult massMessaging(String content, String tadId, boolean isToAll) {
+        return null;
+    }
+
+    /**
+     * TODO 向用户发送模板消息。
+     *
+     * @param templateId 消息模板ID
+     * @param openid 接收消息的用户的 openid
+     * @param params 消息模板中需要传入的数据
+     * @return 微信模板消息接口的返回结果,封装成 {@link WechatApiResult} 的实例。
+     */
+    public WechatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> params) {
+        return null;
     }
 
     /**
@@ -205,27 +390,7 @@ public class MessageManager {
         }
     }
 
-    public WechatApiResult massMessaging(String content, String[] openids) {
-        return null;
-    }
-
-    public WechatApiResult massMessaging(String content, String tadId, boolean isToAll) {
-        return null;
-    }
-
-    /**
-     * TODO 向用户发送模板消息。
-     *
-     * @param templateId 消息模板ID
-     * @param openid 接收消息的用户的 openid
-     * @param params 消息模板中需要传入的数据
-     * @return 微信模板消息接口的返回结果,封装成 {@link WechatApiResult} 的实例。
-     */
-    public WechatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> params) {
-        return null;
-    }
-
-    public String getContent(Reader reader) throws IOException {
+    private String getContent(Reader reader) throws IOException {
         char[] charsArray = new char[1024];
         StringBuilder stringBuilder = new StringBuilder();
         int numCharsReaded = 0;

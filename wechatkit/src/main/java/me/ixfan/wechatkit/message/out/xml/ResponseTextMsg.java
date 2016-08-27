@@ -64,6 +64,13 @@ public class ResponseTextMsg extends ResponseMsg {
      */
     private String content;
 
+    public ResponseTextMsg() { super(); }
+
+    public ResponseTextMsg(String fromUserName, String toUserName, Long createTime, String content) {
+        super(fromUserName, toUserName, createTime, OutMessageType.TEXT.stringValue());
+        this.content = content;
+    }
+
     @XmlElement(name = "Content", required = true)
     public String getContent() {
         return content;
@@ -75,7 +82,7 @@ public class ResponseTextMsg extends ResponseMsg {
 
     @Override
     public String getMsgType() {
-        return OutMessageType.Text.value();
+        return OutMessageType.TEXT.stringValue();
     }
 
     @Override

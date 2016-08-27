@@ -45,52 +45,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.ixfan.wechatkit.message.out;
+package me.ixfan.wechatkit.exceptions;
 
 /**
- * 公众号向用户发送消息时可选的消息类型。
+ * 微信消息对象转 XML 异常。
  *
  * @author Warren Fan
  */
-public enum OutMessageType {
+public class WechatXmlMessageSerializationException extends RuntimeException {
 
-    /**
-     * 文本消息。主动推消息和发送被动响应消息时都可使用。
-     */
-    TEXT { @Override public String stringValue() { return "text";}},
-    /**
-     * 图片消息。主动推消息和发送被动响应消息时都可使用。
-     */
-    IMAGE { @Override public String stringValue() { return "image"; } },
-    /**
-     * 语音消息。主动推消息和发送被动响应消息时都可使用。
-     */
-    VOICE { @Override public String stringValue() { return "voice"; } },
-    /**
-     * 视频消息。发送被动响应视频消息时使用。
-     */
-    VIDEO { @Override public String stringValue() { return "video"; } },
-    /**
-     * 音乐消息。主动推消息和发送被动响应消息时都可使用。
-     */
-    MUSIC { @Override public String stringValue() { return "music"; } },
-    /**
-     * 图文消息。发送被动响应消息时使用。
-     */
-    NEWS { @Override public String stringValue() { return "news"; } },
-    /**
-     * 图文消息。主动推消息时使用。
-     */
-    MP_NEWS { @Override public String stringValue() { return "mpnews"; } },
-    /**
-     * 视频消息。主动推消息时使用。
-     */
-    MP_VIDEO { @Override public String stringValue() { return "mpvideo"; } },
-    /**
-     * 卡券消息。主动推消息时使用。
-     */
-    WX_CARD { @Override public String stringValue() { return "wxcard"; } };
+    public WechatXmlMessageSerializationException(String message) {
+        super(message);
+    }
 
-    public abstract String stringValue();
-
+    public WechatXmlMessageSerializationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
