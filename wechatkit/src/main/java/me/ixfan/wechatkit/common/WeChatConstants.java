@@ -117,4 +117,10 @@ public class WeChatConstants {
 
     /** 微信API - 上传临时素材 */
     public static final String WECHAT_POST_MATERIAL_UPLOAD_TEMP = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=${TYPE}";
+    /** 微信API - 上传永久图文素材 */
+    public static final String WECHAT_POST_MATERIAL_UPLOAD_PERMANENT_NEWS = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=${ACCESS_TOKEN}";
+    /** 微信API - 上传图文消息内的图片 */
+    public static final String WECHAT_POST_MATERIAL_UPLOAD_NEWS_PIC = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=${ACCESS_TOKEN}";
+    /** 微信API - 上传非图文类型的永久素材 */
+    public static final String WECHAT_POST_MATERIAL_UPLOAD_PERMANENT = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${ACCESS_TOKEN}&type=${TYPE}";
 }
