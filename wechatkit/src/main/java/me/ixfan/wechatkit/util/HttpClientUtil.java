@@ -45,6 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +170,7 @@ public class HttpClientUtil {
      * @return JSON object of response.
      * @throws IOException If I/O error occurs.
      */
-    private static JsonObject sendMultipartRequestAndGetJsonResponse(String url, Map<String, String> textInputs, Map<String, MultipartInput> binaryInputs)
+    public static JsonObject sendMultipartRequestAndGetJsonResponse(String url, Map<String, String> textInputs, Map<String, MultipartInput> binaryInputs)
             throws IOException {
         MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
         if (null != textInputs) {
@@ -192,12 +193,12 @@ public class HttpClientUtil {
     public static class MultipartInput {
         private String filename;
         private ContentType contentType;
-        private byte[] binaryData;
+        private InputStream data;
 
-        public MultipartInput(String filename, String mimeType, byte[] binaryData) {
+        public MultipartInput(String filename, String mimeType, InputStream data) {
             this.filename = filename;
             this.contentType = ContentType.create(mimeType);
-            this.binaryData = binaryData;
+            this.data = data;
         }
 
         public String getFilename() {
@@ -208,8 +209,8 @@ public class HttpClientUtil {
             return contentType;
         }
 
-        public byte[] getBinaryData() {
-            return binaryData;
+        public InputStream getBinaryData() {
+            return data;
         }
     }
 
