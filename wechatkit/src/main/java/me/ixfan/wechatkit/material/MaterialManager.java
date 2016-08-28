@@ -52,6 +52,7 @@ import com.google.gson.JsonParser;
 import me.ixfan.wechatkit.WeChatFunctionModule;
 import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.common.WechatApiResult;
+import me.ixfan.wechatkit.material.model.ArticleForUpload;
 import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.util.HttpClientUtil;
 
@@ -105,6 +106,27 @@ public class MaterialManager extends WeChatFunctionModule {
     }
 
     /**
+     * TODO 新增永久图文素材。
+     *
+     * @param articles 要上传的图文信息。
+     * @return {@link WechatApiResult}
+     */
+    public WechatApiResult uploadPermanentArticles(ArticleForUpload... articles) {
+        return null;
+    }
+
+    /**
+     * TODO 为图文消息上传图片。
+     *
+     * @param filename 图片文件名。
+     * @param inputStream 图片文件输入源。
+     * @return
+     */
+    public WechatApiResult uploadImageForArticle(String filename, InputStream inputStream) {
+        return null;
+    }
+
+    /**
      * 上传临时缩略图。
      *
      * @param filename 缩略图文件名。
@@ -116,16 +138,55 @@ public class MaterialManager extends WeChatFunctionModule {
     }
 
     /**
+     * 上传永久素材, 媒体文件类型支持图片、语音、视频、缩略图。
+     * 在上传视频素材时需要包含素材的描述信息, 即参数中的 <code>title</code> 和 <code>introduction</code>。
+     *
+     * @param mediaType 要上传的媒体文件类型。
+     * @param filename 文件名。
+     * @param inputStream 媒体文件输入源。
+     * @param title 素材标题, 仅视频素材需要。
+     * @param introduction 素材简介, 仅视频素材需要。
+     * @return {@link WechatApiResult}
+     */
+    private WechatApiResult uploadPermanentMaterial(MediaType mediaType, String filename, InputStream inputStream, String title, String introduction) {
+        Map<String, String> textPart = new HashMap<>();
+        String mimeType;
+        switch (mediaType) {
+            case IMAGE: case THUMB:
+                mimeType = "image/*"; break;
+            case VIDEO:
+                mimeType = "video/*";
+                textPart.put("description", String.format("{\"title\":%s, \"introduction\":%s}", title, introduction));
+                break;
+            case VOICE:
+                mimeType = "audio/*"; break;
+            default: mimeType = "*/*";
+        }
+
+        Map<String, HttpClientUtil.MultipartInput> filePart = new HashMap<>();
+        HttpClientUtil.MultipartInput file = new HttpClientUtil.MultipartInput(filename, mimeType, inputStream);
+        filePart.put("media", file);
+
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendMultipartRequestAndGetJsonResponse(
+                    WeChatConstants.WECHAT_POST_MATERIAL_UPLOAD_PERMANENT.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken()).replace("${TYPE}", mediaType.stringValue()),
+                    textPart, filePart);
+            return WechatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * 上传临时素材, 媒体文件类型支持图片、语音、视频、缩略图。
      *
      * @param mediaType 要上传的媒体文件类型。
      * @param filename 文件名
      * @param inputStream 文件源
-     * @return
+     * @return {@link WechatApiResult}
      */
     private WechatApiResult uploadTemporaryMaterial(MediaType mediaType, String filename, InputStream inputStream)
             throws RuntimeException {
-        Map<String, String> textPart = new HashMap<>();
         String mimeType;
         switch (mediaType) {
             case IMAGE: case THUMB:
@@ -144,7 +205,7 @@ public class MaterialManager extends WeChatFunctionModule {
         try {
             JsonObject jsonResponse = HttpClientUtil.sendMultipartRequestAndGetJsonResponse(
                     WeChatConstants.WECHAT_POST_MATERIAL_UPLOAD_TEMP.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken()).replace("${TYPE}", mediaType.stringValue()),
-                    textPart, filePart);
+                    null, filePart);
             return WechatApiResult.instanceOf(jsonResponse);
         } catch (IOException e) {
             throw new RuntimeException(e);
