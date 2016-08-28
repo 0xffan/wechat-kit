@@ -47,6 +47,9 @@
  */
 package me.ixfan.wechatkit.common;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 /**
  * 调用微信接口的返回结果封装对象。
  *
@@ -79,6 +82,10 @@ public class WechatApiResult {
      * 媒体文件上传时间
      */
     private long createdAt;
+
+    public static WechatApiResult instanceOf(JsonObject jsonResponse) {
+        return new Gson().fromJson(jsonResponse, WechatApiResult.class);
+    }
 
     public long getErrcode() {
         return errcode;
