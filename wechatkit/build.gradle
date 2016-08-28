@@ -22,6 +22,7 @@ configurations.all {
 
 dependencies {
     compile "org.apache.httpcomponents:httpclient:${httpclientVersion}",
+            "org.apache.httpcomponents:httpmime:${httpclientVersion}",
             "com.google.code.gson:gson:${gsonVersion}",
             "org.slf4j:slf4j-api:${slf4jVersion}",
             "org.apache.logging.log4j:log4j-core:${log4jVersion}",
