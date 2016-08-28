@@ -114,4 +114,7 @@ public class WeChatConstants {
     public static final String WECHAT_POST_USER_BATCH_GET_INFO = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=${ACCESS_TOKEN}";
     /** 微信API - 设置用户备注名 */
     public static final String WECHAT_POST_USER_UPDATE_REMARK = "https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=${ACCESS_TOKEN}";
+
+    /** 微信API - 上传临时素材 */
+    public static final String WECHAT_POST_MATERIAL_UPLOAD_TEMP = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=${TYPE}";
 }
