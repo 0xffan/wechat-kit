@@ -45,51 +45,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.ixfan.wechatkit.util;
+package me.ixfan.wechatkit.common;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ContentType;
+import me.ixfan.wechatkit.material.MediaType;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
- * JSON response handler of {@link ResponseHandler}.
  * @author Warren Fan
  */
-public class JsonResponseHandler implements ResponseHandler<JsonObject> {
+@RunWith(JUnit4.class)
+public class WechatApiResultTest {
+    private final String uploadTempImgSuccess = "{\"type\":\"image\",\"media_id\":\"j1Zk-PLu19wZa-hweRGuK8NxteHcByA64BK\",\"created_at\":1472990884}";
 
-    @Override
-    public JsonObject handleResponse(HttpResponse response) throws IOException {
-        StatusLine statusLine = response.getStatusLine();
-        HttpEntity entity = response.getEntity();
-        if (statusLine.getStatusCode() >= 300) {
-            throw new HttpResponseException(
-                    statusLine.getStatusCode(),
-                    statusLine.getReasonPhrase());
-        }
-        if (entity == null) {
-            throw new ClientProtocolException("Response contains no content");
-        }
-
-        ContentType contentType = ContentType.getOrDefault(entity);
-        Charset charset = contentType.getCharset();
-        if (null == charset) {
-            charset = StandardCharsets.UTF_8;
-        }
-        Reader reader = new InputStreamReader(entity.getContent(), charset);
-        return new JsonParser().parse(reader).getAsJsonObject();
+    @Test
+    public void testConstructWxApiResult() {
+        WechatApiResult result = WechatApiResult.instanceOf(new JsonParser().parse(uploadTempImgSuccess).getAsJsonObject());
+        assertNotNull("Failed to construct WechatApiResult instance!", result);
+        assertEquals("Lost field 'type'!", MediaType.IMAGE.stringValue(), result.getType());
+        assertEquals("Lost field 'meida_id'!", "j1Zk-PLu19wZa-hweRGuK8NxteHcByA64BK", result.getMediaId());
+        assertEquals("Lost field 'create_at'!", 1472990884L, result.getCreatedAt());
     }
 }

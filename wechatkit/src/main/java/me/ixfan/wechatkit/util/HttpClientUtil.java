@@ -34,7 +34,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -42,8 +44,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +69,7 @@ public class HttpClientUtil {
      * Send HTTP GET request and get JSON response.
      * @param url URL of request.
      * @return JSON object of response.
-     * @throws IOException
+     * @throws IOException If I/O error occurs.
      */
     public static JsonObject sendGetRequestAndGetJsonResponse(String url) throws IOException {
         return sendRequestAndGetJsonResponse(url, HttpGet.METHOD_NAME);
@@ -77,7 +80,7 @@ public class HttpClientUtil {
      * @param url URL of request.
      * @param params Param data to post.
      * @return JSON object of response.
-     * @throws IOException
+     * @throws IOException If I/O error occurs.
      */
     public static JsonObject sendPostRequestAndGetJsonResponse(String url, Map<String, String> params)
             throws IOException {
@@ -96,7 +99,7 @@ public class HttpClientUtil {
      * @param url URL of request.
      * @param jsonBody Body data in JSON.
      * @return JSON object of response.
-     * @throws IOException
+     * @throws IOException If I/O error occurs.
      */
     public static JsonObject sendPostRequestWithJsonBody(String url, String jsonBody)
             throws IOException {
@@ -116,7 +119,7 @@ public class HttpClientUtil {
      * @param method HTTP method used.
      * @param nameValuePairs name/stringValue pairs parameter used as an element of HTTP messages.
      * @return JSON object of response.
-     * @throws IOException
+     * @throws IOException If I/O error occurs.
      */
     private static JsonObject sendRequestAndGetJsonResponse(String url, String method, NameValuePair... nameValuePairs)
             throws IOException {
@@ -136,7 +139,7 @@ public class HttpClientUtil {
      * @param method HTTP method used.
      * @param nameValuePairs name/stringValue pairs parameter used as an element of HTTP messages.
      * @return String response.
-     * @throws IOException
+     * @throws IOException If I/O error occurs.
      */
     private static String sendRequestAndGetStringResponse(String url, String method, NameValuePair... nameValuePairs)
             throws IOException {
@@ -156,6 +159,76 @@ public class HttpClientUtil {
         }
 
         return httpClient.execute(request, new BasicResponseHandler());
+    }
+
+    /**
+     * POST data using the Content-Type <code>multipart/form-data</code>.
+     * This enables uploading of binary files etc.
+     *
+     * @param url URL of request.
+     * @param textInputs Name-Value pairs of text inputs.
+     * @param binaryInputs Name-Value pairs of binary files inputs.
+     * @return JSON object of response.
+     * @throws IOException If I/O error occurs.
+     */
+    public static JsonObject sendMultipartRequestAndGetJsonResponse(String url, Map<String, String> textInputs, Map<String, MultipartInput> binaryInputs)
+            throws IOException {
+        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+        if (null != textInputs) {
+            textInputs.forEach((k, v) -> multipartEntityBuilder.addTextBody(k, v));
+        }
+        if (null != binaryInputs) {
+            binaryInputs.forEach((k, v) -> {
+                if (null == v.getDataBytes()) {
+                    multipartEntityBuilder.addBinaryBody(k, v.getFile(), v.getContentType(), v.getFile().getName());
+                } else {
+                    multipartEntityBuilder.addBinaryBody(k, v.getDataBytes(), v.getContentType(), v.getFilename());
+                }
+            });
+        }
+
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost post = new HttpPost(url);
+        post.setEntity(multipartEntityBuilder.build());
+        return httpClient.execute(post, new JsonResponseHandler());
+    }
+
+    /**
+     * Emulate binary file input in multipart form.
+     */
+    public static class MultipartInput {
+        private String filename;
+        private ContentType contentType;
+        private byte[] dataBytes;
+        private File file;
+
+        public MultipartInput(String filename, String mimeType, byte[] dataBytes) {
+            this.filename = filename;
+            this.contentType = ContentType.create(mimeType);
+            this.dataBytes = dataBytes;
+        }
+
+        public MultipartInput(String filename, String mimeType, File file) {
+            this.filename = filename;
+            this.contentType = ContentType.create(mimeType);
+            this.file = file;
+        }
+
+        public String getFilename() {
+            return filename;
+        }
+
+        public ContentType getContentType() {
+            return contentType;
+        }
+
+        public byte[] getDataBytes() {
+            return this.dataBytes;
+        }
+
+        public File getFile() {
+            return this.file;
+        }
     }
 
 }

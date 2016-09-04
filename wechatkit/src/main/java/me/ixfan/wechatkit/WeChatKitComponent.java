@@ -45,51 +45,71 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.ixfan.wechatkit.util;
+package me.ixfan.wechatkit;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ContentType;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import me.ixfan.wechatkit.token.TokenManager;
 
 /**
- * JSON response handler of {@link ResponseHandler}.
  * @author Warren Fan
  */
-public class JsonResponseHandler implements ResponseHandler<JsonObject> {
+public abstract class WeChatKitComponent {
 
-    @Override
-    public JsonObject handleResponse(HttpResponse response) throws IOException {
-        StatusLine statusLine = response.getStatusLine();
-        HttpEntity entity = response.getEntity();
-        if (statusLine.getStatusCode() >= 300) {
-            throw new HttpResponseException(
-                    statusLine.getStatusCode(),
-                    statusLine.getReasonPhrase());
-        }
-        if (entity == null) {
-            throw new ClientProtocolException("Response contains no content");
-        }
+    protected String appId;
+    protected String appSecret;
+    protected String wechatId;
+    protected TokenManager tokenManager;
 
-        ContentType contentType = ContentType.getOrDefault(entity);
-        Charset charset = contentType.getCharset();
-        if (null == charset) {
-            charset = StandardCharsets.UTF_8;
-        }
-        Reader reader = new InputStreamReader(entity.getContent(), charset);
-        return new JsonParser().parse(reader).getAsJsonObject();
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getAppSecret() {
+        return appSecret;
+    }
+
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
+    }
+
+    public String getWechatId() {
+        return wechatId;
+    }
+
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
+    }
+
+    public TokenManager getTokenManager() {
+        return tokenManager;
+    }
+
+    public void setTokenManager(TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String wechatId, TokenManager tokenManager) {
+        this.wechatId = wechatId;
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String appId, String appSecret, TokenManager tokenManager) {
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String wechatId, String appId, String appSecret,  TokenManager tokenManager) {
+        this.wechatId = wechatId;
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.tokenManager = tokenManager;
     }
 }

@@ -45,96 +45,110 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.ixfan.wechatkit.common;
-
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+package me.ixfan.wechatkit.material.model;
 
 /**
- * 调用微信接口的返回结果封装对象。
- *
  * @author Warren Fan
  */
-public class WechatApiResult {
+public class ArticleForUpload {
 
     /**
-     * 微信接口返回码
+     * 标题
      */
-    private long errcode;
+    private String title;
     /**
-     * 接口返回结果说明
+     * 作者
      */
-    private String errmsg;
+    private String author;
+    /**
+     * 图文消息的摘要，仅有单图文消息才有摘要，多图文此处为空。
+     */
+    private String digest;
+    /**
+     * 图文消息的封面图片素材id（必须是永久mediaID）。
+     */
+    private String thumb_media_id;
+    /**
+     * 是否显示封面，0为false，即不显示，1为true，即显示。
+     */
+    private int show_cover_pic;
+    /**
+     * 图文消息的具体内容，支持HTML标签，必须少于2万字符，小于1M，且此处会去除JS。
+     */
+    private String content;
+    /**
+     * 图文消息的原文地址，即点击“阅读原文”后的 URL。
+     */
+    private String contentSourceUrl;
 
     /**
-     * 上传图文消息内的图片后的图片URL
+     * 图文消息。
+     *
+     * @param title 标题
+     * @param author 作者
+     * @param contentSourceUrl 图文消息的原文地址，即点击“阅读原文”后的 URL
+     * @param isShowCoverPicture 是否显示封面
      */
-    private String url;
-    /**
-     * 上传的媒体文件类型,分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb），图文消息（news）
-     */
-    private String type;
-    /**
-     * 媒体文件/图文消息上传后获取的唯一标识
-     */
-    private String mediaId;
-    /**
-     * 媒体文件上传时间
-     */
-    private long createdAt;
-
-    public static WechatApiResult instanceOf(JsonObject jsonResponse) {
-        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-        return gson.fromJson(jsonResponse, WechatApiResult.class);
+    public ArticleForUpload(String title, String author, String contentSourceUrl, boolean isShowCoverPicture) {
+        this.title = title;
+        this.author = author;
+        this.contentSourceUrl = contentSourceUrl;
+        this.show_cover_pic = isShowCoverPicture ? 1:0;
     }
 
-    public long getErrcode() {
-        return errcode;
+    public String getTitle() {
+        return title;
     }
 
-    public void setErrcode(long errcode) {
-        this.errcode = errcode;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getErrmsg() {
-        return errmsg;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setErrmsg(String errmsg) {
-        this.errmsg = errmsg;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDigest() {
+        return digest;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDigest(String digest) {
+        this.digest = digest;
     }
 
-    public String getType() {
-        return type;
+    public String getThumb_media_id() {
+        return thumb_media_id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setThumb_media_id(String thumb_media_id) {
+        this.thumb_media_id = thumb_media_id;
     }
 
-    public String getMediaId() {
-        return mediaId;
+    public int getShow_cover_pic() {
+        return show_cover_pic;
     }
 
-    public void setMediaId(String mediaId) {
-        this.mediaId = mediaId;
+    public void setShow_cover_pic(int show_cover_pic) {
+        this.show_cover_pic = show_cover_pic;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
+    public String getContent() {
+        return content;
     }
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContentSourceUrl() {
+        return contentSourceUrl;
+    }
+
+    public void setContentSourceUrl(String contentSourceUrl) {
+        this.contentSourceUrl = contentSourceUrl;
     }
 }
