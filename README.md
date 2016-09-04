@@ -29,7 +29,7 @@ WechatUser user = wechatKit.userManager().getWechatUserInfo("user's openid");
 
 ## 开发进程
 
-> ✔️ - Done &nbsp;&nbsp;&nbsp; 🛠 - Ongoing  &nbsp;&nbsp;&nbsp; 🕖 - Pending
+> ✔️ - Done     🛠 - Ongoing      🕖 - Pending
 
 * 基础功能
 
@@ -38,57 +38,57 @@ WechatUser user = wechatKit.userManager().getWechatUserInfo("user's openid");
 * 菜单管理
 
  ✔️ 创建自定义菜单
- 
+
  ✔️ 删除自定义菜单
 
 * 消息管理
 
  ✔️ 解析微信服务器推送的消息&事件
- 
- 🕖 主动给用户发送消息
- 
+
+ 🛠 主动给用户发送消息
+
  🕖 发送模板消息
- 
+
  🕖 被动回复消息
- 
- 🕖 群发消息
+
+ 🛠 群发消息
 
 * 用户管理
 
  🕖 获取用户基本信息
- 
+
  🕖 设置用户备注名
- 
+
  🕖 用户标签管理
- 
- 🕖 获取用户列表
- 
+
+ 🛠 获取用户列表
+
  🕖 获取用户地理位置
- 
+
 * 客服消息
 
  🕖 添加客服帐号
- 
+
  🕖 修改客服帐号
- 
+
  🕖 删除客服帐号
- 
+
  🕖 获取所有客服帐号
- 
+
  🕖 发送客服消息
- 
+
 * 素材管理
 
  ✔️ 新增临时素材
- 
- 🛠 新增永久素材
- 
+
+ ✔️ 新增永久素材
+
  🕖 获取临时/永久素材
- 
+
  🕖 删除永久素材
- 
+
  🕖 修改永久图文素材
- 
+
  🕖 获取素材总数/列表
 
 ## 一起玩
