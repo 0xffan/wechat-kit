@@ -72,7 +72,7 @@ import java.nio.charset.StandardCharsets;
 public class JsonResponseHandler implements ResponseHandler<JsonObject> {
 
     @Override
-    public JsonObject handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+    public JsonObject handleResponse(HttpResponse response) throws IOException {
         StatusLine statusLine = response.getStatusLine();
         HttpEntity entity = response.getEntity();
         if (statusLine.getStatusCode() >= 300) {

@@ -44,6 +44,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -177,8 +178,13 @@ public class HttpClientUtil {
             textInputs.forEach((k, v) -> multipartEntityBuilder.addTextBody(k, v));
         }
         if (null != binaryInputs) {
-            binaryInputs.forEach(
-                    (k, v) -> multipartEntityBuilder.addBinaryBody(k, v.getBinaryData(), v.getContentType(), v.getFilename()));
+            binaryInputs.forEach((k, v) -> {
+                if (null == v.getDataBytes()) {
+                    multipartEntityBuilder.addBinaryBody(k, v.getFile(), v.getContentType(), v.getFile().getName());
+                } else {
+                    multipartEntityBuilder.addBinaryBody(k, v.getDataBytes(), v.getContentType(), v.getFilename());
+                }
+            });
         }
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -193,12 +199,19 @@ public class HttpClientUtil {
     public static class MultipartInput {
         private String filename;
         private ContentType contentType;
-        private InputStream data;
+        private byte[] dataBytes;
+        private File file;
 
-        public MultipartInput(String filename, String mimeType, InputStream data) {
+        public MultipartInput(String filename, String mimeType, byte[] dataBytes) {
             this.filename = filename;
             this.contentType = ContentType.create(mimeType);
-            this.data = data;
+            this.dataBytes = dataBytes;
+        }
+
+        public MultipartInput(String filename, String mimeType, File file) {
+            this.filename = filename;
+            this.contentType = ContentType.create(mimeType);
+            this.file = file;
         }
 
         public String getFilename() {
@@ -209,8 +222,12 @@ public class HttpClientUtil {
             return contentType;
         }
 
-        public InputStream getBinaryData() {
-            return data;
+        public byte[] getDataBytes() {
+            return this.dataBytes;
+        }
+
+        public File getFile() {
+            return this.file;
         }
     }
 
