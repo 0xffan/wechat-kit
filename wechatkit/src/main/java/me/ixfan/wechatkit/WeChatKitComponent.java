@@ -52,11 +52,11 @@ import me.ixfan.wechatkit.token.TokenManager;
 /**
  * @author Warren Fan
  */
-public abstract class WeChatFunctionModule {
+public abstract class WeChatKitComponent {
 
     protected String appId;
     protected String appSecret;
-    protected String wechatAccountId;
+    protected String wechatId;
     protected TokenManager tokenManager;
 
     public String getAppId() {
@@ -75,12 +75,12 @@ public abstract class WeChatFunctionModule {
         this.appSecret = appSecret;
     }
 
-    public String getWechatAccountId() {
-        return wechatAccountId;
+    public String getWechatId() {
+        return wechatId;
     }
 
-    public void setWechatAccountId(String wechatAccountId) {
-        this.wechatAccountId = wechatAccountId;
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
     }
 
     public TokenManager getTokenManager() {
@@ -91,17 +91,25 @@ public abstract class WeChatFunctionModule {
         this.tokenManager = tokenManager;
     }
 
-    public WeChatFunctionModule(TokenManager tokenManager) {
+    public WeChatKitComponent(TokenManager tokenManager) {
         this.tokenManager = tokenManager;
     }
 
-    public WeChatFunctionModule(String appId, String appSecret) {
-        this.appId = appId;
-        this.appSecret = appSecret;
+    public WeChatKitComponent(String wechatId, TokenManager tokenManager) {
+        this.wechatId = wechatId;
+        this.tokenManager = tokenManager;
     }
 
-    public WeChatFunctionModule(String wechatAccountId, TokenManager tokenManager) {
-        this.wechatAccountId = wechatAccountId;
+    public WeChatKitComponent(String appId, String appSecret, TokenManager tokenManager) {
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String wechatId, String appId, String appSecret,  TokenManager tokenManager) {
+        this.wechatId = wechatId;
+        this.appId = appId;
+        this.appSecret = appSecret;
         this.tokenManager = tokenManager;
     }
 }

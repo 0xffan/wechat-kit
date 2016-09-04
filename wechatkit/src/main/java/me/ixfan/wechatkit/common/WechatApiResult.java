@@ -47,7 +47,9 @@
  */
 package me.ixfan.wechatkit.common;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 /**
@@ -84,7 +86,8 @@ public class WechatApiResult {
     private long createdAt;
 
     public static WechatApiResult instanceOf(JsonObject jsonResponse) {
-        return new Gson().fromJson(jsonResponse, WechatApiResult.class);
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        return gson.fromJson(jsonResponse, WechatApiResult.class);
     }
 
     public long getErrcode() {

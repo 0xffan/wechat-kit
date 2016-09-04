@@ -123,4 +123,6 @@ public class WeChatConstants {
     public static final String WECHAT_POST_MATERIAL_UPLOAD_NEWS_PIC = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=${ACCESS_TOKEN}";
     /** 微信API - 上传非图文类型的永久素材 */
     public static final String WECHAT_POST_MATERIAL_UPLOAD_PERMANENT = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${ACCESS_TOKEN}&type=${TYPE}";
+    /** 微信API - 获取永久素材的总数 */
+    public static final String WECHAT_GET_MATERIAL_COUNT = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token=${ACCESS_TOKEN}";
 }

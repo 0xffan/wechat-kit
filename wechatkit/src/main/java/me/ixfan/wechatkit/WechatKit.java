@@ -24,6 +24,7 @@
 
 package me.ixfan.wechatkit;
 
+import me.ixfan.wechatkit.material.MaterialManager;
 import me.ixfan.wechatkit.menu.MenuManager;
 import me.ixfan.wechatkit.message.MessageManager;
 import me.ixfan.wechatkit.token.TokenManager;
@@ -40,18 +41,19 @@ public class WechatKit {
 
     private final String appId;
     private final String appSecret;
-    private final String wechatAccountId;
+    private final String wechatId;
 
     private final TokenManager tokenManager;
 
     private MenuManager menuManager;
     private UserManager userManager;
     private MessageManager messageManager;
+    private MaterialManager materialManager;
 
     private WechatKit(Builder builder) {
         this.appId = builder.appId;
         this.appSecret = builder.appSecret;
-        this.wechatAccountId = builder.wechatAccountId;
+        this.wechatId = builder.wechatId;
         this.tokenManager = new TokenManager(this.appId, this.appSecret, builder.accessTokenContainer);
     }
 
@@ -66,13 +68,13 @@ public class WechatKit {
     public static class Builder {
         private final String appId;
         private final String appSecret;
-        private final String wechatAccountId;
+        private final String wechatId;
         private WechatAccessTokenContainer accessTokenContainer;
 
-        public Builder(String appId, String appSecret, String wechatAccountId) {
+        public Builder(String appId, String appSecret, String wechatId) {
             this.appId = appId;
             this.appSecret = appSecret;
-            this.wechatAccountId = wechatAccountId;
+            this.wechatId = wechatId;
         }
 
         public Builder setAccessTokenContainer(WechatAccessTokenContainer accessTokenContainer) {
@@ -111,9 +113,16 @@ public class WechatKit {
 
     public MessageManager messageManager() {
         if (null == this.messageManager) {
-            this.messageManager = new MessageManager(wechatAccountId, tokenManager);
+            this.messageManager = new MessageManager(this.wechatId, this.tokenManager);
         }
         return this.messageManager;
+    }
+
+    public MaterialManager materialManager() {
+        if (null == this.materialManager) {
+            this.materialManager = new MaterialManager(this.tokenManager);
+        }
+        return this.materialManager;
     }
 
 }
