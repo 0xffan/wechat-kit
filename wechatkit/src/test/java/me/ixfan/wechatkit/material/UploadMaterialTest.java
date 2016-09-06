@@ -67,7 +67,7 @@ import static org.junit.Assert.fail;
 @RunWith(JUnit4.class)
 public class UploadMaterialTest {
 
-    private WechatKit wechatKit = WechatKit.build(null, "wxb76c280b46f183d7", "ee3bd8c40dc585b784122c01ba80fb0c", SimpleTokenContainer.getTokenContainer());
+    private WechatKit wechatKit = WechatKit.build(null, "APPID", "APPSECRET", SimpleTokenContainer.getTokenContainer());
 
     @Ignore("已测试通过, 忽略是因为避免每次单元测试都向公众号上传素材.")
     @Test
