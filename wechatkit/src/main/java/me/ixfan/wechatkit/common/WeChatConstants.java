@@ -106,7 +106,7 @@ public class WeChatConstants {
 
     /** 微信API - 获取标签下粉丝列表 */
     public static final String WECHAT_GET_USER_WITH_TAG = "https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=${ACCESS_TOKEN}";
-    /** 微信API - 获取用户列表 */
+    /** 微信API - 获取关注者列表 */
     public static final String WECHAT_GET_USER_LIST = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=${ACCESS_TOKEN}&next_openid=${NEXT_OPENID}";
     /** 微信API - 获取用户基本信息 */
     public static final String WECHAT_GET_USER_GET_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN";

@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author xfan
  */
-public class WechatUser {
+public class WechatFollower {
 
     private String openid;
     private String nickname;
@@ -39,10 +39,9 @@ public class WechatUser {
     private String province;
     private String city;
     private String headImgUrl;
-    private List<String> privilege;
     private String unionid;
 
-    public WechatUser(String openid) {
+    public WechatFollower(String openid) {
         this.openid = openid;
     }
 
@@ -100,14 +99,6 @@ public class WechatUser {
 
     public void setHeadImgUrl(String headImgUrl) {
         this.headImgUrl = headImgUrl;
-    }
-
-    public List<String> getPrivilege() {
-        return privilege;
-    }
-
-    public void setPrivilege(List<String> privilege) {
-        this.privilege = privilege;
     }
 
     public String getUnionid() {
