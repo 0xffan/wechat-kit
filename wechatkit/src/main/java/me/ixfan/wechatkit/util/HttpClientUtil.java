@@ -59,8 +59,6 @@ import java.util.stream.Collectors;
  */
 public class HttpClientUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
-
     private HttpClientUtil() {
         throw new AssertionError();
     }
@@ -73,25 +71,6 @@ public class HttpClientUtil {
      */
     public static JsonObject sendGetRequestAndGetJsonResponse(String url) throws IOException {
         return sendRequestAndGetJsonResponse(url, HttpGet.METHOD_NAME);
-    }
-
-    /**
-     * Send HTTP POST request and get JSON response.
-     * @param url URL of request.
-     * @param params Param data to post.
-     * @return JSON object of response.
-     * @throws IOException If I/O error occurs.
-     */
-    public static JsonObject sendPostRequestAndGetJsonResponse(String url, Map<String, String> params)
-            throws IOException {
-        List<NameValuePair> nameValuePairs = params.keySet()
-                                                   .stream()
-                                                   .map(key -> new BasicNameValuePair(key, params.get(key)))
-                                                   .collect(Collectors.toList());
-        return sendRequestAndGetJsonResponse(
-                url,
-                HttpPost.METHOD_NAME,
-                nameValuePairs.toArray(new NameValuePair[nameValuePairs.size()]));
     }
 
     /**
@@ -123,42 +102,22 @@ public class HttpClientUtil {
      */
     private static JsonObject sendRequestAndGetJsonResponse(String url, String method, NameValuePair... nameValuePairs)
             throws IOException {
-        String jsonStr = sendRequestAndGetStringResponse(url, method, nameValuePairs);
-        try {
-            return new JsonParser().parse(jsonStr).getAsJsonObject();
-        } catch (JsonParseException e) {
-            logger.error("Exception occurs during parsing of a Json string, maybe the specified text is not valid JSON.");
-            throw e;
-        }
-    }
-
-    /**
-     * Send HTTP request with specified HTTP method.
-     * If method is not specified, GET method will be used.
-     * @param url URL of request.
-     * @param method HTTP method used.
-     * @param nameValuePairs name/stringValue pairs parameter used as an element of HTTP messages.
-     * @return String response.
-     * @throws IOException If I/O error occurs.
-     */
-    private static String sendRequestAndGetStringResponse(String url, String method, NameValuePair... nameValuePairs)
-            throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         HttpUriRequest request;
         switch (method) {
             case HttpPost.METHOD_NAME:
                 request = RequestBuilder.post(url)
-                        .setCharset(Charsets.UTF_8)
-                        .setEntity(new UrlEncodedFormEntity(Arrays.asList(nameValuePairs)))
-                        .build();
+                                        .setCharset(Charsets.UTF_8)
+                                        .setEntity(new UrlEncodedFormEntity(Arrays.asList(nameValuePairs)))
+                                        .build();
                 break;
             default:
                 request = RequestBuilder.get(url).setCharset(Charsets.UTF_8).build();
                 break;
         }
 
-        return httpClient.execute(request, new BasicResponseHandler());
+        return httpClient.execute(request, new JsonResponseHandler());
     }
 
     /**
