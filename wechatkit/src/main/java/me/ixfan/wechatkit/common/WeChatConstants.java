@@ -90,30 +90,30 @@ public class WeChatConstants {
     public static final String WECHAT_GET_MENU_DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=${ACCESS_TOKEN}";
 
     /** 微信API - 获取公众号已创建的标签 */
-    public static final String WECHAT_GET_TAGS_GET = "https://api.weixin.qq.com/cgi-bin/tags/get?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_GET_GET_TAGS = "https://api.weixin.qq.com/cgi-bin/tags/get?access_token=${ACCESS_TOKEN}";
     /** 微信API - 创建标签 */
-    public static final String WECHAT_POST_TAGS_CREATE = "https://api.weixin.qq.com/cgi-bin/tags/create?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_CREATE_TAG = "https://api.weixin.qq.com/cgi-bin/tags/create?access_token=${ACCESS_TOKEN}";
     /** 微信API - 编辑标签 */
-    public static final String WECHAT_POST_TAGS_UPDATE = "https://api.weixin.qq.com/cgi-bin/tags/update?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_UPDATE_TAG = "https://api.weixin.qq.com/cgi-bin/tags/update?access_token=${ACCESS_TOKEN}";
     /** 微信API - 删除标签 */
-    public static final String WECHAT_POST_TAGS_DELETE = "https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_DELETE_TAG = "https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=${ACCESS_TOKEN}";
     /** 微信API - 批量为用户打标签 */
-    public static final String WECHAT_POST_TAGS_BATCH_TAGGING = "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_BATCH_TAGGING = "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=${ACCESS_TOKEN}";
     /** 微信API - 批量为用户取消标签 */
-    public static final String WECHAT_POST_TAGS_BATCH_UNTAGGING = "https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_BATCH_UNTAGGING = "https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=${ACCESS_TOKEN}";
     /** 微信API - 获取用户身上的标签列表 */
-    public static final String WECHAT_POST_TAGS_GET_TAGS_OF_USER = "https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_GET_TAGS_OF_USER = "https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token=${ACCESS_TOKEN}";
 
     /** 微信API - 获取标签下粉丝列表 */
     public static final String WECHAT_GET_USER_WITH_TAG = "https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=${ACCESS_TOKEN}";
     /** 微信API - 获取关注者列表 */
     public static final String WECHAT_GET_USER_LIST = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=${ACCESS_TOKEN}&next_openid=${NEXT_OPENID}";
     /** 微信API - 获取用户基本信息 */
-    public static final String WECHAT_GET_USER_GET_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN";
+    public static final String WECHAT_GET_USER_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=${LANG}";
     /** 微信API - 批量获取用户基本信息 */
-    public static final String WECHAT_POST_USER_BATCH_GET_INFO = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_BATCH_GET_USER_INFO = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=${ACCESS_TOKEN}";
     /** 微信API - 设置用户备注名 */
-    public static final String WECHAT_POST_USER_UPDATE_REMARK = "https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_UPDATE_USER_REMARK = "https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=${ACCESS_TOKEN}";
 
     /** 微信API - 上传临时素材 */
     public static final String WECHAT_POST_MATERIAL_UPLOAD_TEMP = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=${ACCESS_TOKEN}&type=${TYPE}";
