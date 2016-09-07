@@ -29,13 +29,13 @@ import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.exceptions.WeChatApiErrorException;
 import me.ixfan.wechatkit.token.TokenManager;
-import me.ixfan.wechatkit.user.model.WechatFollower;
+import me.ixfan.wechatkit.user.model.WeChatFollower;
 import me.ixfan.wechatkit.util.HttpClientUtil;
-import org.apache.commons.codec.binary.StringUtils;
+import org.apache.http.util.Args;
+import org.apache.http.util.TextUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO: 用户管理
@@ -79,14 +79,34 @@ public class UserManager extends WeChatKitComponent {
     }
 
     /**
-     * TODO 获取微信用户基本信息（包括 UnionId 机制）。同一用户，对同一个微信开放平台下的不同应用，UnionId 是相同的。
+     * 获取微信用户基本信息（包括 UnionId 机制）。同一用户，对同一个微信开放平台下的不同应用，UnionId 是相同的。
      *
      * @param openId 用户的 OpenId。
-     * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语。
-     * @return {@link WechatFollower}
+     * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语。默认为 zh_CN。
+     * @return {@link WeChatFollower}
      * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
      */
-    public WechatFollower getUserInfo(String openId, String lang) throws WeChatApiErrorException {
-        return null;
+    public WeChatFollower getUserInfo(String openId, String lang) throws WeChatApiErrorException {
+        Args.notBlank(openId, "OpenId");
+        if (TextUtils.isBlank(lang)) {
+            lang = "zh_CN";
+        }
+        Args.check(lang.equals("zh_CN") || lang.equals("zh_TW") || lang.equals("en"), "'lang' 的值只能为 zh_CN, zh_TW 或 en.");
+
+        final String url = WeChatConstants.WECHAT_GET_USER_INFO.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken())
+                                            .replace("${OPENID}", openId)
+                                            .replace("${LANG}", lang);
+        JsonObject jsonResponse;
+        try {
+            jsonResponse = HttpClientUtil.sendGetRequestAndGetJsonResponse(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResponse.has("subscribe")) {
+            return WeChatFollower.fromJson(jsonResponse);
+        } else {
+            throw new WeChatApiErrorException(jsonResponse.get("errcode").getAsInt(), jsonResponse.get("errmsg").getAsString());
+        }
     }
 }

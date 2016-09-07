@@ -50,13 +50,13 @@ package me.ixfan.wechatkit.user;
 import me.ixfan.wechatkit.WechatKit;
 import me.ixfan.wechatkit.exceptions.WeChatApiErrorException;
 import me.ixfan.wechatkit.token.SimpleTokenContainer;
+import me.ixfan.wechatkit.user.model.WeChatFollower;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * @author Warren Fan
@@ -65,6 +65,7 @@ import static org.junit.Assert.fail;
 public class UserManagerTest {
     private WechatKit wechatKit = WechatKit.build(null, "APPID", "APPSECRET", SimpleTokenContainer.getTokenContainer());
 
+    @Ignore("测试通过，忽略以防止每次单元测试都调用微信API")
     @Test
     public void testGetFollowersOpenIdList() {
         String[] openids;
@@ -76,5 +77,23 @@ public class UserManagerTest {
         }
         assertNotNull(openids);
         assertTrue("应该有关注者的，怎么没获取到？！", openids.length > 0);
+    }
+
+    @Ignore("测试通过，忽略以防止每次单元测试都调用微信API")
+    @Test
+    public void testGetUserInfoSuccessfully() {
+        final String myOpenId = "op8KJwO3XUAMMsvDXqwVMWskLxV0";
+        WeChatFollower user;
+        try {
+            user = wechatKit.userManager().getUserInfo(myOpenId, "zh_TW");
+        } catch (WeChatApiErrorException e) {
+            fail(e.getMessage());
+            return;
+        }
+        assertNotNull(user);
+        assertEquals("Get wrong nickname!", "大小棥", user.getNickname());
+        assertEquals("", myOpenId, user.getOpenid());
+        assertNotNull("用户头像URL没获取到", user.getHeadimgurl());
+        assertTrue("关注时间没获取到", null != user.getSubscribeTime() && user.getSubscribeTime().compareTo(0L) > 0);
     }
 }
