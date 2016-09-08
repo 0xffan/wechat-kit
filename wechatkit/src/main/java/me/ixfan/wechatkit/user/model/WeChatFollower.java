@@ -23,10 +23,11 @@
  */
 package me.ixfan.wechatkit.user.model;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Wechat user model.
@@ -95,6 +96,12 @@ public class WeChatFollower {
     public static WeChatFollower fromJson(JsonObject jsonObject) {
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         return gson.fromJson(jsonObject, WeChatFollower.class);
+    }
+
+    public static List<WeChatFollower> batchFromJson(JsonArray jsonArray) {
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        Type type = new TypeToken<List<WeChatFollower>>(){}.getType();
+        return gson.fromJson(jsonArray, type);
     }
     /**
      * @return 用户的标识(openid)，对当前公众号唯一。
