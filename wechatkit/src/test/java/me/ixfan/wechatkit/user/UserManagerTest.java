@@ -56,6 +56,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -92,8 +95,22 @@ public class UserManagerTest {
         }
         assertNotNull(user);
         assertEquals("Get wrong nickname!", "大小棥", user.getNickname());
-        assertEquals("", myOpenId, user.getOpenid());
+        assertEquals("OpenId 呢？！", myOpenId, user.getOpenid());
         assertNotNull("用户头像URL没获取到", user.getHeadimgurl());
         assertTrue("关注时间没获取到", null != user.getSubscribeTime() && user.getSubscribeTime().compareTo(0L) > 0);
+    }
+
+    @Ignore("测试通过，忽略以防止每次单元测试都调用微信API")
+    @Test
+    public void testBatchGetUserInfoSucessfully() {
+        List<WeChatFollower> users;
+        try {
+            users = weChatKit.userManager().batchGetUserInfo(Arrays.asList("op8KJwO3XUAMMsvDXqwVMWskLxV0"), "zh_CN");
+        } catch (WeChatApiErrorException e) {
+            fail(e.getMessage());
+            return;
+        }
+        assertNotNull(users);
+        assertNotNull("用户的openid没有，不对哦", users.get(0).getOpenid());
     }
 }

@@ -24,6 +24,7 @@
 
 package me.ixfan.wechatkit.user;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatConstants;
@@ -36,6 +37,9 @@ import org.apache.http.util.TextUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: 用户管理
@@ -86,7 +90,7 @@ public class UserManager extends WeChatKitComponent {
      * @return {@link WeChatFollower}
      * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
      */
-    public WeChatFollower getUserInfo(String openId, String lang) throws WeChatApiErrorException {
+    public WeChatFollower getUserInfo(final String openId, String lang) throws WeChatApiErrorException {
         Args.notBlank(openId, "OpenId");
         if (TextUtils.isBlank(lang)) {
             lang = "zh_CN";
@@ -105,6 +109,45 @@ public class UserManager extends WeChatKitComponent {
 
         if (jsonResponse.has("subscribe")) {
             return WeChatFollower.fromJson(jsonResponse);
+        } else {
+            throw new WeChatApiErrorException(jsonResponse.get("errcode").getAsInt(), jsonResponse.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 批量获取用户信息，最多支持一次拉取100条。
+     * @param openIds 用户的 OpenId 列表。
+     * @param lang 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语，默认为 zh-CN。
+     * @return {@link WeChatFollower}s
+     */
+    public List<WeChatFollower> batchGetUserInfo(final List<String> openIds, String lang)
+            throws WeChatApiErrorException {
+        Args.notEmpty(openIds, "OpenIds");
+        if (TextUtils.isBlank(lang)) {
+            lang = "zh_CN";
+        }
+        Args.check(lang.equals("zh_CN") || lang.equals("zh_TW") || lang.equals("en"), "'lang' 的值只能为 zh_CN, zh_TW 或 en.");
+
+        final String finalLang = lang;
+        JsonObject jsonResponse;
+        try {
+            final List<Map<String, String>> data = new ArrayList<>();
+            openIds.forEach(openid -> {
+                Map<String, String> map = new HashMap<>();
+                map.put("openid", openid);
+                map.put("lang", finalLang);
+                data.add(map);
+            });
+            final Map<String, List<Map<String, String>>> jsonMap = new HashMap<>();
+            jsonMap.put("user_list", data);
+            Gson gson = new Gson();
+            jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(WeChatConstants.WECHAT_POST_BATCH_GET_USER_INFO.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken()), gson.toJson(jsonMap));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResponse.has("user_info_list")) {
+            return WeChatFollower.batchFromJson(jsonResponse.get("user_info_list").getAsJsonArray());
         } else {
             throw new WeChatApiErrorException(jsonResponse.get("errcode").getAsInt(), jsonResponse.get("errmsg").getAsString());
         }
