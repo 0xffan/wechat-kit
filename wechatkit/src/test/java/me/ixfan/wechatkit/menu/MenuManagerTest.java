@@ -48,7 +48,7 @@
 package me.ixfan.wechatkit.menu;
 
 import com.google.gson.Gson;
-import me.ixfan.wechatkit.WechatKit;
+import me.ixfan.wechatkit.WeChatKit;
 import me.ixfan.wechatkit.menu.model.MenuItem;
 import me.ixfan.wechatkit.token.SimpleTokenContainer;
 import me.ixfan.wechatkit.util.AppProperties;
@@ -68,14 +68,14 @@ import static org.junit.Assert.assertTrue;
  */
 public class MenuManagerTest {
 
-    private static WechatKit wechatKit;
+    private static WeChatKit weChatKit;
     private static MenuItem levelOneMenu1;
     private static MenuItem levelOneMenu2;
     private static MenuItem levelOneMenu3;
 
     @BeforeClass
     public static void prepare() {
-        wechatKit = new WechatKit.Builder(AppProperties.get("APPID"), AppProperties.get("APPSECRET"), AppProperties.get("WECHAT_ID"))
+        weChatKit = new WeChatKit.Builder(AppProperties.get("APPID"), AppProperties.get("APPSECRET"), AppProperties.get("WECHAT_ID"))
                         .setAccessTokenContainer(SimpleTokenContainer.getTokenContainer()).build();
 
         levelOneMenu1 = new MenuItem("⚤ 你", MenuType.CLICK);
@@ -127,14 +127,14 @@ public class MenuManagerTest {
     @Ignore("跳过创建菜单的测试, 避免每次测试都创建一次测试菜单.")
     @Test
     public void createCustomizedMenuSuccessfully() {
-        boolean result = this.wechatKit.menuManager().createCustomizedMenu(Arrays.asList(levelOneMenu1, levelOneMenu2, levelOneMenu3));
+        boolean result = this.weChatKit.menuManager().createCustomizedMenu(Arrays.asList(levelOneMenu1, levelOneMenu2, levelOneMenu3));
         assertTrue("Failed to create wechat menu!", result);
     }
 
     @Ignore("跳过删除菜单的测试, 避免每次测试都把菜单删掉.")
     @Test
     public void deleteCustomizedMenuSuccessfully() {
-        boolean result = this.wechatKit.menuManager().deleteCustomizedMenu();
+        boolean result = this.weChatKit.menuManager().deleteCustomizedMenu();
         assertTrue("Failed to delete wechat menu!", result);
     }
 }

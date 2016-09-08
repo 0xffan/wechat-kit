@@ -47,7 +47,7 @@
  */
 package me.ixfan.wechatkit.user;
 
-import me.ixfan.wechatkit.WechatKit;
+import me.ixfan.wechatkit.WeChatKit;
 import me.ixfan.wechatkit.exceptions.WeChatApiErrorException;
 import me.ixfan.wechatkit.token.SimpleTokenContainer;
 import me.ixfan.wechatkit.user.model.WeChatFollower;
@@ -63,14 +63,14 @@ import static org.junit.Assert.*;
  */
 @RunWith(JUnit4.class)
 public class UserManagerTest {
-    private WechatKit wechatKit = WechatKit.build(null, "APPID", "APPSECRET", SimpleTokenContainer.getTokenContainer());
+    private WeChatKit weChatKit = WeChatKit.build(null, "APPID", "APPSECRET", SimpleTokenContainer.getTokenContainer());
 
     @Ignore("测试通过，忽略以防止每次单元测试都调用微信API")
     @Test
     public void testGetFollowersOpenIdList() {
         String[] openids;
         try {
-            openids = wechatKit.userManager().getFollowerList(null);
+            openids = weChatKit.userManager().getFollowerList(null);
         } catch (WeChatApiErrorException e) {
             fail(e.getMessage());
             return;
@@ -85,7 +85,7 @@ public class UserManagerTest {
         final String myOpenId = "op8KJwO3XUAMMsvDXqwVMWskLxV0";
         WeChatFollower user;
         try {
-            user = wechatKit.userManager().getUserInfo(myOpenId, "zh_TW");
+            user = weChatKit.userManager().getUserInfo(myOpenId, "zh_TW");
         } catch (WeChatApiErrorException e) {
             fail(e.getMessage());
             return;

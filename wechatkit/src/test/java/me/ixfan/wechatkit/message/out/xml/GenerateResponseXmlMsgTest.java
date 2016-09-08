@@ -47,7 +47,7 @@
  */
 package me.ixfan.wechatkit.message.out.xml;
 
-import me.ixfan.wechatkit.WechatKit;
+import me.ixfan.wechatkit.WeChatKit;
 import me.ixfan.wechatkit.material.MediaObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,11 +69,11 @@ public class GenerateResponseXmlMsgTest {
     private final String expectedVideoMsg = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[media_id]]></MediaId><Title><![CDATA[title]]></Title><Description><![CDATA[description]]></Description></Video></xml>";
     private final String expectedMusicMsg = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[music]]></MsgType><Music><Title><![CDATA[TITLE]]></Title><Description><![CDATA[DESCRIPTION]]></Description><MusicUrl><![CDATA[MUSIC_Url]]></MusicUrl><HQMusicUrl><![CDATA[HQ_MUSIC_Url]]></HQMusicUrl><ThumbMediaId><![CDATA[media_id]]></ThumbMediaId></Music></xml>";
     private final String expectedNewsMsg  = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>12345678</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>2</ArticleCount><Articles><item><Title><![CDATA[title1]]></Title><Description><![CDATA[description1]]></Description><PicUrl><![CDATA[picurl]]></PicUrl><Url><![CDATA[url]]></Url></item><item><Title><![CDATA[title]]></Title><Description><![CDATA[description]]></Description><PicUrl><![CDATA[picurl]]></PicUrl><Url><![CDATA[url]]></Url></item></Articles></xml>";
-    private WechatKit wechatKit = WechatKit.build("fromUser", "appid", "appsecret", null);
+    private WeChatKit weChatKit = WeChatKit.build("fromUser", "appid", "appsecret", null);
 
     @Test
     public void generatedCorrectTextResponseMessageInXml() {
-        String xmlMsg = wechatKit.messageManager().generateTextResponseMessageInXml("toUser", "你好");
+        String xmlMsg = weChatKit.messageManager().generateTextResponseMessageInXml("toUser", "你好");
         assertEquals("Generate wrong XML text message.", expectedTextMsg, xmlMsg.replaceAll("<CreateTime>\\d+</CreateTime>", "<CreateTime>12345678</CreateTime>"));
     }
 
@@ -81,13 +81,13 @@ public class GenerateResponseXmlMsgTest {
     public void generatedCorrectTextResponseMessageInXml_Object() {
         ResponseTextMsg textMsg = new ResponseTextMsg("fromUser", "toUser", 12345678L, "你好");
 
-        String xmlMsg = wechatKit.messageManager().generateResponseMessageInXml(textMsg);
+        String xmlMsg = weChatKit.messageManager().generateResponseMessageInXml(textMsg);
         assertEquals("Generate wrong XML text message.", expectedTextMsg, xmlMsg);
     }
 
     @Test
     public void generatedCorrectImageResponseMessageInXml() {
-        String xmlMsg = wechatKit.messageManager().generateImageResponseMessageInXml("toUser", "media_id");
+        String xmlMsg = weChatKit.messageManager().generateImageResponseMessageInXml("toUser", "media_id");
         assertEquals("Generate wrong XML text message.", expectedImageMsg, xmlMsg.replaceAll("<CreateTime>\\d+</CreateTime>", "<CreateTime>12345678</CreateTime>"));
     }
 
@@ -96,13 +96,13 @@ public class GenerateResponseXmlMsgTest {
         ResponseImageMsg imageMsg = new ResponseImageMsg("fromUser", "toUser", 12345678L);
         imageMsg.setMediaImage(new MediaObject("media_id"));
 
-        String xmlMsg = wechatKit.messageManager().generateResponseMessageInXml(imageMsg);
+        String xmlMsg = weChatKit.messageManager().generateResponseMessageInXml(imageMsg);
         assertEquals("Generate wrong XML text message.", expectedImageMsg, xmlMsg);
     }
 
     @Test
     public void generatedCorrectVoiceResponseMessageInXml() {
-        String xmlMsg = wechatKit.messageManager().generateVoiceResponseMessageInXml("toUser", "media_id");
+        String xmlMsg = weChatKit.messageManager().generateVoiceResponseMessageInXml("toUser", "media_id");
         assertEquals("Generate wrong XML text message.", expectedVoiceMsg, xmlMsg.replaceAll("<CreateTime>\\d+</CreateTime>", "<CreateTime>12345678</CreateTime>"));
     }
 
@@ -111,13 +111,13 @@ public class GenerateResponseXmlMsgTest {
         ResponseVoiceMsg voiceMsg = new ResponseVoiceMsg("fromUser", "toUser", 12345678L);
         voiceMsg.setMediaVoice(new MediaObject("media_id"));
 
-        String xmlMsg = wechatKit.messageManager().generateResponseMessageInXml(voiceMsg);
+        String xmlMsg = weChatKit.messageManager().generateResponseMessageInXml(voiceMsg);
         assertEquals("Generate wrong XML text message.", expectedVoiceMsg, xmlMsg);
     }
 
     @Test
     public void generatedCorrectVideoResponseMessageInXml() {
-        String xmlMsg = wechatKit.messageManager().generateVideoResponseMessageInXml("toUser", "title", "description", "media_id");
+        String xmlMsg = weChatKit.messageManager().generateVideoResponseMessageInXml("toUser", "title", "description", "media_id");
         assertEquals("Generate wrong XML text message.", expectedVideoMsg, xmlMsg.replaceAll("<CreateTime>\\d+</CreateTime>", "<CreateTime>12345678</CreateTime>"));
     }
 
@@ -127,7 +127,7 @@ public class GenerateResponseXmlMsgTest {
         Video video = new Video("title", "description", "media_id");
         videoMsg.setVideo(video);
 
-        String xmlMsg = wechatKit.messageManager().generateResponseMessageInXml(videoMsg);
+        String xmlMsg = weChatKit.messageManager().generateResponseMessageInXml(videoMsg);
         assertEquals("Generate wrong XML text message.", expectedVideoMsg, xmlMsg);
     }
 
@@ -136,7 +136,7 @@ public class GenerateResponseXmlMsgTest {
         Music music = new Music("TITLE", "DESCRIPTION", "MUSIC_Url", "media_id");
         music.setHqMusicUrl("HQ_MUSIC_Url");
 
-        String xmlMsg = wechatKit.messageManager().generateMusicResponseMessageInXml("toUser", music);
+        String xmlMsg = weChatKit.messageManager().generateMusicResponseMessageInXml("toUser", music);
         assertEquals("Generate wrong XML text message.", expectedMusicMsg, xmlMsg.replaceAll("<CreateTime>\\d+</CreateTime>", "<CreateTime>12345678</CreateTime>"));
     }
 
@@ -147,7 +147,7 @@ public class GenerateResponseXmlMsgTest {
         ResponseMusicMsg musicMsg = new ResponseMusicMsg("fromUser", "toUser", 12345678L);
         musicMsg.setMusic(music);
 
-        String xmlMsg = wechatKit.messageManager().generateResponseMessageInXml(musicMsg);
+        String xmlMsg = weChatKit.messageManager().generateResponseMessageInXml(musicMsg);
         assertEquals("Generate wrong XML text message.", expectedMusicMsg, xmlMsg);
     }
 
@@ -156,7 +156,7 @@ public class GenerateResponseXmlMsgTest {
         Article article1 = new Article("title1", "description1", "picurl", "url");
         Article article2 = new Article("title", "description", "picurl", "url");
 
-        String xmlMsg = wechatKit.messageManager().generateNewsResponseMessageInXml("toUser", article1, article2);
+        String xmlMsg = weChatKit.messageManager().generateNewsResponseMessageInXml("toUser", article1, article2);
         assertEquals("Generate wrong XML text message.", expectedNewsMsg, xmlMsg.replaceAll("<CreateTime>\\d+</CreateTime>", "<CreateTime>12345678</CreateTime>"));
     }
 
@@ -167,7 +167,7 @@ public class GenerateResponseXmlMsgTest {
         ResponseNewsMsg newsMsg = new ResponseNewsMsg("fromUser", "toUser", 12345678L);
         newsMsg.setArticles(Arrays.asList(article1, article2));
 
-        String xmlMsg = wechatKit.messageManager().generateResponseMessageInXml(newsMsg);
+        String xmlMsg = weChatKit.messageManager().generateResponseMessageInXml(newsMsg);
         assertEquals("Generate wrong XML text message.", expectedNewsMsg, xmlMsg);
     }
 

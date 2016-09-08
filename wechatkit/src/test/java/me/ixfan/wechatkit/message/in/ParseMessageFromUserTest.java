@@ -47,7 +47,7 @@
  */
 package me.ixfan.wechatkit.message.in;
 
-import me.ixfan.wechatkit.WechatKit;
+import me.ixfan.wechatkit.WeChatKit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -72,11 +72,11 @@ public class ParseMessageFromUserTest {
     private final String SHORT_VIDEO_MSG_FROM_USER = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1358831860</CreateTime><MsgType><![CDATA[shortvideo]]></MsgType><MediaId><![CDATA[media_id]]></MediaId><ThumbMediaId><![CDATA[thumb_media_id]]></ThumbMediaId><MsgId>1234567890123456</MsgId></xml>";
     private final String LOCATION_MSG_FROM_USER = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1358831860</CreateTime><MsgType><![CDATA[location]]></MsgType><Location_X>23.134521</Location_X><Location_Y>113.358803</Location_Y><Scale>20</Scale><Label><![CDATA[位置信息]]></Label><MsgId>1234567890123456</MsgId></xml>";
     private final String LINK_MSG_FROM_USER = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>1358831860</CreateTime><MsgType><![CDATA[link]]></MsgType><Title><![CDATA[公众平台官网链接]]></Title><Description><![CDATA[公众平台官网链接]]></Description><Url><![CDATA[url]]></Url><MsgId>1234567890123456</MsgId></xml>";
-    WechatKit wechatKit = WechatKit.build("YOUR_WECHAT_ACCOUNT_ID", "YOUR_APPID", "YOUR_APP_SECRET", null);
+    WeChatKit weChatKit = WeChatKit.build("YOUR_WECHAT_ACCOUNT_ID", "YOUR_APPID", "YOUR_APP_SECRET", null);
 
     @Test
     public void parseXmlTextMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 TEXT_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -90,7 +90,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlImageMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 IMAGE_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -105,7 +105,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlVoiceMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 VOICE_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -121,7 +121,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlVoiceMessageWithRecognitionSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 VOICE_MSG_WITH_RECOGNITON_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -137,7 +137,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlVideoMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 VIDEO_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -152,7 +152,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlShortVideoMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 SHORT_VIDEO_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -167,7 +167,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlLocationMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 LOCATION_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -184,7 +184,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlLinkMessageSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 LINK_MSG_FROM_USER)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());

@@ -47,7 +47,7 @@
  */
 package me.ixfan.wechatkit.message.in;
 
-import me.ixfan.wechatkit.WechatKit;
+import me.ixfan.wechatkit.WeChatKit;
 import me.ixfan.wechatkit.message.in.event.*;
 import org.junit.Test;
 
@@ -71,11 +71,11 @@ public class ParseEventFromWechatTest {
     private final String REPORT_LOCATION_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[LOCATION]]></EVENT><Latitude>23.137466</Latitude><Longitude>113.352425</Longitude><Precision>119.385040</Precision></xml>";
     private final String MENU_CLICK_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[CLICK]]></EVENT><EventKey><![CDATA[EVENTKEY]]></EventKey></xml>";
     private final String MENU_VIEW_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[VIEW]]></EVENT><EventKey><![CDATA[www.qq.com]]></EventKey></xml>";
-    WechatKit wechatKit = WechatKit.build("YOUR_WECHAt_ACCOUNT_ID", "YOUR_APPID", "YOUR_APP_SECRET", null);
+    WeChatKit weChatKit = WeChatKit.build("YOUR_WECHAt_ACCOUNT_ID", "YOUR_APPID", "YOUR_APP_SECRET", null);
 
     @Test
     public void parseSubscribeEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 SUBSCRIBE_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -89,7 +89,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseUnsubscribeEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 UNSUBSCRIBE_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -103,7 +103,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseScanCodeAndFollowEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 SCAN_CODE_THEN_FOLLOW_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -119,7 +119,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseFollowerScanCodeEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 FOLLOWER_SCAN_CODE_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -135,7 +135,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseLocationReportEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 REPORT_LOCATION_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -152,7 +152,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseMenuClickEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 MENU_CLICK_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
@@ -167,7 +167,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseMenuViewEventSuccessfully() {
-        ReceivedMsg receivedMsg = wechatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
                 MENU_VIEW_EVENT)));
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());

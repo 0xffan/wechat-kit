@@ -37,7 +37,7 @@ import me.ixfan.wechatkit.user.UserManager;
  * @author xfan
  * @since 16/5/22
  */
-public class WechatKit {
+public class WeChatKit {
 
     private final String appId;
     private final String appSecret;
@@ -50,20 +50,20 @@ public class WechatKit {
     private MessageManager messageManager;
     private MaterialManager materialManager;
 
-    private WechatKit(Builder builder) {
+    private WeChatKit(Builder builder) {
         this.appId = builder.appId;
         this.appSecret = builder.appSecret;
         this.wechatId = builder.wechatId;
         this.tokenManager = new TokenManager(this.appId, this.appSecret, builder.accessTokenContainer);
     }
 
-    public static WechatKit build(String wechatAccountId, String appId, String appSecret, WechatAccessTokenContainer accessTokenContainer) {
+    public static WeChatKit build(String wechatAccountId, String appId, String appSecret, WechatAccessTokenContainer accessTokenContainer) {
         return new Builder(appId, appSecret, wechatAccountId).setAccessTokenContainer(accessTokenContainer).build();
     }
 
 
     /**
-     * Builder of WechatKit. The instance of {@link WechatAccessTokenContainer} is required.
+     * Builder of WeChatKit. The instance of {@link WechatAccessTokenContainer} is required.
      */
     public static class Builder {
         private final String appId;
@@ -82,8 +82,8 @@ public class WechatKit {
             return this;
         }
 
-        public WechatKit build() {
-            return new WechatKit(this);
+        public WeChatKit build() {
+            return new WeChatKit(this);
         }
     }
 

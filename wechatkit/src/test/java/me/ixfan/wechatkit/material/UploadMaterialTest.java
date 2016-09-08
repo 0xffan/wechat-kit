@@ -47,7 +47,7 @@
  */
 package me.ixfan.wechatkit.material;
 
-import me.ixfan.wechatkit.WechatKit;
+import me.ixfan.wechatkit.WeChatKit;
 import me.ixfan.wechatkit.common.WechatApiResult;
 import me.ixfan.wechatkit.token.SimpleTokenContainer;
 import org.junit.Ignore;
@@ -67,14 +67,14 @@ import static org.junit.Assert.fail;
 @RunWith(JUnit4.class)
 public class UploadMaterialTest {
 
-    private WechatKit wechatKit = WechatKit.build(null, "APPID", "APPSECRET", SimpleTokenContainer.getTokenContainer());
+    private WeChatKit weChatKit = WeChatKit.build(null, "APPID", "APPSECRET", SimpleTokenContainer.getTokenContainer());
 
     @Ignore("已测试通过, 忽略是因为避免每次单元测试都向公众号上传素材.")
     @Test
     public void testUploadTempImage_file() {
         File file = getMaterialFile("WxMaterial/CqOMI6wXYAAI996.jpeg");
 
-        WechatApiResult result = wechatKit.materialManager().uploadTemporaryImage(file);
+        WechatApiResult result = weChatKit.materialManager().uploadTemporaryImage(file);
         assertNotNull(result);
         assertNotNull("Upload image failed!", result.getMediaId());
         assertEquals(MediaType.IMAGE.stringValue(), result.getType());
@@ -91,7 +91,7 @@ public class UploadMaterialTest {
             return;
         }
 
-        WechatApiResult result = wechatKit.materialManager().uploadTemporaryImage("uploadTempImageTest.jpeg", bytes);
+        WechatApiResult result = weChatKit.materialManager().uploadTemporaryImage("uploadTempImageTest.jpeg", bytes);
         assertNotNull(result);
         assertNotNull("Upload image failed!", result.getMediaId());
         assertEquals(MediaType.IMAGE.stringValue(), result.getType());
@@ -102,7 +102,7 @@ public class UploadMaterialTest {
     public void testUploadPermanentImage_file() {
         File file = getMaterialFile("WxMaterial/CqOMI6wXYAAI996.jpeg");
 
-        WechatApiResult result = wechatKit.materialManager().uploadPermanentImage(file);
+        WechatApiResult result = weChatKit.materialManager().uploadPermanentImage(file);
         assertNotNull(result);
         assertNotNull("Lost field 'media_id'!", result.getMediaId());
         assertNotNull("Lost field 'url'!", result.getUrl());
@@ -119,7 +119,7 @@ public class UploadMaterialTest {
             return;
         }
 
-        WechatApiResult result = wechatKit.materialManager().uploadPermanentImage("uploadPermanentImageTest.jpeg", bytes);
+        WechatApiResult result = weChatKit.materialManager().uploadPermanentImage("uploadPermanentImageTest.jpeg", bytes);
         assertNotNull(result);
         assertNotNull("Lost field 'media_id'!", result.getMediaId());
         assertNotNull("Lost field 'url'!", result.getUrl());
