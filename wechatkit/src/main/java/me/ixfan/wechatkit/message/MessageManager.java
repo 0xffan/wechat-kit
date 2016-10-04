@@ -67,24 +67,10 @@ public class MessageManager {
     /**
      * 解析来自微信的 XML 格式的消息,返回对应的消息对象实例。
      *
-     * @param xmlMessageReader 微信推送的 XML 格式的消息或事件。
+     * @param msgInXml 微信推送的 XML 格式的消息或事件。
      * @return 消息或事件对象实例。
      */
-    public ReceivedMsg parseXmlMessage(Reader xmlMessageReader) throws WechatXmlMessageParseException {
-        String msgInXml;
-        try {
-            msgInXml = getContent(xmlMessageReader);
-        } catch (IOException e) {
-            throw new WechatXmlMessageParseException("Failed to read content from 'Reader'.", e);
-        } finally {
-            if (null != xmlMessageReader) {
-                try {
-                    xmlMessageReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public ReceivedMsg parseXmlMessage(final String msgInXml) throws WechatXmlMessageParseException {
 
         DocumentBuilder documentBuilder;
         try {
@@ -145,7 +131,7 @@ public class MessageManager {
                     throw new WechatXmlMessageParseException("Failed to deserialize link message in XML to object.", e);
                 }
             case EVENT:
-                EventType eventType = EventType.of(document.getElementsByTagName("EVENT").item(0).getFirstChild().getNodeValue());
+                EventType eventType = EventType.of(document.getElementsByTagName("Event").item(0).getFirstChild().getNodeValue());
                 return parseEventMessage(msgInXml, eventType);
             default: return null;
         }
@@ -327,7 +313,7 @@ public class MessageManager {
      * @param eventType 事件类型
      * @return 解析后的事件消息对象
      */
-    private ReceivedMsg parseEventMessage(String msgInXml, EventType eventType) throws WechatXmlMessageParseException {
+    private ReceivedMsg parseEventMessage(final String msgInXml, EventType eventType) throws WechatXmlMessageParseException {
         switch (eventType) {
             case SUBSCRIBE:
                 try {
@@ -388,16 +374,6 @@ public class MessageManager {
                 }
             default: return null;
         }
-    }
-
-    private String getContent(Reader reader) throws IOException {
-        char[] charsArray = new char[1024];
-        StringBuilder stringBuilder = new StringBuilder();
-        int numCharsReaded = 0;
-        while (-1 != (numCharsReaded = reader.read(charsArray))) {
-            stringBuilder.append(charsArray, 0, numCharsReaded);
-        }
-        return stringBuilder.toString();
     }
 
 }

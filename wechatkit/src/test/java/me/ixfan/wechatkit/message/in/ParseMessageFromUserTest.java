@@ -76,8 +76,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlTextMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                TEXT_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(TEXT_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -90,8 +89,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlImageMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                IMAGE_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(IMAGE_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -105,8 +103,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlVoiceMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                VOICE_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(VOICE_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -121,8 +118,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlVoiceMessageWithRecognitionSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                VOICE_MSG_WITH_RECOGNITON_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(VOICE_MSG_WITH_RECOGNITON_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -137,8 +133,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlVideoMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                VIDEO_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(VIDEO_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -152,8 +147,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlShortVideoMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                SHORT_VIDEO_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(SHORT_VIDEO_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -167,8 +161,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlLocationMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                LOCATION_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(LOCATION_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());
@@ -184,8 +177,7 @@ public class ParseMessageFromUserTest {
 
     @Test
     public void parseXmlLinkMessageSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                LINK_MSG_FROM_USER)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(LINK_MSG_FROM_USER);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 1358831860L, receivedMsg.getCreateTime().longValue());

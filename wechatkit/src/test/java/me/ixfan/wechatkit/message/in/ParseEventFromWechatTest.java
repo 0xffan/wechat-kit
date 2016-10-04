@@ -64,19 +64,18 @@ import static org.junit.Assert.fail;
  * @author Warren Fan
  */
 public class ParseEventFromWechatTest {
-    private final String SUBSCRIBE_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[subscribe]]></EVENT></xml>";
-    private final String UNSUBSCRIBE_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[unsubscribe]]></EVENT></xml>";
-    private final String SCAN_CODE_THEN_FOLLOW_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[subscribe]]></EVENT><EventKey><![CDATA[qrscene_123123]]></EventKey><Ticket><![CDATA[TICKET]]></Ticket></xml>";
-    private final String FOLLOWER_SCAN_CODE_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[SCAN]]></EVENT><EventKey><![CDATA[SCENE_VALUE]]></EventKey><Ticket><![CDATA[TICKET]]></Ticket></xml>";
-    private final String REPORT_LOCATION_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[LOCATION]]></EVENT><Latitude>23.137466</Latitude><Longitude>113.352425</Longitude><Precision>119.385040</Precision></xml>";
-    private final String MENU_CLICK_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[CLICK]]></EVENT><EventKey><![CDATA[EVENTKEY]]></EventKey></xml>";
-    private final String MENU_VIEW_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><EVENT><![CDATA[VIEW]]></EVENT><EventKey><![CDATA[www.qq.com]]></EventKey></xml>";
+    private final String SUBSCRIBE_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event></xml>";
+    private final String UNSUBSCRIBE_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[unsubscribe]]></Event></xml>";
+    private final String SCAN_CODE_THEN_FOLLOW_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event><EventKey><![CDATA[qrscene_123123]]></EventKey><Ticket><![CDATA[TICKET]]></Ticket></xml>";
+    private final String FOLLOWER_SCAN_CODE_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[SCAN]]></Event><EventKey><![CDATA[SCENE_VALUE]]></EventKey><Ticket><![CDATA[TICKET]]></Ticket></xml>";
+    private final String REPORT_LOCATION_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[LOCATION]]></Event><Latitude>23.137466</Latitude><Longitude>113.352425</Longitude><Precision>119.385040</Precision></xml>";
+    private final String MENU_CLICK_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[CLICK]]></Event><EventKey><![CDATA[EVENTKEY]]></EventKey></xml>";
+    private final String MENU_VIEW_EVENT = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[fromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[VIEW]]></Event><EventKey><![CDATA[www.qq.com]]></EventKey></xml>";
     WeChatKit weChatKit = WeChatKit.build("YOUR_WECHAt_ACCOUNT_ID", "YOUR_APPID", "YOUR_APP_SECRET", null);
 
     @Test
     public void parseSubscribeEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                SUBSCRIBE_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(SUBSCRIBE_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
@@ -89,8 +88,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseUnsubscribeEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                UNSUBSCRIBE_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(UNSUBSCRIBE_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
@@ -103,8 +101,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseScanCodeAndFollowEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                SCAN_CODE_THEN_FOLLOW_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(SCAN_CODE_THEN_FOLLOW_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
@@ -119,8 +116,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseFollowerScanCodeEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                FOLLOWER_SCAN_CODE_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(FOLLOWER_SCAN_CODE_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
@@ -135,8 +131,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseLocationReportEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                REPORT_LOCATION_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(REPORT_LOCATION_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
@@ -152,8 +147,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseMenuClickEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                MENU_CLICK_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(MENU_CLICK_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
@@ -167,8 +161,7 @@ public class ParseEventFromWechatTest {
 
     @Test
     public void parseMenuViewEventSuccessfully() {
-        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(new BufferedReader(new StringReader(
-                MENU_VIEW_EVENT)));
+        ReceivedMsg receivedMsg = weChatKit.messageManager().parseXmlMessage(MENU_VIEW_EVENT);
         assertEquals("Get wrong <ToUserName>!", "toUser", receivedMsg.getToUserName());
         assertEquals("Get wrong <FromUserName>!", "fromUser", receivedMsg.getFromUserName());
         assertEquals("Get wrong <CreateTime>!", 123456789L, receivedMsg.getCreateTime().longValue());
