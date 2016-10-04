@@ -25,13 +25,13 @@
 package me.ixfan.wechatkit.token;
 
 import me.ixfan.wechatkit.util.AppProperties;
-import org.apache.commons.codec.Charsets;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
 /**
@@ -56,7 +56,7 @@ public class ObtainAccessTokenCallableJob implements Callable<AccessToken> {
                 .setRetryHandler(new ObtainTokenRetryHandler())
                 .build();
 
-        HttpUriRequest request = RequestBuilder.get(requestUrl).setCharset(Charsets.UTF_8).build();
+        HttpUriRequest request = RequestBuilder.get(requestUrl).setCharset(StandardCharsets.UTF_8).build();
         AccessToken accessToken = null;
         try {
             accessToken = httpClient.execute(request, new AccessTokenResponseHandler());

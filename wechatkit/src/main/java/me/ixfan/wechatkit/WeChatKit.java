@@ -87,6 +87,10 @@ public class WeChatKit {
         }
     }
 
+    public TokenManager tokenManager() {
+        return this.tokenManager;
+    }
+
     /**
      * Customize menu of WeChat official accounts.
      *

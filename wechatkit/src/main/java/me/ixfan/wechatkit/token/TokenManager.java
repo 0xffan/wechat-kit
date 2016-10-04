@@ -47,7 +47,6 @@
  */
 package me.ixfan.wechatkit.token;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.util.HttpClientUtil;
@@ -55,8 +54,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Warren Fan
@@ -92,25 +89,19 @@ public class TokenManager {
     /**
      * Refresh cached <code>access_token</code>.
      */
-    private void refreshAccessToken() {
+    public void refreshAccessToken() {
         try {
             JsonObject jsonObject = HttpClientUtil.sendGetRequestAndGetJsonResponse(
                     WeChatConstants.WECHAT_GET_OBTAIN_ACCESS_TOKEN.replace("${APPID}", this.appid)
                                                                   .replace("${APPSECRET}", this.appSecret));
 
-            Map<String, String> keyValues = new HashMap<>();
-            for (Map.Entry<String, JsonElement> element: jsonObject.entrySet()) {
-                keyValues.put(element.getKey(), element.getValue().getAsString());
-            }
-
-            if (null != keyValues.get("access_token")) {
+            if (jsonObject.has("access_token")) {
                 AccessToken accessToken = new AccessToken();
-                accessToken.setAccessToken(keyValues.get("access_token"));
-                accessToken.setExpiresIn(Long.parseLong(keyValues.get("expires_in")));
-
+                accessToken.setAccessToken(jsonObject.get("access_token").getAsString());
+                accessToken.setExpiresIn(jsonObject.get("expires_in").getAsLong());
                 this.tokenContainer.setWechatApiAccessToken(accessToken);
             } else {
-                logger.error("Obtaining access_token failed, errcode:{}, errmsg:{}", keyValues.get(WeChatConstants.WECHAT_API_RESPONSE_KEY_ERRCODE), keyValues.get(WeChatConstants.WECHAT_API_RESPONSE_LEY_ERRMSG));
+                logger.error("Obtaining access_token failed, errcode:{}, errmsg:{}", jsonObject.get(WeChatConstants.WECHAT_API_RESPONSE_KEY_ERRCODE).getAsString(), jsonObject.get(WeChatConstants.WECHAT_API_RESPONSE_KEY_ERRMSG).getAsString());
             }
         } catch (IOException e) {
             logger.error("Error occurred while getting access token!");
