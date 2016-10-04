@@ -1,7 +1,7 @@
 version '0.1-SNAPSHOT'
 
 jar {
-    baseName = 'ixfan-wechat-kit'
+    baseName = 'ixfan-wechatkit'
     manifest {
         attributes("Implementation-Title": "WeChat Development Kit for Java",
                 "Implementation-Version": version)
