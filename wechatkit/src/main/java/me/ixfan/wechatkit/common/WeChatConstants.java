@@ -79,7 +79,7 @@ public class WeChatConstants {
     /** 微信API JSON相应结果中返回码的key */
     public static final String WECHAT_API_RESPONSE_KEY_ERRCODE = "errcode";
     /** 微信API JSON相应结果中返回消息的key */
-    public static final String WECHAT_API_RESPONSE_LEY_ERRMSG = "errmsg";
+    public static final String WECHAT_API_RESPONSE_KEY_ERRMSG = "errmsg";
 
     /** 微信API - 获取 <code>access_token</code> */
     public static final String WECHAT_GET_OBTAIN_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}";
