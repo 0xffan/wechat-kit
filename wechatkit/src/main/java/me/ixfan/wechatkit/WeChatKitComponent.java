@@ -59,6 +59,28 @@ public abstract class WeChatKitComponent {
     protected String wechatId;
     protected TokenManager tokenManager;
 
+    public WeChatKitComponent(TokenManager tokenManager) {
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String wechatId, TokenManager tokenManager) {
+        this.wechatId = wechatId;
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String appId, String appSecret, TokenManager tokenManager) {
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.tokenManager = tokenManager;
+    }
+
+    public WeChatKitComponent(String wechatId, String appId, String appSecret,  TokenManager tokenManager) {
+        this.wechatId = wechatId;
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.tokenManager = tokenManager;
+    }
+
     public String getAppId() {
         return appId;
     }
@@ -88,28 +110,6 @@ public abstract class WeChatKitComponent {
     }
 
     public void setTokenManager(TokenManager tokenManager) {
-        this.tokenManager = tokenManager;
-    }
-
-    public WeChatKitComponent(TokenManager tokenManager) {
-        this.tokenManager = tokenManager;
-    }
-
-    public WeChatKitComponent(String wechatId, TokenManager tokenManager) {
-        this.wechatId = wechatId;
-        this.tokenManager = tokenManager;
-    }
-
-    public WeChatKitComponent(String appId, String appSecret, TokenManager tokenManager) {
-        this.appId = appId;
-        this.appSecret = appSecret;
-        this.tokenManager = tokenManager;
-    }
-
-    public WeChatKitComponent(String wechatId, String appId, String appSecret,  TokenManager tokenManager) {
-        this.wechatId = wechatId;
-        this.appId = appId;
-        this.appSecret = appSecret;
         this.tokenManager = tokenManager;
     }
 }

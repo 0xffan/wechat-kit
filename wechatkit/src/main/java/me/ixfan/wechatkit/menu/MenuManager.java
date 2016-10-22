@@ -26,6 +26,7 @@ package me.ixfan.wechatkit.menu;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.menu.model.MenuItem;
 import me.ixfan.wechatkit.token.TokenManager;
@@ -43,14 +44,12 @@ import java.util.Map;
  *
  * Created by xfan on 16/3/26.
  */
-public class MenuManager {
+public class MenuManager extends WeChatKitComponent {
 
     private Logger logger = LoggerFactory.getLogger(MenuManager.class);
 
-    private TokenManager tokenManager;
-
     public MenuManager(TokenManager tokenManager) {
-        this.tokenManager = tokenManager;
+        super(tokenManager);
     }
 
     /**

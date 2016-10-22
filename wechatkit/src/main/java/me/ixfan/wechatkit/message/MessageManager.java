@@ -24,6 +24,7 @@
 
 package me.ixfan.wechatkit.message;
 
+import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WechatApiResult;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageParseException;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageSerializationException;
@@ -54,14 +55,10 @@ import java.util.Map;
  *
  * Created by Warran Fan on 16/3/26.
  */
-public class MessageManager {
-
-    private String wechatAccountId;
-    private TokenManager tokenManager;
+public class MessageManager extends WeChatKitComponent {
 
     public MessageManager(String wechatAccountId, TokenManager tokenManager) {
-        this.wechatAccountId = wechatAccountId;
-        this.tokenManager = tokenManager;
+        super(wechatAccountId, tokenManager);
     }
 
     /**
@@ -194,7 +191,7 @@ public class MessageManager {
      * @return 被动回复文本消息的 XML 数据包。
      */
     public String generateTextResponseMessageInXml(String toUserOpenid, String content) {
-        ResponseTextMsg textMsg = new ResponseTextMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis(), content);
+        ResponseTextMsg textMsg = new ResponseTextMsg(super.wechatId, toUserOpenid, System.currentTimeMillis(), content);
         try {
             return JAXBUtil.marshal(textMsg);
         } catch (Exception e) {
@@ -210,7 +207,7 @@ public class MessageManager {
      * @return 被动回复图片消息的 XML 数据包。
      */
     public String generateImageResponseMessageInXml(String toUserOpenid, String mediaId) {
-        ResponseImageMsg imageMsg = new ResponseImageMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        ResponseImageMsg imageMsg = new ResponseImageMsg(super.wechatId, toUserOpenid, System.currentTimeMillis());
         imageMsg.setMediaImage(new MediaObject(mediaId));
         try {
             return JAXBUtil.marshal(imageMsg);
@@ -227,7 +224,7 @@ public class MessageManager {
      * @return 被动回复语音消息的 XML 数据包。
      */
     public String generateVoiceResponseMessageInXml(String toUserOpenid, String mediaId) {
-        ResponseVoiceMsg voiceMsg = new ResponseVoiceMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        ResponseVoiceMsg voiceMsg = new ResponseVoiceMsg(super.wechatId, toUserOpenid, System.currentTimeMillis());
         voiceMsg.setMediaVoice(new MediaObject(mediaId));
         try {
             return JAXBUtil.marshal(voiceMsg);
@@ -245,7 +242,7 @@ public class MessageManager {
      * @return 被动回复视频消息的 XML 数据包。
      */
     public String generateVideoResponseMessageInXml(String toUserOpenid, String title, String description, String mediaId) {
-        ResponseVideoMsg videoMsg = new ResponseVideoMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        ResponseVideoMsg videoMsg = new ResponseVideoMsg(super.wechatId, toUserOpenid, System.currentTimeMillis());
         videoMsg.setVideo(new Video(title, description, mediaId));
         try {
             return JAXBUtil.marshal(videoMsg);
@@ -261,7 +258,7 @@ public class MessageManager {
      * @return 被动回复音乐消息的 XML 数据包。
      */
     public String generateMusicResponseMessageInXml(String toUserOpenid, Music music) {
-        ResponseMusicMsg musicMsg = new ResponseMusicMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        ResponseMusicMsg musicMsg = new ResponseMusicMsg(super.wechatId, toUserOpenid, System.currentTimeMillis());
         musicMsg.setMusic(music);
         try {
             return JAXBUtil.marshal(musicMsg);
@@ -277,7 +274,7 @@ public class MessageManager {
      * @return 被动回复图文消息的 XML 数据包。
      */
     public String generateNewsResponseMessageInXml(String toUserOpenid, Article... articles) {
-        ResponseNewsMsg newsMsg = new ResponseNewsMsg(this.wechatAccountId, toUserOpenid, System.currentTimeMillis());
+        ResponseNewsMsg newsMsg = new ResponseNewsMsg(super.wechatId, toUserOpenid, System.currentTimeMillis());
         newsMsg.setArticles(Arrays.asList(articles));
         try {
             return JAXBUtil.marshal(newsMsg);
