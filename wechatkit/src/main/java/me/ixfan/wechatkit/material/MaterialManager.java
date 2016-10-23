@@ -204,6 +204,26 @@ public class MaterialManager extends WeChatKitComponent {
     }
 
     /**
+     * 新增用于群发的图文消息。
+     *
+     * @param articles 要上传的图文信息。
+     * @return 上传成功后通过 {@link WechatApiResult#getMediaId()} 可以得到图文素材的 <code>media_id</code>；
+     * 若上传失败，可以通过 {@link WechatApiResult#getErrcode()} 和 {@link WechatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WechatApiResult uploadArticlesForMassMessage(ArticleForUpload... articles) {
+        Map<String, ArticleForUpload[]> data = new HashMap<>();
+        data.put("articles", articles);
+        try {
+            Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(WeChatConstants.WECHAT_POST_MESSAGE_UPLOAD_NEWS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken()), gson.toJson(data));
+            return WechatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * 为图文消息上传图片。
      *
      * @param filename 图片文件名。
