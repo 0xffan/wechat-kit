@@ -47,6 +47,8 @@
  */
 package me.ixfan.wechatkit.message.out;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 /**
  * 公众号向用户发送消息时可选的消息类型。
  *
@@ -89,8 +91,28 @@ public enum OutMessageType {
     /**
      * 卡券消息。主动推消息时使用。
      */
-    WX_CARD { @Override public String stringValue() { return "wxcard"; } };
+    WX_CARD { @Override public String stringValue() { return "wxcard"; } },
+
+    /**
+     * 未知类型。
+     */
+    UNKNOWN { @Override public String stringValue() { return "unknown";} };
 
     public abstract String stringValue();
+
+    public static OutMessageType instanceOf(String type) {
+        switch (type) {
+            case "text": return TEXT;
+            case "image":return IMAGE;
+            case "voice": return VOICE;
+            case "video": return VIDEO;
+            case "music": return MUSIC;
+            case "news": return NEWS;
+            case "mpnews": return MP_NEWS;
+            case "mpvideo": return MP_VIDEO;
+            case "wxcard": return WX_CARD;
+            default: return UNKNOWN;
+        }
+    }
 
 }
