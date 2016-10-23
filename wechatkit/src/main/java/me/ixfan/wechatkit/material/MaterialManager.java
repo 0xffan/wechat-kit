@@ -47,7 +47,9 @@
  */
 package me.ixfan.wechatkit.material;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatConstants;
@@ -193,7 +195,8 @@ public class MaterialManager extends WeChatKitComponent {
         Map<String, ArticleForUpload[]> data = new HashMap<>();
         data.put("articles", articles);
         try {
-            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(WeChatConstants.WECHAT_POST_MATERIAL_UPLOAD_PERMANENT_NEWS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken()), new Gson().toJson(data));
+            Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(WeChatConstants.WECHAT_POST_MATERIAL_UPLOAD_PERMANENT_NEWS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken()), gson.toJson(data));
             return WechatApiResult.instanceOf(jsonResponse);
         } catch (IOException e) {
             throw new RuntimeException(e);

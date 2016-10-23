@@ -67,11 +67,11 @@ public class ArticleForUpload {
     /**
      * 图文消息的封面图片素材id（必须是永久mediaID）。
      */
-    private String thumb_media_id;
+    private String thumbMediaId;
     /**
      * 是否显示封面，0为false，即不显示，1为true，即显示。
      */
-    private int show_cover_pic;
+    private int showCoverPic;
     /**
      * 图文消息的具体内容，支持HTML标签，必须少于2万字符，小于1M，且此处会去除JS。
      */
@@ -93,7 +93,7 @@ public class ArticleForUpload {
         this.title = title;
         this.author = author;
         this.contentSourceUrl = contentSourceUrl;
-        this.show_cover_pic = isShowCoverPicture ? 1:0;
+        this.showCoverPic = isShowCoverPicture ? 1:0;
     }
 
     public String getTitle() {
@@ -120,20 +120,20 @@ public class ArticleForUpload {
         this.digest = digest;
     }
 
-    public String getThumb_media_id() {
-        return thumb_media_id;
+    public String getThumbMediaId() {
+        return thumbMediaId;
     }
 
-    public void setThumb_media_id(String thumb_media_id) {
-        this.thumb_media_id = thumb_media_id;
+    public void setThumbMediaId(String thumbMediaId) {
+        this.thumbMediaId = thumbMediaId;
     }
 
-    public int getShow_cover_pic() {
-        return show_cover_pic;
+    public int getShowCoverPic() {
+        return showCoverPic;
     }
 
-    public void setShow_cover_pic(int show_cover_pic) {
-        this.show_cover_pic = show_cover_pic;
+    public void setShowCoverPic(int showCoverPic) {
+        this.showCoverPic = showCoverPic;
     }
 
     public String getContent() {
