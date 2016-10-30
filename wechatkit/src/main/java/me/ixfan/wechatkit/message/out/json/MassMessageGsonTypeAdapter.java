@@ -27,6 +27,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import me.ixfan.wechatkit.message.out.OutMessageType;
+import org.apache.commons.codec.binary.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +44,12 @@ public class MassMessageGsonTypeAdapter extends TypeAdapter<MessageForMassSend> 
         if (null != value.getFilter()) {
             out.name("filter").beginObject();
             out.name("is_to_all").value(value.getFilter().isToAll());
-            out.name("group_id").value(value.getFilter().getGroupId());
+            String tagId = value.getFilter().getTagId();
+            if (tagId.matches("^[1-9]+\\d*$")) {
+                out.name("tag_id").value(Long.parseLong(tagId));
+            } else {
+                out.name("tag_id").value(tagId);
+            }
             out.endObject();
         }
 
@@ -137,21 +143,21 @@ public class MassMessageGsonTypeAdapter extends TypeAdapter<MessageForMassSend> 
                     break;
                 case "filter":
                     in.beginObject();
-                    int groupId = -1;
+                    String tagId = null;
                     boolean isToAll = false;
                     while (in.hasNext()) {
                         switch (in.nextName()) {
                             case "is_to_all":
                                 isToAll = in.nextBoolean();
                                 break;
-                            case "group_id":
-                                groupId = in.nextInt();
+                            case "tag_id":
+                                tagId = in.nextString();
                                 break;
                             default: break;
                         }
                     }
                     in.endObject();
-                    filter = new MessageForMassSend.Filter(groupId, isToAll);
+                    filter = new MessageForMassSend.Filter(tagId, isToAll);
                     break;
                 case "touser":
                     in.beginArray();
@@ -187,7 +193,7 @@ public class MassMessageGsonTypeAdapter extends TypeAdapter<MessageForMassSend> 
         in.endObject();
 
         if (null != filter) {
-            return new MessageForMassSend(OutMessageType.valueOf(msgType), msgContent, filter.getGroupId(), filter.isToAll());
+            return new MessageForMassSend(OutMessageType.valueOf(msgType), msgContent, filter.getTagId(), filter.isToAll());
         } else if (null != toUser) {
             return new MessageForMassSend(OutMessageType.valueOf(msgType), msgContent, toUser);
         }

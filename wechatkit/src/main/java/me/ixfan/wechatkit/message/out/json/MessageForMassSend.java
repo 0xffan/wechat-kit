@@ -46,13 +46,13 @@ public class MessageForMassSend {
      *
      * @param msgType 消息类型。详见{@link OutMessageType}。
      * @param msgContent 消息内容。
-     * @param groupId 接收消息的分组。
+     * @param tagId 接收消息的分组。
      * @param isToAll 使用 isToAll 为 true 且成功群发，会使得此次群发进入历史消息列表。
      */
-    public MessageForMassSend(OutMessageType msgType, String msgContent, int groupId, boolean isToAll)  {
+    public MessageForMassSend(OutMessageType msgType, String msgContent, String tagId, boolean isToAll)  {
         this.msgType = msgType.stringValue();
         this.msgContent = msgContent;
-        this.filter = new Filter(groupId, isToAll);
+        this.filter = new Filter(tagId, isToAll);
     }
 
     /**
@@ -111,10 +111,10 @@ public class MessageForMassSend {
 
     static class Filter {
         private boolean isToAll;
-        private int groupId;
+        private String tagId;
 
-        Filter(int groupId, boolean isToAll) {
-            this.groupId = groupId;
+        Filter(String tagId, boolean isToAll) {
+            this.tagId = tagId;
             this.isToAll = isToAll;
         }
 
@@ -126,12 +126,12 @@ public class MessageForMassSend {
             isToAll = toAll;
         }
 
-        public int getGroupId() {
-            return groupId;
+        public String getTagId() {
+            return tagId;
         }
 
-        public void setGroupId(int groupId) {
-            this.groupId = groupId;
+        public void setTagId(String tagId) {
+            this.tagId = tagId;
         }
     }
 

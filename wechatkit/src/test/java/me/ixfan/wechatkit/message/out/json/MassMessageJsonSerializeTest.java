@@ -39,12 +39,12 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class MassMessageJsonSerializeTest {
 
-    private final String NEWS_TO_GROUP = "{\"filter\":{\"is_to_all\":false,\"group_id\":2},\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
-    private final String TEXT_TO_GROUP = "{\"filter\":{\"is_to_all\":false,\"group_id\":2},\"msgtype\":\"text\",\"text\":{\"content\":\"CONTENT\"}}";
-    private final String IMG_TO_GROUP = "{\"filter\":{\"is_to_all\":false,\"group_id\":2},\"msgtype\":\"image\",\"image\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
-    private final String VOICE_TO_GROUP = "{\"filter\":{\"is_to_all\":false,\"group_id\":2},\"msgtype\":\"voice\",\"voice\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
-    private final String VIDEO_TO_GROUP = "{\"filter\":{\"is_to_all\":false,\"group_id\":2},\"msgtype\":\"mpvideo\",\"mpvideo\":{\"media_id\":\"IhdaAQXuvJtGzwwc0abfXnzeezfO0NgPK6AQYShD8RQYMTtfzbLdBIQkQziv2XJc\"}}";
-    private final String CARD_TO_GROUP = "{\"filter\":{\"is_to_all\":false,\"group_id\":2},\"msgtype\":\"wxcard\",\"wxcard\":{\"card_id\":\"123dsdajkasd231jhksad\"}}";
+    private final String NEWS_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
+    private final String TEXT_TO_Tag = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"text\",\"text\":{\"content\":\"CONTENT\"}}";
+    private final String IMG_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"image\",\"image\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
+    private final String VOICE_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"voice\",\"voice\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
+    private final String VIDEO_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"mpvideo\",\"mpvideo\":{\"media_id\":\"IhdaAQXuvJtGzwwc0abfXnzeezfO0NgPK6AQYShD8RQYMTtfzbLdBIQkQziv2XJc\"}}";
+    private final String CARD_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":\"t2\"},\"msgtype\":\"wxcard\",\"wxcard\":{\"card_id\":\"123dsdajkasd231jhksad\"}}";
 
     private final String NEWS_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
     private final String TEXT_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"text\",\"text\":{\"content\":\"hello from boxer.\"}}";
@@ -54,39 +54,39 @@ public class MassMessageJsonSerializeTest {
     private final String CARD_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"wxcard\",\"wxcard\":{\"card_id\":\"123dsdajkasd231jhksad\"}}";
 
     @Test
-    public void successfullySerializeMassTextMsgToGroup() {
-        MessageForMassSend msg = new MessageForMassSend(OutMessageType.TEXT, "CONTENT", 2, false);
-        assertEquals(TEXT_TO_GROUP, msg.toJsonString());
+    public void successfullySerializeMassTextMsgToTag() {
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.TEXT, "CONTENT", "2", false);
+        assertEquals(TEXT_TO_Tag, msg.toJsonString());
     }
 
     @Test
-    public void successfullySerializeMassNewsMsgToGroup() {
-        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, "123dsdajkasd231jhksad", 2, false);
-        assertEquals(NEWS_TO_GROUP, msg.toJsonString());
+    public void successfullySerializeMassNewsMsgToTag() {
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, "123dsdajkasd231jhksad", "2", false);
+        assertEquals(NEWS_TO_TAG, msg.toJsonString());
     }
 
     @Test
-    public void successfullySerializeMassImgMsgToGroup() {
-        MessageForMassSend msg = new MessageForMassSend(OutMessageType.IMAGE, "123dsdajkasd231jhksad", 2, false);
-        assertEquals(IMG_TO_GROUP, msg.toJsonString());
+    public void successfullySerializeMassImgMsgToTag() {
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.IMAGE, "123dsdajkasd231jhksad", "2", false);
+        assertEquals(IMG_TO_TAG, msg.toJsonString());
     }
 
     @Test
-    public void successfullySerializeMassVoiceMsgToGroup() {
-        MessageForMassSend msg = new MessageForMassSend(OutMessageType.VOICE, "123dsdajkasd231jhksad", 2, false);
-        assertEquals(VOICE_TO_GROUP, msg.toJsonString());
+    public void successfullySerializeMassVoiceMsgToTag() {
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.VOICE, "123dsdajkasd231jhksad", "2", false);
+        assertEquals(VOICE_TO_TAG, msg.toJsonString());
     }
 
     @Test
-    public void successfullySerializeMassVideoMsgToGroup() {
-        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_VIDEO, "IhdaAQXuvJtGzwwc0abfXnzeezfO0NgPK6AQYShD8RQYMTtfzbLdBIQkQziv2XJc", 2, false);
-        assertEquals(VIDEO_TO_GROUP, msg.toJsonString());
+    public void successfullySerializeMassVideoMsgToTag() {
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_VIDEO, "IhdaAQXuvJtGzwwc0abfXnzeezfO0NgPK6AQYShD8RQYMTtfzbLdBIQkQziv2XJc", "2", false);
+        assertEquals(VIDEO_TO_TAG, msg.toJsonString());
     }
 
     @Test
-    public void successfullySerializeMassCardMsgToGroup() {
-        MessageForMassSend msg = new MessageForMassSend(OutMessageType.WX_CARD, "123dsdajkasd231jhksad", 2, false);
-        assertEquals(CARD_TO_GROUP, msg.toJsonString());
+    public void successfullySerializeMassCardMsgToTag() {
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.WX_CARD, "123dsdajkasd231jhksad", "t2", false);
+        assertEquals(CARD_TO_TAG, msg.toJsonString());
     }
 
     @Test

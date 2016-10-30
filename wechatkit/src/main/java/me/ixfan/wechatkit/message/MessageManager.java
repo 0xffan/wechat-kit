@@ -24,28 +24,31 @@
 
 package me.ixfan.wechatkit.message;
 
+import com.google.gson.JsonObject;
 import me.ixfan.wechatkit.WeChatKitComponent;
-import me.ixfan.wechatkit.common.WechatApiResult;
+import me.ixfan.wechatkit.common.WeChatApiResult;
+import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageParseException;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageSerializationException;
 import me.ixfan.wechatkit.material.MediaObject;
 import me.ixfan.wechatkit.message.in.*;
 import me.ixfan.wechatkit.message.in.event.*;
+import me.ixfan.wechatkit.message.out.OutMessageType;
+import me.ixfan.wechatkit.message.out.json.MessageForMassSend;
 import me.ixfan.wechatkit.message.out.xml.*;
 import me.ixfan.wechatkit.token.TokenManager;
+import me.ixfan.wechatkit.util.HttpClientUtil;
 import me.ixfan.wechatkit.util.JAXBUtil;
+import org.apache.http.util.Args;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Map;
@@ -283,12 +286,300 @@ public class MessageManager extends WeChatKitComponent {
         }
     }
 
-    public WechatApiResult massMessaging(String content, String[] openids) {
-        return null;
+    /**
+     * 根据 OpenId 列表群发文本消息。
+     * @param content 文本消息内容。
+     * @param openIds OpenId 列表。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassTextMessageToUsers(String content, String... openIds) {
+        Args.notEmpty(content, "文本消息内容");
+        Args.notNull(openIds, "OpenId列表");
+        Args.notEmpty(Arrays.asList(openIds), "OpenId列表");
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.TEXT, content, Arrays.asList(openIds));
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public WechatApiResult massMessaging(String content, String tadId, boolean isToAll) {
-        return null;
+    /**
+     * 根据标签群发文本消息。
+     * @param content 文本消息内容。
+     * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
+     * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
+     *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassTextMessageToUsersWithTag(String content, String tagId, boolean isToAll) {
+        Args.notEmpty(content, "文本消息内容");
+        if (!isToAll) {
+            Args.notEmpty(tagId, "标签ID");
+        }
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.TEXT, content, tagId, isToAll);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据 OpenId 列表群发图片消息。
+     * @param mediaId 用于群发的图片的 media_id。
+     * @param openIds OpenId 列表。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassImageToUsers(String mediaId, String... openIds) {
+        Args.notEmpty(mediaId, "Media ID of image material");
+        Args.notNull(openIds, "OpenId list");
+        Args.notEmpty(Arrays.asList(openIds), "OpenId list");
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.IMAGE, mediaId, Arrays.asList(openIds));
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据标签群发图片消息。
+     * @param mediaId 用于群发的图片的 media_id。
+     * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
+     * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
+     *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassImageToUsersWithTag(String mediaId, String tagId, boolean isToAll) {
+        Args.notEmpty(mediaId, "Media ID of image material");
+        if (!isToAll) {
+            Args.notEmpty(tagId, "Tag ID");
+        }
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.IMAGE, mediaId, tagId, false);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据 OpenId 列表群发语音消息。
+     * @param mediaId 用于群发的语音的 media_id。
+     * @param openIds OpenId 列表。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassVoiceMessageToUsers(String mediaId, String... openIds) {
+        Args.notEmpty(mediaId, "Media ID of voice material");
+        Args.notNull(openIds, "OpenId list");
+        Args.notEmpty(Arrays.asList(openIds), "OpenId list");
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.VOICE, mediaId, Arrays.asList(openIds));
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据标签群发语音消息。
+     * @param mediaId 用于群发的语音的 media_id。
+     * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
+     * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
+     *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassVoiceMessageToUsersWithTag(String mediaId, String tagId, boolean isToAll) {
+        Args.notEmpty(mediaId, "Media ID of voice material");
+        if (!isToAll) {
+            Args.notEmpty(tagId, "Tag ID");
+        }
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.VOICE, mediaId, tagId, false);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据 OpenId 列表群发视频消息。
+     * @param mediaId 用于群发的视频素材的 media_id。
+     * @param openIds OpenId 列表。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassVideoMessageToUsers(String mediaId, String... openIds) {
+        Args.notEmpty(mediaId, "Media ID of video material");
+        Args.notNull(openIds, "OpenId list");
+        Args.notEmpty(Arrays.asList(openIds), "OpenId list");
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_VIDEO, mediaId, Arrays.asList(openIds));
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据标签群发视频消息。
+     * @param mediaId 用于群发的视频素材的 media_id。
+     * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
+     * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
+     *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassVideoMessageToUsersWithTag(String mediaId, String tagId, boolean isToAll) {
+        Args.notEmpty(mediaId, "Media ID of video material");
+        if (!isToAll) {
+            Args.notEmpty(tagId, "Tag ID");
+        }
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_VIDEO, mediaId, tagId, false);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据 OpenId 列表群发音乐消息。
+     * @param mediaId 用于群发的音乐素材的 media_id。
+     * @param openIds OpenId 列表。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassMusicToUsers(String mediaId, String... openIds) {
+        Args.notEmpty(mediaId, "Media ID of music material");
+        Args.notNull(openIds, "OpenId list");
+        Args.notEmpty(Arrays.asList(openIds), "OpenId list");
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MUSIC, mediaId, Arrays.asList(openIds));
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据标签群发音乐消息。
+     * @param mediaId 用于群发的音乐素材的 media_id。
+     * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
+     * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
+     *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @return 发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID；
+     * 若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。
+     */
+    public WeChatApiResult sendMassMusicToUsersWithTag(String mediaId, String tagId, boolean isToAll) {
+        Args.notEmpty(mediaId, "Media ID of music material");
+        if (!isToAll) {
+            Args.notEmpty(tagId, "Tag ID");
+        }
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MUSIC, mediaId, tagId, false);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据 OpenId 列表群发图文消息。
+     * @param mediaId 用于群发的图文素材的 media_id。
+     * @param openIds OpenId 列表。
+     * @return <p>发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID。
+     * 通过 {@link WeChatApiResult#getMsgDataId()} 可以得到消息的数据ID，该字段只有在群发图文消息时，才会出现。可以用于在图文分析数据接口中，获取到对应的图文消息的数据，是图文分析数据接口中的msgid字段中的前半部分，详见图文分析数据接口中的msgid字段的介绍。</p>
+     * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。</p>
+     */
+    public WeChatApiResult sendMassArticleToUsers(String mediaId, String... openIds) {
+        Args.notEmpty(mediaId, "Media ID of news material");
+        Args.notNull(openIds, "OpenId list");
+        Args.notEmpty(Arrays.asList(openIds), "OpenId list");
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, mediaId, Arrays.asList(openIds));
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据标签群发图文消息。
+     * @param mediaId 用于群发的图文素材的 media_id。
+     * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
+     * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
+     *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @return <p>发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID。
+     * 通过 {@link WeChatApiResult#getMsgDataId()} 可以得到消息的数据ID，该字段只有在群发图文消息时，才会出现。可以用于在图文分析数据接口中，获取到对应的图文消息的数据，是图文分析数据接口中的msgid字段中的前半部分，详见图文分析数据接口中的msgid字段的介绍。</p>
+     * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。</p>
+     */
+    public WeChatApiResult sendMassArticleToUsersWithTag(String mediaId, String tagId, boolean isToAll) {
+        Args.notEmpty(mediaId, "Media ID of news material");
+        if (!isToAll) {
+            Args.notEmpty(tagId, "Tag ID");
+        }
+
+        final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
+        MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, mediaId, tagId, false);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -297,9 +588,9 @@ public class MessageManager extends WeChatKitComponent {
      * @param templateId 消息模板ID
      * @param openid 接收消息的用户的 openid
      * @param params 消息模板中需要传入的数据
-     * @return 微信模板消息接口的返回结果,封装成 {@link WechatApiResult} 的实例。
+     * @return 微信模板消息接口的返回结果,封装成 {@link WeChatApiResult} 的实例。
      */
-    public WechatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> params) {
+    public WeChatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> params) {
         return null;
     }
 

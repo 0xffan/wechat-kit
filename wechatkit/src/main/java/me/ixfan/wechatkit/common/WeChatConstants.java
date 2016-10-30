@@ -129,7 +129,7 @@ public class WeChatConstants {
     /** 微信API - 上传用于群发的图文消息素材 */
     public static final String WECHAT_POST_MESSAGE_UPLOAD_NEWS = "https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=${ACCESS_TOKEN}";
     /** 微信API - 根据分组群发消息 */
-    public static final String WECHAT_POST_MESSAGE_MASS_SEND_BY_GROUP = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=${ACCESS_TOKEN}";
     /** 微信API - 根据 OpenId 列表群发消息 */
     public static final String WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=${ACCESS_TOKEN}";
 }
