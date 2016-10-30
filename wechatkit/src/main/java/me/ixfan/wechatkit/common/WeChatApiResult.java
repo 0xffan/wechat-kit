@@ -57,7 +57,7 @@ import com.google.gson.JsonObject;
  *
  * @author Warren Fan
  */
-public class WechatApiResult {
+public class WeChatApiResult {
 
     /**
      * 微信接口返回码
@@ -85,9 +85,19 @@ public class WechatApiResult {
      */
     private long createdAt;
 
-    public static WechatApiResult instanceOf(JsonObject jsonResponse) {
+
+    /**
+     * 群发消息成功后得到的消息发送任务的ID
+     */
+    private long msgId;
+    /**
+     * 群发图文消息成功后得到的消息的数据ID
+     */
+    private long msgDataId;
+
+    public static WeChatApiResult instanceOf(JsonObject jsonResponse) {
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-        return gson.fromJson(jsonResponse, WechatApiResult.class);
+        return gson.fromJson(jsonResponse, WeChatApiResult.class);
     }
 
     public long getErrcode() {
@@ -136,5 +146,21 @@ public class WechatApiResult {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public long getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(long msgId) {
+        this.msgId = msgId;
+    }
+
+    public long getMsgDataId() {
+        return msgDataId;
+    }
+
+    public void setMsgDataId(long msgDataId) {
+        this.msgDataId = msgDataId;
     }
 }
