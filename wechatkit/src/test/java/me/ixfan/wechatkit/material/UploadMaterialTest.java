@@ -48,7 +48,7 @@
 package me.ixfan.wechatkit.material;
 
 import me.ixfan.wechatkit.WeChatKit;
-import me.ixfan.wechatkit.common.WechatApiResult;
+import me.ixfan.wechatkit.common.WeChatApiResult;
 import me.ixfan.wechatkit.token.SimpleTokenContainer;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -74,7 +74,7 @@ public class UploadMaterialTest {
     public void testUploadTempImage_file() {
         File file = getMaterialFile("WxMaterial/CqOMI6wXYAAI996.jpeg");
 
-        WechatApiResult result = weChatKit.materialManager().uploadTemporaryImage(file);
+        WeChatApiResult result = weChatKit.materialManager().uploadTemporaryImage(file);
         assertNotNull(result);
         assertNotNull("Upload image failed!", result.getMediaId());
         assertEquals(MediaType.IMAGE.stringValue(), result.getType());
@@ -91,7 +91,7 @@ public class UploadMaterialTest {
             return;
         }
 
-        WechatApiResult result = weChatKit.materialManager().uploadTemporaryImage("uploadTempImageTest.jpeg", bytes);
+        WeChatApiResult result = weChatKit.materialManager().uploadTemporaryImage("uploadTempImageTest.jpeg", bytes);
         assertNotNull(result);
         assertNotNull("Upload image failed!", result.getMediaId());
         assertEquals(MediaType.IMAGE.stringValue(), result.getType());
@@ -102,7 +102,7 @@ public class UploadMaterialTest {
     public void testUploadPermanentImage_file() {
         File file = getMaterialFile("WxMaterial/CqOMI6wXYAAI996.jpeg");
 
-        WechatApiResult result = weChatKit.materialManager().uploadPermanentImage(file);
+        WeChatApiResult result = weChatKit.materialManager().uploadPermanentImage(file);
         assertNotNull(result);
         assertNotNull("Lost field 'media_id'!", result.getMediaId());
         assertNotNull("Lost field 'url'!", result.getUrl());
@@ -119,7 +119,7 @@ public class UploadMaterialTest {
             return;
         }
 
-        WechatApiResult result = weChatKit.materialManager().uploadPermanentImage("uploadPermanentImageTest.jpeg", bytes);
+        WeChatApiResult result = weChatKit.materialManager().uploadPermanentImage("uploadPermanentImageTest.jpeg", bytes);
         assertNotNull(result);
         assertNotNull("Lost field 'media_id'!", result.getMediaId());
         assertNotNull("Lost field 'url'!", result.getUrl());
