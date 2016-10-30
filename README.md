@@ -18,7 +18,7 @@
 
 ```java
 // 首先创建 WechatKit 实例
-WeChatKit wechatKit = WeChatKit.build("APPID", "APPSECRET", yourWechatAccessTokenContainerImpl);
+WeChatKit wechatKit = WeChatKit.build("WeChatID"，"APPID", "APPSECRET", yourWechatAccessTokenContainerImpl);
 
 // 为公众号创建自定义菜单
 wechatKit.menuManager().createCustomizedMenu(menuItemsList);
