@@ -60,13 +60,13 @@ import static org.junit.Assert.assertNotNull;
  * @author Warren Fan
  */
 @RunWith(JUnit4.class)
-public class WechatApiResultTest {
+public class WeChatApiResultTest {
     private final String uploadTempImgSuccess = "{\"type\":\"image\",\"media_id\":\"j1Zk-PLu19wZa-hweRGuK8NxteHcByA64BK\",\"created_at\":1472990884}";
 
     @Test
     public void testConstructWxApiResult() {
-        WechatApiResult result = WechatApiResult.instanceOf(new JsonParser().parse(uploadTempImgSuccess).getAsJsonObject());
-        assertNotNull("Failed to construct WechatApiResult instance!", result);
+        WeChatApiResult result = WeChatApiResult.instanceOf(new JsonParser().parse(uploadTempImgSuccess).getAsJsonObject());
+        assertNotNull("Failed to construct WeChatApiResult instance!", result);
         assertEquals("Lost field 'type'!", MediaType.IMAGE.stringValue(), result.getType());
         assertEquals("Lost field 'meida_id'!", "j1Zk-PLu19wZa-hweRGuK8NxteHcByA64BK", result.getMediaId());
         assertEquals("Lost field 'create_at'!", 1472990884L, result.getCreatedAt());
