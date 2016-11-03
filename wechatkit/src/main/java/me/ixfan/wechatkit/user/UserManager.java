@@ -30,19 +30,17 @@ import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatConstants;
 import me.ixfan.wechatkit.exceptions.WeChatApiErrorException;
 import me.ixfan.wechatkit.token.TokenManager;
+import me.ixfan.wechatkit.user.model.UserTag;
 import me.ixfan.wechatkit.user.model.WeChatFollower;
 import me.ixfan.wechatkit.util.HttpClientUtil;
 import org.apache.http.util.Args;
 import org.apache.http.util.TextUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * TODO: 用户管理
+ * 用户管理
  *
  * Created by xfan on 16/3/26.
  */
@@ -119,6 +117,7 @@ public class UserManager extends WeChatKitComponent {
      * @param openIds 用户的 OpenId 列表。
      * @param lang 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语，默认为 zh-CN。
      * @return {@link WeChatFollower}s
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
      */
     public List<WeChatFollower> batchGetUserInfo(final List<String> openIds, String lang)
             throws WeChatApiErrorException {
@@ -152,4 +151,101 @@ public class UserManager extends WeChatKitComponent {
             throw new WeChatApiErrorException(jsonResponse.get("errcode").getAsInt(), jsonResponse.get("errmsg").getAsString());
         }
     }
+
+    /**
+     * 创建标签。
+     *
+     * @param tagName 标签名。30个字符以内。
+     * @return {@link UserTag} 创建的标签。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public UserTag createTag(String tagName) throws WeChatApiErrorException {
+        Args.notEmpty(tagName, "Tag name");
+        final String url = WeChatConstants.WECHAT_POST_CREATE_TAG.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"tag\":{\"name\":\"" + tagName + "\"}}";
+        JsonObject jsonResponse;
+        try {
+            jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, jsonData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResponse.has("tag")) {
+            return new UserTag(jsonResponse.getAsJsonObject("tag").get("id").getAsInt(), jsonResponse.getAsJsonObject("tag").get("name").getAsString());
+        } else {
+            throw new WeChatApiErrorException(jsonResponse.get("errcode").getAsInt(), jsonResponse.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 获取已创建的标签。
+     *
+     * @return 已有的标签列表。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public List<UserTag> getExistingTags() throws WeChatApiErrorException {
+        final String url = WeChatConstants.WECHAT_GET_GET_TAGS.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendGetRequestAndGetJsonResponse(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResp.has("tags")) {
+            Gson gson = new Gson();
+            return Arrays.asList(gson.fromJson(jsonResp.getAsJsonArray("tags"), UserTag[].class));
+        } else {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 更新标签。
+     *
+     * @param tagId 标签ID。
+     * @param tagName 新的标签名。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public void updateTag(int tagId, String tagName) throws WeChatApiErrorException {
+        Args.notNegative(tagId, "Tag ID");
+        Args.notEmpty(tagName, "Tag name");
+
+        final String url = WeChatConstants.WECHAT_POST_UPDATE_TAG.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"tag\":{\"id\":" + String.valueOf(tagId) + ",\"name\":\"" + tagName + "\"}}";
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendPostRequestWithJsonBody(url, jsonData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (0 != jsonResp.get("errcode").getAsInt()) {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 删除标签。
+     *
+     * @param tagId 标签ID。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public void deleteTag(int tagId) throws WeChatApiErrorException {
+        Args.notNegative(tagId, "Tag ID");
+
+        final String url = WeChatConstants.WECHAT_POST_DELETE_TAG.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"tag\":{\"id\":" + String.valueOf(tagId) + "}}";
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendPostRequestWithJsonBody(url, jsonData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (0 != jsonResp.get("errcode").getAsInt()) {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
 }
