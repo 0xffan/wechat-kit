@@ -25,6 +25,7 @@
 package me.ixfan.wechatkit.user;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatConstants;
@@ -38,6 +39,8 @@ import org.apache.http.util.TextUtils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * 用户管理
@@ -67,7 +70,7 @@ public class UserManager extends WeChatKitComponent {
             throw new RuntimeException(e);
         }
         if (jsonResp.has("count") && jsonResp.get("count").getAsInt() > 0) {
-            ArrayList<String> openids = new ArrayList<>();
+            final ArrayList<String> openids = new ArrayList<>();
             jsonResp.get("data").getAsJsonObject()
                     .get("openid").getAsJsonArray()
                     .forEach(e -> openids.add(e.getAsString()));
@@ -244,6 +247,130 @@ public class UserManager extends WeChatKitComponent {
         }
 
         if (0 != jsonResp.get("errcode").getAsInt()) {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 获取标签下的粉丝列表。
+     *
+     * @param tagId 标签ID。
+     * @param nextOpenId 第一个拉取的OPENID，不填默认从头开始拉取。
+     * @return 关注者的 OpenId 数组，最后一个为 <code>next_openid</code>。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public String[] getUsersWithTag(int tagId, String nextOpenId) throws WeChatApiErrorException {
+        Args.notNegative(tagId, "Tag ID");
+
+        final String url = WeChatConstants.WECHAT_GET_USER_WITH_TAG.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"tagid\":${TAG_ID},\"next_openid\":\"${NEXT_OPENID}\"}";
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendPostRequestWithJsonBody(url, jsonData.replace("${TAG_ID}", String.valueOf(tagId)).replace("${NEXT_OPENID}", null != nextOpenId ? nextOpenId:""));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResp.has("count")) {
+            final ArrayList<String> openids = new ArrayList<>();
+            if (jsonResp.get("count").getAsInt() > 0) {
+                jsonResp.get("data").getAsJsonObject()
+                        .get("openid").getAsJsonArray()
+                        .forEach(e -> openids.add(e.getAsString()));
+                if (jsonResp.has("next_openid")) {
+                    openids.add(jsonResp.get("next_openid").getAsString());
+                }
+            }
+            return openids.toArray(new String[0]);
+        } else {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 批量为用户打标签。微信目前支持公众号为用户打上最多三个标签。
+     *
+     * @param tagId 标签ID。
+     * @param openIds 粉丝的OpenID，每次传入的openid列表个数不能超过50个。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public void batchTaggingUsersWithTag(int tagId, List<String> openIds) throws WeChatApiErrorException {
+        Args.notNegative(tagId, "Tag ID");
+        Args.notEmpty(openIds, "OpenIds");
+
+        final String url = WeChatConstants.WECHAT_POST_BATCH_TAGGING.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"openid_list\":[${OPENIDS}],\"tagid\":${TAG_ID}}";
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendPostRequestWithJsonBody(
+                                        url,
+                                        jsonData.replace("${OPENIDS}", openIds.stream().collect(Collectors.joining(",")))
+                                                .replace("${TAG_ID}", String.valueOf(tagId)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResp.get("errcode").getAsInt() != 0) {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 批量为用户取消标签。
+     *
+     * @param tagId 标签ID。
+     * @param openIds 粉丝的OpenID，每次传入的openid列表个数不能超过50个。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public void batchUntaggingUsers(int tagId, List<String> openIds) throws WeChatApiErrorException {
+        Args.notNegative(tagId, "Tag ID");
+        Args.notEmpty(openIds, "OpenIds");
+
+        final String url = WeChatConstants.WECHAT_POST_BATCH_UNTAGGING.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"openid_list\":[${OPENIDS}],\"tagid\":${TAG_ID}}";
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendPostRequestWithJsonBody(
+                    url,
+                    jsonData.replace("${OPENIDS}", openIds.stream().collect(Collectors.joining(",")))
+                            .replace("${TAG_ID}", String.valueOf(tagId)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResp.get("errcode").getAsInt() != 0) {
+            throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
+        }
+    }
+
+    /**
+     * 获取用户身上的标签列表。
+     *
+     * @param openId 粉丝的OpenID。
+     * @return 用户身上的标签ID列表。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
+     */
+    public int[] getTagsOfUser(String openId) throws WeChatApiErrorException {
+        Args.notEmpty(openId, "OpenID");
+
+        final String url = WeChatConstants.WECHAT_POST_GET_TAGS_OF_USER.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final String jsonData = "{\"openid\":\"${OPENID}\"}";
+        JsonObject jsonResp;
+        try {
+            jsonResp = HttpClientUtil.sendPostRequestWithJsonBody(url, jsonData.replace("${OPENID}", openId));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (jsonResp.has("tagid_list")) {
+            JsonArray jsonArray = jsonResp.getAsJsonArray("tagid_list");
+            int[] tagIds = new int[jsonArray.size()];
+            if (jsonArray.size() > 0) {
+                IntStream.range(0, jsonArray.size())
+                        .forEach(i -> tagIds[i] = jsonArray.get(i).getAsInt());
+            }
+            return tagIds;
+        } else {
             throw new WeChatApiErrorException(jsonResp.get("errcode").getAsInt(), jsonResp.get("errmsg").getAsString());
         }
     }
