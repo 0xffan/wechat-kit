@@ -99,7 +99,7 @@ public class MassMessagingTest {
         Assert.assertNotNull("msg_id should not be blank!", result.getMsgId());
     }
 
-    @Ignore("待标签管理实现")
+    @Ignore("未测")
     @Test
     public void testSendMassTextMessageToTagSuccessfully() {
         WeChatApiResult result = weChatKit.messageManager().sendMassTextMessageToUsersWithTag("Hello World!", testTag, false);
@@ -107,7 +107,7 @@ public class MassMessagingTest {
         Assert.assertNotNull("msg_id should not be blank!", result.getMsgId());
     }
 
-    @Ignore("待标签管理实现")
+    @Ignore("未测")
     @Test
     public void testSendMassImageMessageToTagSuccessfully() {
         WeChatApiResult result = weChatKit.messageManager().sendMassImageToUsersWithTag("Y2H84Vo0AWTV8WL4jYMrZN6tWmvsWrspeafAXUSFvAo", testTag, false);
