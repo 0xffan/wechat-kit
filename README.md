@@ -47,11 +47,11 @@ WeChatFollower user = wechatKit.userManager().getWechatUserInfo("user's openid")
 
  🛠 主动给用户发送消息
 
- 🕖 发送模板消息
+ 🛠 发送模板消息
 
- 🕖 被动回复消息
+ ✔️ 被动回复消息
 
- 🛠 群发消息
+ ✔️ 群发消息
 
 * 用户管理
 
@@ -59,7 +59,7 @@ WeChatFollower user = wechatKit.userManager().getWechatUserInfo("user's openid")
 
  🕖 设置用户备注名
 
- 🕖 用户标签管理
+ ✔️ 用户标签管理
 
  ✔️ 获取用户列表
 
