@@ -35,10 +35,13 @@ import me.ixfan.wechatkit.message.in.*;
 import me.ixfan.wechatkit.message.in.event.*;
 import me.ixfan.wechatkit.message.out.OutMessageType;
 import me.ixfan.wechatkit.message.out.json.MessageForMassSend;
+import me.ixfan.wechatkit.message.out.template.MessageTemplate;
+import me.ixfan.wechatkit.message.out.template.TemplateMessageForSend;
 import me.ixfan.wechatkit.message.out.xml.*;
 import me.ixfan.wechatkit.token.TokenManager;
 import me.ixfan.wechatkit.util.HttpClientUtil;
 import me.ixfan.wechatkit.util.JAXBUtil;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.http.util.Args;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -51,6 +54,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -583,16 +588,68 @@ public class MessageManager extends WeChatKitComponent {
     }
 
     /**
-     * TODO 向用户发送模板消息。
+     * 向用户发送模板消息。
      *
      * @param templateId 消息模板ID
      * @param openid 接收消息的用户的 openid
-     * @param params 消息模板中需要传入的数据
-     * @return 微信模板消息接口的返回结果,封装成 {@link WeChatApiResult} 的实例。
+     * @param contentParams 消息模板中需要传入的数据
+     * @return <p>微信服务器成功接收发送模板消息的请求后，可通过 {@link WeChatApiResult#getMsgId()} 得到消息发送任务的ID。
+     * 注意：此时消息可能还未发送给用户。在模版消息发送任务完成后，微信服务器将会向开发者服务器推送是否送达成功的事件通知。</p>
+     * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。</p>
      */
-    public WeChatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> params) {
-        return null;
+    public WeChatApiResult sendTemplateMessage(String templateId, String openid, Map<String, String> contentParams) {
+        Args.notEmpty(templateId, "ID of message template");
+        Args.notEmpty(openid, "OpenID of message receiver");
+        final String url = WeChatConstants.WECHAT_POST_SEND_TEMPLATE_MESSAGE.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final TemplateMessageForSend templateMessageForSend =
+                new TemplateMessageForSend(templateId, openid, contentParams);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, templateMessageForSend.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    /**
+     * 向用户发送模板消息。
+     * @param templateId 消息模板ID。
+     * @param openid 接收消息的用户的 openid。
+     * @param url 模板跳转链接。
+     * @param contentParams <p>消息模板中需要传入的数据，key-value pairs。数据的 key 为消息模板中设置的参数名，若需要自定义该数据的显示颜色，
+     *                      则在 key 后面加上十六进制的颜色值。</p>
+     *                      <p>举例：消息模板内容中设置了参数数据 {{withdrawMoney.DATA}}，则此参数的 key 为 "withdrawMoney"，
+     *                      若需要该数据显示颜色为 #173177，则 key 为 "withdrawMoney#173177"。</p>
+     * @return <p>微信服务器成功接收发送模板消息的请求后，可通过 {@link WeChatApiResult#getMsgId()} 得到消息发送任务的ID。
+     * 注意：此时消息可能还未发送给用户。在模版消息发送任务完成后，微信服务器将会向开发者服务器推送是否送达成功的事件通知。</p>
+     * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
+     * 得到错误代码和错误信息。</p>
+     */
+    public WeChatApiResult sendTemplateMessage(String templateId, String openid, String url, Map<String, String> contentParams) {
+        Args.notEmpty(templateId, "ID of message template");
+        Args.notEmpty(openid, "OpenID of message receiver");
+        final String postUrl = WeChatConstants.WECHAT_POST_SEND_TEMPLATE_MESSAGE.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        final TemplateMessageForSend templateMessageForSend =
+                new TemplateMessageForSend(templateId, openid, url, contentParams);
+        try {
+            JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(postUrl, templateMessageForSend.toJsonString());
+            return WeChatApiResult.instanceOf(jsonResponse);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * TODO 获取帐号下所有的消息模板列表。
+     * @return 帐号下所有的消息模板列表。
+     */
+    public List<MessageTemplate> retrieveMessageTemplates() {
+        final String url = WeChatConstants.WECHAT_GET_MESSAGE_TEMPLATES.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+
+        return Collections.emptyList();
+    }
+
 
     /**
      * 解析事件消息。

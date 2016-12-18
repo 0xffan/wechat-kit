@@ -82,6 +82,10 @@ public enum EventType {
      * 自定义菜单事件: 弹出地理位置选择器的事件推送
      */
     MENU_LOCATION_SELECT { public String stringValue() { return "location_select"; }},
+    /**
+     * 模板消息发送结束事件
+     */
+    TEMPLATE_SEND_JOB_FINISH { public String stringValue() { return "TEMPLATESENDJOBFINISH"; }},
     UNKNOWN { public String stringValue() { return "unknown"; }};
 
     public static EventType of(String eventKey) {
@@ -98,6 +102,7 @@ public enum EventType {
             case "pic_photo_or_album": return MENU_PIC_OR_ALBUM;
             case "pic_weixin": return MENU_PIC_WEIXIN;
             case "location_select": return MENU_LOCATION_SELECT;
+            case "TEMPLATESENDJOBFINISH": return TEMPLATE_SEND_JOB_FINISH;
             default: return UNKNOWN;
         }
     }
