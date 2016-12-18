@@ -132,4 +132,7 @@ public class WeChatConstants {
     public static final String WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=${ACCESS_TOKEN}";
     /** 微信API - 根据 OpenId 列表群发消息 */
     public static final String WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=${ACCESS_TOKEN}";
+
+    public static final String WECHAT_GET_MESSAGE_TEMPLATES = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=${ACCESS_TOKEN}";
+    public static final String WECHAT_POST_SEND_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${ACCESS_TOKEN}";
 }
