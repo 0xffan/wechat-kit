@@ -24,10 +24,12 @@
 
 package me.ixfan.wechatkit.message;
 
-import com.google.gson.JsonObject;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import me.ixfan.wechatkit.WeChatKitComponent;
 import me.ixfan.wechatkit.common.WeChatApiResult;
 import me.ixfan.wechatkit.common.WeChatConstants;
+import me.ixfan.wechatkit.exceptions.WeChatApiErrorException;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageParseException;
 import me.ixfan.wechatkit.exceptions.WechatXmlMessageSerializationException;
 import me.ixfan.wechatkit.material.MediaObject;
@@ -53,10 +55,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 消息管理
@@ -641,13 +640,30 @@ public class MessageManager extends WeChatKitComponent {
     }
 
     /**
-     * TODO 获取帐号下所有的消息模板列表。
+     * 获取帐号下所有的消息模板列表。
      * @return 帐号下所有的消息模板列表。
+     * @throws WeChatApiErrorException 如果微信API调用失败，返回了错误码和错误信息，会抛出此异常。
      */
-    public List<MessageTemplate> retrieveMessageTemplates() {
+    public List<MessageTemplate> retrieveMessageTemplates() throws WeChatApiErrorException {
         final String url = WeChatConstants.WECHAT_GET_MESSAGE_TEMPLATES.replace("${ACCESS_TOKEN}", super.tokenManager.getAccessToken());
+        JsonObject jsonResponse;
+        try {
+            jsonResponse = HttpClientUtil.sendGetRequestAndGetJsonResponse(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        return Collections.emptyList();
+        if (!jsonResponse.has("template_list")) {
+            throw new WeChatApiErrorException(jsonResponse.get("errcode").getAsInt(), jsonResponse.get("errmsg").getAsString());
+        } else {
+            JsonArray teplArray = jsonResponse.getAsJsonArray("template_list");
+            if (teplArray.size() == 0) {
+                return Collections.emptyList();
+            }
+            Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+            return gson.fromJson(teplArray, new TypeToken<ArrayList<MessageTemplate>>(){}.getType());
+        }
+
     }
 
 
