@@ -591,7 +591,10 @@ public class MessageManager extends WeChatKitComponent {
      *
      * @param templateId 消息模板ID
      * @param openid 接收消息的用户的 openid
-     * @param contentParams 消息模板中需要传入的数据
+     * @param contentParams <p>消息模板中需要传入的数据，key-value pairs。数据的 key 为消息模板中设置的参数名，若需要自定义该数据的显示颜色，
+     *                      则在 key 后面加上十六进制的颜色值。</p>
+     *                      <p>举例：消息模板内容中设置了参数数据 {{withdrawMoney.DATA}}，则此参数的 key 为 "withdrawMoney"，
+     *                      若需要该数据显示颜色为 #173177，则 key 为 "withdrawMoney#173177"。</p>
      * @return <p>微信服务器成功接收发送模板消息的请求后，可通过 {@link WeChatApiResult#getMsgId()} 得到消息发送任务的ID。
      * 注意：此时消息可能还未发送给用户。在模版消息发送任务完成后，微信服务器将会向开发者服务器推送是否送达成功的事件通知。</p>
      * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
