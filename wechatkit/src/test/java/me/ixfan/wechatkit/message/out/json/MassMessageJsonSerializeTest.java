@@ -39,14 +39,14 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JUnit4.class)
 public class MassMessageJsonSerializeTest {
 
-    private final String NEWS_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
+    private final String NEWS_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"},\"send_ignore_reprint\":0}";
     private final String TEXT_TO_Tag = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"text\",\"text\":{\"content\":\"CONTENT\"}}";
     private final String IMG_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"image\",\"image\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
     private final String VOICE_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"voice\",\"voice\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
     private final String VIDEO_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":2},\"msgtype\":\"mpvideo\",\"mpvideo\":{\"media_id\":\"IhdaAQXuvJtGzwwc0abfXnzeezfO0NgPK6AQYShD8RQYMTtfzbLdBIQkQziv2XJc\"}}";
     private final String CARD_TO_TAG = "{\"filter\":{\"is_to_all\":false,\"tag_id\":\"t2\"},\"msgtype\":\"wxcard\",\"wxcard\":{\"card_id\":\"123dsdajkasd231jhksad\"}}";
 
-    private final String NEWS_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"}}";
+    private final String NEWS_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"mpnews\",\"mpnews\":{\"media_id\":\"123dsdajkasd231jhksad\"},\"send_ignore_reprint\":0}";
     private final String TEXT_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"text\",\"text\":{\"content\":\"hello from boxer.\"}}";
     private final String IMG_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"image\",\"image\":{\"media_id\":\"BTgN0opcW3Y5zV_ZebbsD3NFKRWf6cb7OPswPi9Q83fOJHK2P67dzxn11Cp7THat\"}}";
     private final String VOICE_TO_USERS = "{\"touser\":[\"OPENID1\",\"OPENID2\"],\"msgtype\":\"voice\",\"voice\":{\"media_id\":\"mLxl6paC7z2Tl-NJT64yzJve8T9c8u9K2x-Ai6Ujd4lIH9IBuF6-2r66mamn_gIT\"}}";
@@ -62,6 +62,7 @@ public class MassMessageJsonSerializeTest {
     @Test
     public void successfullySerializeMassNewsMsgToTag() {
         MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, "123dsdajkasd231jhksad", "2", false);
+        msg.setSendIgnoreReprint(0);
         assertEquals(NEWS_TO_TAG, msg.toJsonString());
     }
 
@@ -98,6 +99,7 @@ public class MassMessageJsonSerializeTest {
     @Test
     public void successfullySerializeMassNewsMsgToUsers() {
         MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, "123dsdajkasd231jhksad", Arrays.asList("OPENID1", "OPENID2"));
+        msg.setSendIgnoreReprint(0);
         assertEquals(NEWS_TO_USERS, msg.toJsonString());
     }
 
