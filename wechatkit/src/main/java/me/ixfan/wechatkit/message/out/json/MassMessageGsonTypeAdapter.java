@@ -104,6 +104,7 @@ public class MassMessageGsonTypeAdapter extends TypeAdapter<MessageForMassSend> 
                 out.name(OutMessageType.MP_NEWS.stringValue()).beginObject();
                 out.name("media_id").value(value.getMsgContent());
                 out.endObject();
+                out.name("send_ignore_reprint").value(value.getSendIgnoreReprint());
                 break;
             case MP_VIDEO:
                 out.name(OutMessageType.MP_VIDEO.stringValue()).beginObject();

@@ -40,6 +40,7 @@ public class MessageForMassSend {
     private List<String> toUser;
     private String title;
     private String description;
+    private int sendIgnoreReprint = 0;
 
     /**
      * 构建根据分组群发消息的消息对象。
@@ -107,6 +108,15 @@ public class MessageForMassSend {
 
     public List<String> getToUser() {
         return toUser;
+    }
+
+    public void setSendIgnoreReprint(int sendIgnoreReprint) {
+        this.sendIgnoreReprint = sendIgnoreReprint;
+    }
+
+    public int getSendIgnoreReprint() {
+
+        return sendIgnoreReprint;
     }
 
     static class Filter {

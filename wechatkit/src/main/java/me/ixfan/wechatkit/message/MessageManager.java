@@ -538,19 +538,23 @@ public class MessageManager extends WeChatKitComponent {
     /**
      * 根据 OpenId 列表群发图文消息。
      * @param mediaId 用于群发的图文素材的 media_id。
+     * @param ignoreReprint <p>指定待群发的文章被判定为转载时，是否继续群发。默认为 false。</p>
+     *                      <p>true  - 文章被判定为转载时，将继续进行群发操作；</p>
+     *                      <p>false - 文章被判定为转载时，将停止群发操作。</p>
      * @param openIds OpenId 列表。
      * @return <p>发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID。
      * 通过 {@link WeChatApiResult#getMsgDataId()} 可以得到消息的数据ID，该字段只有在群发图文消息时，才会出现。可以用于在图文分析数据接口中，获取到对应的图文消息的数据，是图文分析数据接口中的msgid字段中的前半部分，详见图文分析数据接口中的msgid字段的介绍。</p>
      * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
      * 得到错误代码和错误信息。</p>
      */
-    public WeChatApiResult sendMassArticleToUsers(String mediaId, String... openIds) {
+    public WeChatApiResult sendMassArticleToUsers(String mediaId, boolean ignoreReprint, String... openIds) {
         Args.notEmpty(mediaId, "Media ID of news material");
         Args.notNull(openIds, "OpenId list");
         Args.notEmpty(Arrays.asList(openIds), "OpenId list");
 
         final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SNED_BY_OPENIDS.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
         MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, mediaId, Arrays.asList(openIds));
+        msg.setSendIgnoreReprint(ignoreReprint ? 1:0);
         try {
             JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
             return WeChatApiResult.instanceOf(jsonResponse);
@@ -565,12 +569,15 @@ public class MessageManager extends WeChatKitComponent {
      * @param tagId 群发到的标签的tag_id，参加用户管理中用户分组接口，若is_to_all值为true，可不填写tag_id。
      * @param isToAll 用于设定是否向全部用户发送，值为true或false，选择true该消息群发给所有用户，选择false可根据tag_id发送给指定群组的用户。
      *                此参数的使用有些需要注意的地方，请查阅微信开发者文档群发消息的部分。
+     * @param ignoreReprint <p>指定待群发的文章被判定为转载时，是否继续群发。默认为 false。</p>
+     *                      <p>true  - 文章被判定为转载时，将继续进行群发操作；</p>
+     *                      <p>false - 文章被判定为转载时，将停止群发操作。</p>
      * @return <p>发送成功后通过 {@link WeChatApiResult#getMsgId()} 可以得到消息发送任务的ID。
      * 通过 {@link WeChatApiResult#getMsgDataId()} 可以得到消息的数据ID，该字段只有在群发图文消息时，才会出现。可以用于在图文分析数据接口中，获取到对应的图文消息的数据，是图文分析数据接口中的msgid字段中的前半部分，详见图文分析数据接口中的msgid字段的介绍。</p>
      * <p>若发送失败，可以通过 {@link WeChatApiResult#getErrcode()} 和 {@link WeChatApiResult#getErrmsg()}
      * 得到错误代码和错误信息。</p>
      */
-    public WeChatApiResult sendMassArticleToUsersWithTag(String mediaId, String tagId, boolean isToAll) {
+    public WeChatApiResult sendMassArticleToUsersWithTag(String mediaId, String tagId, boolean isToAll, boolean ignoreReprint) {
         Args.notEmpty(mediaId, "Media ID of news material");
         if (!isToAll) {
             Args.notEmpty(tagId, "Tag ID");
@@ -578,6 +585,7 @@ public class MessageManager extends WeChatKitComponent {
 
         final String url = WeChatConstants.WECHAT_POST_MESSAGE_MASS_SEND_BY_TAG.replace("${ACCESS_TOKEN}", super.getTokenManager().getAccessToken());
         MessageForMassSend msg = new MessageForMassSend(OutMessageType.MP_NEWS, mediaId, tagId, false);
+        msg.setSendIgnoreReprint(ignoreReprint ? 1:0);
         try {
             JsonObject jsonResponse = HttpClientUtil.sendPostRequestWithJsonBody(url, msg.toJsonString());
             return WeChatApiResult.instanceOf(jsonResponse);
